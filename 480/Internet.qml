@@ -18,77 +18,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import QtMobility.location 1.1
+import QtWebKit 1.0
 
 Window {
     id: root
 
     anchors.fill: parent
-    focus: true
 
-    Map {
-        id: map
+    WebView {
+        id: webView
+        focus: true
+        url: "http://www.google.com"
         anchors.fill: parent
-
-        plugin : Plugin {
-            name : "nokia"
-        }
-        mapType: Map.StreetMap
-        center: Coordinate {
-            latitude: 48.0
-            longitude: 11.0
-        }
-        zoomLevel: 4.0
+        anchors.leftMargin: 70
+        anchors.topMargin: 10
+        anchors.rightMargin: 10
+        anchors.bottomMargin: 10
     }
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-        property bool mouseDown : false
-        property int lastX : -1
-        property int lastY : -1
-
-        onPressed : {
-            mouseDown = true
-            lastX = mouse.x
-            lastY = mouse.y
-        }
-        onReleased : {
-            mouseDown = false
-        }
-        onPositionChanged: {
-            if (mouseDown) {
-                var dx = mouse.x - lastX
-                var dy = mouse.y - lastY
-                map.pan(-dx, -dy)
-                lastX = mouse.x
-                lastY = mouse.y
-            }
-        }
-    }
-
-    Keys.onPressed: {
-        if (event.key == Qt.Key_Right) {
-            map.pan(100, 0)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Left) {
-            map.pan(-100, 0)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Up) {
-            map.pan(0, -100)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Down) {
-            map.pan(0, 100)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Minus) {
-            map.zoomLevel = map.zoomLevel - 1
-            event.accepted = true
-        } else if (event.key == Qt.Key_Plus) {
-            map.zoomLevel = map.zoomLevel + 1
-            event.accepted = true
-        }
-    }
-
-    Engine { name: qsTr("OviMap"); role: "ovimap"; visualElement: root }
+    Engine { name: qsTr("Internet"); role: "internet"; visualElement: root }
 }

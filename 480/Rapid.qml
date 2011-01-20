@@ -123,5 +123,11 @@ Item {
             mapLoader.createObject(rapid)
         }
         else if (mapLoader.status == Component.Error) { console.log(mapLoader.errorString()) }
+
+        var internetLoader = Qt.createComponent("Internet.qml");
+        if (internetLoader.status == Component.Ready) {
+            internetLoader.createObject(rapid)
+        }
+        else if (internetLoader.status == Component.Error) { console.log(internetLoader.errorString()) }
     }
 }
