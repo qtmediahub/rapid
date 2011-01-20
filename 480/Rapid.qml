@@ -117,5 +117,11 @@ Item {
             weatherLoader.createObject(rapid)
         }
         else if (weatherLoader.status == Component.Error) { console.log(weatherLoader.errorString()) }
+
+        var mapLoader = Qt.createComponent("OviMap.qml");
+        if (mapLoader.status == Component.Ready) {
+            mapLoader.createObject(rapid)
+        }
+        else if (mapLoader.status == Component.Error) { console.log(mapLoader.errorString()) }
     }
 }
