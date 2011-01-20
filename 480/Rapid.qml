@@ -112,7 +112,10 @@ Item {
         }
         else if (animatedTilesLoader.status == Component.Error) { console.log(animatedTilesLoader.errorString()) }
 
+        var weatherLoader = Qt.createComponent("Weather.qml");
+        if (weatherLoader.status == Component.Ready) {
+            weatherLoader.createObject(rapid)
+        }
+        else if (weatherLoader.status == Component.Error) { console.log(weatherLoader.errorString()) }
     }
-
-
 }
