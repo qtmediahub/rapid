@@ -35,10 +35,10 @@ Window {
         }
         mapType: Map.StreetMap
         center: Coordinate {
-            latitude: 48.0
-            longitude: 11.0
+            latitude: 41.376319
+            longitude: 2.152752
         }
-        zoomLevel: 4.0
+        zoomLevel: 15.0
     }
 
     MouseArea {
@@ -65,6 +65,39 @@ Window {
                 lastX = mouse.x
                 lastY = mouse.y
             }
+        }
+    }
+
+    Image {
+        id: zoomIn
+        source: "./images/zoom-in.png"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -zoomIn.height
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+
+        MouseArea {
+            id: zIMA
+            anchors.fill: zoomIn
+            anchors.margins: -zoomIn.height/2.0
+            onClicked: { map.zoomLevel = map.zoomLevel + 1 }
+        }
+    }
+
+    Image {
+        id: zoomOut
+        source: "./images/zoom-out.png"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: zoomOut.height
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+
+
+        MouseArea {
+            id: zOMA
+            anchors.fill: zoomOut
+            anchors.margins: -zoomOut.height/2.0
+            onClicked: { map.zoomLevel = map.zoomLevel - 1 }
         }
     }
 
