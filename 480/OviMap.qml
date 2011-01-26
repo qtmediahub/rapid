@@ -29,17 +29,14 @@ Window {
     Map {
         id: map
         anchors.fill: parent
+        plugin : Plugin { name : "nokia" }
 
-        plugin : Plugin {
-            name : "nokia"
-        }
         mapType: Map.StreetMap
-        center: Coordinate {
-            latitude: 41.376319
-            longitude: 2.152752
-        }
+
+        center: Coordinate { latitude: 41.376319; longitude: 2.152752 }
         zoomLevel: 15.0
     }
+
 
     MouseArea {
         anchors.fill: parent
@@ -101,6 +98,33 @@ Window {
         }
     }
 
+    Text { id: sat
+        anchors.right: parent.right; anchors.rightMargin: 30; anchors.top: parent.top; anchors.topMargin: 10
+        text: "Satalite"
+        color: map.mapType == Map.StreetMap ? "black" : "white"
+        Behavior on color { ColorAnimation { duration: 500 } }
+        Rectangle { id: buttonRectSat; anchors.fill: parent; anchors.margins: -5;
+            color: map.mapType == Map.SatelliteMapDay ? "red" : "blue"; opacity: 0.28; border.color: "transparent";
+            border.width: 1; radius: 8
+            MouseArea { anchors.fill: parent; onClicked: { map.mapType = Map.SatelliteMapDay } }
+            Behavior on color { ColorAnimation { duration: 500 } }
+        }
+    }
+
+    Text { id: streetMap
+        anchors.right: sat.left; anchors.rightMargin: 30; anchors.top: parent.top; anchors.topMargin: 10
+        text: "Street Map"
+        color: map.mapType == Map.StreetMap ? "black" : "white"
+        Behavior on color { ColorAnimation { duration: 500 } }
+        Rectangle { id: buttonRectStreet; anchors.fill: parent; anchors.margins: -5;
+            color: map.mapType == Map.StreetMap ? "red" : "blue"; opacity: 0.28; border.color: "transparent";
+            border.width: 1; radius: 8
+            MouseArea { anchors.fill: parent; onClicked: { map.mapType = Map.StreetMap } }
+            Behavior on color { ColorAnimation { duration: 500 } }
+        }
+    }
+
+
     Keys.onPressed: {
         if (event.key == Qt.Key_Right) {
             map.pan(100, 0)
@@ -123,5 +147,5 @@ Window {
         }
     }
 
-    Engine { name: qsTr("OviMap"); role: "ovimap"; visualElement: root }
+    Engine { name: qsTr("Ovi Maps"); role: "ovimap"; visualElement: root }
 }
