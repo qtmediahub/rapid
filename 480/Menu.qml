@@ -36,10 +36,6 @@ Item {
         }
     ]
 
-
-    Image {
-    }
-
     BorderImage {
         id: menuPic
         source: "./images/menu.png"

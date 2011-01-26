@@ -123,5 +123,11 @@ Item {
             qticLoader.createObject(rapid)
         }
         else if (qticLoader.status == Component.Error) { console.log(qticLoader.errorString()) }
+
+        var camLoader = Qt.createComponent("CameraWindow.qml");
+        if (camLoader.status == Component.Ready) {
+            camLoader.createObject(rapid)
+        }
+        else if (camLoader.status == Component.Error) { console.log(camLoader.errorString()) }
     }
 }

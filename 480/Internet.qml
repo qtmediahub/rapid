@@ -23,14 +23,12 @@ import QtWebKit 1.0
 Window {
     id: root
 
-    anchors.fill: parent
-
     WebView {
         id: webView
         focus: true
         url: "http://www.google.com"
         anchors.fill: parent
-        anchors.leftMargin: 70
+        anchors.leftMargin: 10
         anchors.topMargin: 10
         anchors.rightMargin: 10
         anchors.bottomMargin: 10

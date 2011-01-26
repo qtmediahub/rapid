@@ -41,7 +41,6 @@ import "qticcontent"
 
 Window{
     id: root
-    anchors.fill: parent
 
     Rectangle {
         id: mainElement
@@ -50,7 +49,6 @@ Window{
         width: 690; height: 264
         anchors.verticalCenter: parent.verticalCenter
         radius: gearBar.height
-//        anchors.horizontalCenter: parent.horizontalCenter
         anchors.right: parent.right
         anchors.rightMargin: 20
 
@@ -133,6 +131,6 @@ Window{
             NumberAnimation { target: statusBar; property: "distanceSmall"; from:    133.82; to:  20133.82; duration: 12000000 }
         }
 
-        Engine { name: qsTr("Intrument Cluster"); role: "qtic"; visualElement: root }
+        Engine { name: qsTr("Cluster"); role: "qtic"; visualElement: root }
     }
 }

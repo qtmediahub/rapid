@@ -22,8 +22,6 @@ import QtQuick 1.0
 Window {
     id: root
 
-    anchors.fill: parent
-
     property string city: "Munich"
 
     function fahrenheit2celsius(f) {

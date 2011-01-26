@@ -3,7 +3,6 @@ import AnimatedTiles 1.0
 
 Window {
     id: root
-    anchors.fill: parent
 
     AnimatedTiles{ anchors.fill: parent }
 

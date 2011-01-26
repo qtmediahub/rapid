@@ -23,7 +23,6 @@ import QtMobility.location 1.1
 Window {
     id: root
 
-    anchors.fill: parent
     focus: true
 
     Map {
