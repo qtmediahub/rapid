@@ -129,5 +129,11 @@ Item {
             internetLoader.createObject(rapid)
         }
         else if (internetLoader.status == Component.Error) { console.log(internetLoader.errorString()) }
+
+        var qticLoader = Qt.createComponent("qtic.qml");
+        if (qticLoader.status == Component.Ready) {
+            qticLoader.createObject(rapid)
+        }
+        else if (qticLoader.status == Component.Error) { console.log(qticLoader.errorString()) }
     }
 }
