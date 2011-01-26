@@ -75,18 +75,6 @@ Item {
     Component.onCompleted: {
         selectedElement = "empty"
 
-        var testLoader = Qt.createComponent("test.qml");
-        if (testLoader.status == Component.Ready) {
-            testWindow = testLoader.createObject(rapid)
-        }
-        else if (testLoader.status == Component.Error) { console.log(testLoader.errorString()) }
-
-        var testLoader2 = Qt.createComponent("test2.qml");
-        if (testLoader2.status == Component.Ready) {
-            test2Window = testLoader2.createObject(rapid)
-        }
-        else if (testLoader.status == Component.Error) { console.log(testLoader.errorString()) }
-
         var musicLoader = Qt.createComponent("Music.qml");
         if (musicLoader.status == Component.Ready) {
             /*musicWindow = */musicLoader.createObject(rapid)
