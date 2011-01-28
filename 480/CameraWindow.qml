@@ -156,5 +156,5 @@ Window {
         }
     }
 
-    Engine { name: qsTr("Rear Cam"); role: "camera"; visualElement: root }
+    Engine { name: qsTr("Rear-view"); role: "camera"; visualElement: root }
 }
