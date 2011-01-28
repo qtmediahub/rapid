@@ -23,16 +23,40 @@ import QtWebKit 1.0
 Window {
     id: root
 
-    WebView {
-        id: webView
-        focus: true
-        url: "http://www.google.com"
-        anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.topMargin: 10
-        anchors.rightMargin: 10
-        anchors.bottomMargin: 10
-    }
+    property int borderMargin: 10
 
+    Flickable {
+        id: webViewport
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
+        flickableDirection:  Flickable.AutoFlickDirection
+//        property int webviewMargin: 100
+
+        anchors.fill: parent
+        anchors.leftMargin: root.borderMargin
+        anchors.topMargin: root.borderMargin
+        anchors.rightMargin: root.borderMargin
+        anchors.bottomMargin: root.borderMargin
+
+        contentWidth: webView.width;
+        contentHeight: webView.height
+
+        WebView {
+            id: webView
+            url: "http://qt.nokia.com"
+//            url: "http://www.google.de"
+
+            opacity: progress == 1 ? 1 : 0.5
+
+            preferredWidth: webViewport.width
+            //Need a default/initial value in excess of what I eventually require
+            //or we see unintialized pixmap in the Flickable
+            preferredHeight: root.height - 2*root.borderMargin
+
+            Behavior on opacity {
+                NumberAnimation{ duration: 400}
+            }
+        }
+    }
     Engine { name: qsTr("Internet"); role: "internet"; visualElement: root }
 }
