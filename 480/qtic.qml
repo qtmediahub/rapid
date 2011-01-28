@@ -39,18 +39,19 @@
 import Qt 4.7
 import "qticcontent"
 
-Window{
+Window {
     id: root
 
     Rectangle {
         id: mainElement
         clip: true
-        color: "#343434"
+
         width: 690; height: 264
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.centerIn: parent
+        scale: Math.min(parent.height / height, parent.width / width)*0.98  /// the mutilple 0.98-factor is for margin ;)
+
+        color: "#343434"
         radius: gearBar.height
-        anchors.right: parent.right
-        anchors.rightMargin: 20
 
         property bool ignition: false
         property int  gearSetter: -1
@@ -131,6 +132,7 @@ Window{
             NumberAnimation { target: statusBar; property: "distanceSmall"; from:    133.82; to:  20133.82; duration: 12000000 }
         }
 
-        Engine { name: qsTr("Cluster"); role: "qtic"; visualElement: root }
     }
+
+    Engine { name: qsTr("Instrument\nCluster"); role: "qtic"; visualElement: root }
 }
