@@ -19,11 +19,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMobility.location 1.1
+import "../components"
 
 Window {
     id: root
 
     focus: true
+
 
     Map {
         id: map
@@ -35,7 +37,6 @@ Window {
         center: Coordinate { latitude: 41.376319; longitude: 2.152752 }
         zoomLevel: 15.0
     }
-
 
     MouseArea {
         anchors.fill: parent
@@ -64,65 +65,50 @@ Window {
         }
     }
 
-    Image {
-        id: zoomIn
-        source: "./images/zoom-in.png"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: -zoomIn.height
+
+    Toolbar {
         anchors.right: parent.right
-        anchors.rightMargin: 10
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
 
-        MouseArea {
-            id: zIMA
-            anchors.fill: zoomIn
-            anchors.margins: -zoomIn.height/2.0
-            onClicked: { map.zoomLevel = map.zoomLevel + 1 }
+        onBtnClicked: { handleToolbarEvent(event) }
+        model: ListModel {
+            ListElement { buttonText: "STREET"; event: "Street";
+                iconImage: "./images/icon_route.png"
+                buttonEnabled: true
+                blink: false
+                shareButtonText: ""
+            }
+            ListElement { buttonText: "SATELLITE"; event: "Satellite"
+                iconImage: "./images/icon_nearby.png"
+                buttonEnabled: true
+                blink: false
+                shareButtonText: ""
+            }
+            // Add one padding element to create space between elements
+            ListElement {buttonText: ""; event: ""; iconImage: ""; buttonEnabled: false; blink: false; shareButtonText: ""
+            }
+            ListElement { buttonText: "ZOOM"; event: "ZoomIn"
+                iconImage: "./images/icon_zoom_in.png"
+                buttonEnabled: true
+                blink: false
+                shareButtonText: true
+            }
+            ListElement { buttonText: ""; event: "ZoomOut"
+                iconImage: "./images/icon_zoom_out.png"
+                buttonEnabled: true
+                blink: false
+                shareButtonText: ""
+            }
         }
     }
 
-    Image {
-        id: zoomOut
-        source: "./images/zoom-out.png"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: zoomOut.height
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-
-
-        MouseArea {
-            id: zOMA
-            anchors.fill: zoomOut
-            anchors.margins: -zoomOut.height/2.0
-            onClicked: { map.zoomLevel = map.zoomLevel - 1 }
-        }
+    function handleToolbarEvent(event) {
+        if(event == "Street") { map.mapType = Map.StreetMap }
+        else if (event == "Satellite") { map.mapType = Map.SatelliteMapDay }
+        else if (event == "ZoomOut") { map.zoomLevel = map.zoomLevel - 1 }
+        else if (event == "ZoomIn") { map.zoomLevel = map.zoomLevel + 1 }
     }
-
-    Text { id: sat
-        anchors.right: parent.right; anchors.rightMargin: 30; anchors.top: parent.top; anchors.topMargin: 10
-        text: "Satalite"
-        color: map.mapType == Map.StreetMap ? "black" : "white"
-        Behavior on color { ColorAnimation { duration: 500 } }
-        Rectangle { id: buttonRectSat; anchors.fill: parent; anchors.margins: -5;
-            color: map.mapType == Map.SatelliteMapDay ? "red" : "blue"; opacity: 0.28; border.color: "transparent";
-            border.width: 1; radius: 8
-            MouseArea { anchors.fill: parent; onClicked: { map.mapType = Map.SatelliteMapDay } }
-            Behavior on color { ColorAnimation { duration: 500 } }
-        }
-    }
-
-    Text { id: streetMap
-        anchors.right: sat.left; anchors.rightMargin: 30; anchors.top: parent.top; anchors.topMargin: 10
-        text: "Street Map"
-        color: map.mapType == Map.StreetMap ? "black" : "white"
-        Behavior on color { ColorAnimation { duration: 500 } }
-        Rectangle { id: buttonRectStreet; anchors.fill: parent; anchors.margins: -5;
-            color: map.mapType == Map.StreetMap ? "red" : "blue"; opacity: 0.28; border.color: "transparent";
-            border.width: 1; radius: 8
-            MouseArea { anchors.fill: parent; onClicked: { map.mapType = Map.StreetMap } }
-            Behavior on color { ColorAnimation { duration: 500 } }
-        }
-    }
-
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Right) {
