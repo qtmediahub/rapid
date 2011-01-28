@@ -16,17 +16,11 @@ Item {
     }
 
     states: [
-        State {
-            name: "collapsed"
-            PropertyChanges {
-                target: menu
-                x: -214
-            }
-
+        State { name: "collapsed"
+            PropertyChanges { target: menu; x: -274 }  // TODO from const to property ... use in PathView as well ... including font size?
         },
-        State {
-            name: "extended"
-            PropertyChanges { target: menu; x: 40}   // ... qml seam to find the right value on its own :)
+        State { name: "extended"
+            PropertyChanges { target: menu; x: 15}  // TODO from const to property ... use in PathView as well ... including font size?
         }
     ]
 
@@ -60,11 +54,11 @@ Item {
 
         pathItemCount: 6
         path: Path { // TODO... values..
-            startX: menu.width-200;             startY: 0
+            startX: menu.width-220;             startY: -rapid.menuFontPixelSize
 
             PathQuad {
-                controlX: menu.width-120;       controlY: menu.height/2.0 - rapid.menuFontPixelSize;
-                x: menu.width-190 ;             y: menu.height;}
+                controlX: menu.width-140;       controlY: menu.height/2.0 - rapid.menuFontPixelSize;
+                x: menu.width-230 ;             y: menu.height + rapid.menuFontPixelSize;}
         }
 
         dragMargin: rootMenuList.width
