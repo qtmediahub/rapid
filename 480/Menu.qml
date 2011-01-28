@@ -41,11 +41,25 @@ Item {
         border.right: 0; border.bottom: 90
     }
 
-    Rectangle {
-        color: "green"
-        opacity: 0.0
-        anchors.fill: parent
+    MouseArea {
+        enabled: menu.state == "extended"
+        anchors.left: parent.left//menuPic.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        width: rapid.width
+
+        onClicked: { menu.state = "collapsed" }
+
+        Rectangle {
+            visible: menu.state == "extended"
+            color: "green"
+            opacity: 0.0
+            anchors.fill: parent
+        }
+
     }
+
 
 
     PathView {
