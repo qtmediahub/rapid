@@ -29,103 +29,22 @@ Window {
     property string videofile
     property bool vplaying: false
 
-    Rectangle {
-        id: videoChooser
-        anchors.centerIn: parent
-        width: 300
-        height: 400
-        color: "#181818"
-        radius: 8
+    function itemActivated(itemData) {
+        video.source = itemData.filePath
+        video.play()
+        posterView.opacity = 0
+        video.opacity = 1
+    }
 
-//        ListView {
-//            id: listview
-//            anchors.fill: parent
-//            anchors.leftMargin: 10
+    PosterView {
+        id: posterView
 
-//            model: VisualDataModel {
+        anchors.fill: parent
+        posterModel: videoEngine.pluginProperties.model
 
-//                id: visualDataModel
-//                model: videoEngine.pluginProperties.model
-//                delegate: Rectangle {
-//                    id: delegateItem
-//                    width: parent.width
-//                    height: 25
-//                    color: "transparent"
-//                    Text {
-//                        color: "white"
-//                        text: display
-//                    }
-
-//                    function activate() {
-//                        var visualDataModel = ListView.view.model
-//                        if (model.hasModelChildren) {
-//                            visualDataModel.rootIndex = visualDataModel.modelIndex(index)
-//                        } else {
-//                            //console.log(model.display);
-//                            videoChooser.opacity = 0.0;
-//                            video.opacity = 1.0;
-//                            videofile = basedir+model.display
-//                        }
-//                    }
-
-//                    MouseArea {
-//                        anchors.fill: parent;
-//                        acceptedButtons: Qt.LeftButton | Qt.RightButton
-//                        onEntered: {
-//                            ListView.view.currentIndex = index
-//                        }
-//                        onClicked: {
-//                            if (mouse.button == Qt.LeftButton) {
-//                                delegateItem.activate()
-//                            } else {
-//                                ListView.view.rightClicked(delegateItem.x + mouseX, delegateItem.y + mouseY)
-//                            }
-//                        }
-//                    }
-
-//                }
-//            }
-//        }
-
-        ListView {
-            id: listview
-            anchors.fill: parent
-            anchors.margins: 10
-            visible: true
-            FolderListModel {
-                id: foldermodel
-                folder: basedir
-                showDirs: true
-                showDotAndDotDot: true
-                nameFilters: ["*.mpeg","*.avi","*.ogg"]
-            }
-            Component {
-                id: filedelegate
-                Text {
-                    height: 20
-                    width: listview.width
-                    color: "white"
-                    font.bold: true
-                    elide: Text.ElideRight
-                    text: fileName
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            //console.log(filePath); console.log(fileName); console.log(foldermodel.isFolder(index))
-                            if(foldermodel.isFolder(index)) {
-                                basedir = filePath
-                            } else {
-                                videoChooser.opacity = 0.0;
-                                video.opacity = 1.0;
-                                videofile = filePath;
-                            }
-                        }
-                    }
-                }
-            }
-
-            model: foldermodel
-            delegate: filedelegate
+        onActivated: {
+            if (currentItem.itemdata.type != "AddNewSource")
+                root.itemActivated(currentItem.itemdata)
         }
     }
 
@@ -197,7 +116,7 @@ Window {
                     onClicked: {
                         video.stop();
                         vplaying = false
-                        videoChooser.opacity = 1.0;
+                        posterView.opacity = 1.0;
                         video.opacity = 0.0;
                     }
                 }
@@ -247,5 +166,6 @@ Window {
     Component.onCompleted: {
         //videoEngine.pluginProperties.model.setThemeResourcePath(basedir);
         videoEngine.visualElement = root
+        !!videoEngine && videoEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }
