@@ -137,40 +137,36 @@ Window {
     Camera { id: cam;     anchors.fill: parent; visible:  display.showRealCam; z: -99999999; }
     Image  { id: fakeCam; anchors.fill: parent; visible: !display.showRealCam; z: -99999999; source: "images/view2.png"}
 
-    Rectangle { id: switchButton;
-        anchors.right: parent.right; anchors.rightMargin: -width/2
-        anchors.top: parent.top; anchors.topMargin: -height/2
-        width: 100
-        height: width
-        radius: width
-        color: "green"
-        opacity: 0.3
-        MouseArea { anchors.fill: parent
+    Image { id: switchButton;
+        anchors.left: parent.left; anchors.leftMargin: 10
+        anchors.bottom: parent.bottom; anchors.bottomMargin: (speedContainer.height - switchButton.height + speedContainer.anchors.bottomMargin)/2
+        source: "images/icon_locate.png"
+
+        MouseArea { anchors.fill: parent; anchors.margins: -parent.anchors.bottomMargin
             onClicked: { display.showRealCam = !display.showRealCam } }
     }
 
-
     Rectangle {
     id: speedContainer
-        anchors.bottom: parent.bottom; anchors.bottomMargin: 0
-        anchors.left: parent.left; anchors.leftMargin: 20
-        anchors.right: parent.right; anchors.rightMargin: 20; height: 16
+        anchors.bottom: parent.bottom; anchors.bottomMargin: 3
+        anchors.left: switchButton.right; anchors.leftMargin: 10
+        anchors.right: parent.right; anchors.rightMargin: 20; height: 48
         gradient: Gradient {
             GradientStop { position: 0.0; color: "gray" }
             GradientStop { position: 1.0; color: "white" }
         }
-        radius: 8; opacity: 0.7; smooth: true
+        radius: 16; opacity: 0.7; smooth: true
         Rectangle {
             id: speedSlider
-            x: 1; y: 1; width: 30; height: 14
-            radius: 6; smooth: true
+            x: 1; y: 2; width: 50; height: 44
+            radius: 13; smooth: true
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#424242" }
                 GradientStop { position: 1.0; color: "black" }
             }
             MouseArea {
                 anchors.fill: parent
-                drag.target: parent; drag.axis: "XAxis"; drag.minimumX: 2; drag.maximumX: speedContainer.width - 32
+                drag.target: parent; drag.axis: "XAxis"; drag.minimumX: 2; drag.maximumX: speedContainer.width - 52
             }
         }
     }
