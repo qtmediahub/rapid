@@ -73,11 +73,13 @@ Item {
     }
 
     // Yoolbar item drawer is implemented as a list drawer
+
     Component {
         id: btnDrawer
         ToolbarButton {
             MouseArea {
                 anchors.fill: parent
+                anchors.margins: buttons.spacing/2
                 onClicked: {
                     // If the button is enabled, highlight
                     // the button and notify observers

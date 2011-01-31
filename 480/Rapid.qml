@@ -133,7 +133,7 @@ Item {
         }
         else if (mapLoader.status == Component.Error) { console.log(mapLoader.errorString()) }
 
-        var internetLoader = Qt.createComponent("Internet.qml");
+        var internetLoader = Qt.createComponent("Browser/BrowserApp.qml");
         if (internetLoader.status == Component.Ready) {
             internetLoader.createObject(rapid)
         }
