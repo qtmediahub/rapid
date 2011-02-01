@@ -19,13 +19,28 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import AnimatedTiles 1.0
+import ActionMapper 1.0
 
 Window {
     id: root
 
-    AnimatedTiles{ anchors.fill: parent }
+    AnimatedTiles{ id: tiles; anchors.fill: parent }
 
     Rectangle { color: "blue"; opacity: 0.0; anchors.fill: parent }
+
+    Keys.onPressed: {
+        if (actionmap.eventMatch(event, ActionMapper.Left)) {
+            tiles.ellipseWanted();
+        } else if (actionmap.eventMatch(event, ActionMapper.Up)) {
+            tiles.figure8Wanted();
+        } else if (actionmap.eventMatch(event, ActionMapper.Forward)) {
+            tiles.randomWanted();
+        } else if (actionmap.eventMatch(event, ActionMapper.Down)) {
+            tiles.tiledWanted();
+        } else if (actionmap.eventMatch(event, ActionMapper.Right)) {
+            tiles.centeredWanted();
+        }
+    }
 
     Component.onCompleted: {
         console.debug("animatedTilesEngine:" + animatedTilesEngine)

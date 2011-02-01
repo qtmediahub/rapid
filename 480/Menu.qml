@@ -27,12 +27,21 @@ Item {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
+    property bool extended: (menu.state == "extended")
+
     function switchMenu() {
         if(menu.state == "collapsed")
             menu.state = "extended"
         else // if?
             menu.state = "collapsed"
     }
+
+    function oneUp() {          rootMenuList.decrementCurrentIndex();   }
+    function oneDown() {        rootMenuList.incrementCurrentIndex();   }
+    function getCurrent() {
+        return rootMenuList.model[ rootMenuList.currentIndex ];
+    }
+
 
     states: [
         State { name: "collapsed"

@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
+import ActionMapper 1.0
 
 Window {
     id: root
@@ -48,22 +49,9 @@ Window {
 
     Item {
         id: display
-        anchors.fill: cam
+        anchors.fill: parent
 
-        property real angle: -1- (speedSlider.x * (-2) / (speedContainer.width - 34))
-
-//        MouseArea {
-//            anchors.fill: parent
-//            onClicked: {
-//                if(display.angle == 1)
-//                    display.angle = 0
-//                else if(display.angle == 0)
-//                    display.angle = -1
-//                else if(display.angle == -1)
-//                    display.angle = 1
-//            } }
-
-//        PropertyAnimation { target: display; property: "angle"; from: -1; to: 1; loops: Animation.Infinite; running: true; duration: 5000 }
+        property real angle: -1 + ((angleSlider.x -angleSlider.minX) / (angleSlider.maxX-angleSlider.minX) * 2)
 
         property int carWidth: display.width// TODO: fixed value...
         property int xOffSet90Degrees: display.height/2.9
@@ -109,6 +97,84 @@ Window {
                 PathAttribute { name: "scale"; value: 0.3 }
             }
 
+            PropertyAnimation { target: directionPoints; property: "offset"; from: 0; to: 100; loops: Animation.Infinite; running: true; duration: 25000 }
+        }
+    }
+
+
+    Camera { id: cam;     anchors.fill: parent; visible:  display.showRealCam; z: -99999999; }
+    Image  { id: fakeCam; anchors.fill: parent; visible: !display.showRealCam; z: -99999999; source: "images/view2.png"}
+
+    Image { id: switchButton;
+        anchors.left: parent.left; anchors.leftMargin: 20
+        anchors.bottom: parent.bottom; anchors.bottomMargin: (angleController.height - switchButton.height + angleController.anchors.bottomMargin)/2
+        source: "images/icon_locate.png"
+
+        MouseArea { anchors.fill: parent; anchors.margins: -parent.anchors.bottomMargin
+            onClicked: { display.showRealCam = !display.showRealCam } }
+    }
+
+    Rectangle {
+    id: angleController
+        anchors.bottom: parent.bottom; anchors.bottomMargin: 3
+        anchors.left: switchButton.right; anchors.leftMargin: 10
+        anchors.right: parent.right; anchors.rightMargin: 20;
+
+        height: 48
+        radius: 16;
+        opacity: 0.7;
+        smooth: true
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "gray" }
+            GradientStop { position: 1.0; color: "white" }
+        }
+
+        Rectangle {
+            id: angleSlider
+
+            property int margins: 2
+
+            property int minX: margins
+            property int maxX: angleController.width - width - margins
+
+            x: minX;
+            y: margins;
+            height: angleController.height - (2*margins)
+            width: height;
+            radius: 13;
+            smooth: true
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#424242" }
+                GradientStop { position: 1.0; color: "black" }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                drag.target: parent; drag.axis: "XAxis"; drag.minimumX: angleSlider.minX; drag.maximumX: angleSlider.maxX
+            }
+        }
+    }
+
+    Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
+        if (    actionmap.eventMatch(event, ActionMapper.Right) ||
+                actionmap.eventMatch(event, ActionMapper.Up)    ) {
+            if(angleSlider.x < angleSlider.maxX)
+                angleSlider.x+=5;
+        }
+        else if(actionmap.eventMatch(event, ActionMapper.Left) ||
+                actionmap.eventMatch(event, ActionMapper.Down)  ) {
+            if(angleSlider.x > angleSlider.minX)
+                angleSlider.x-=5;
+        }
+    }
+
+    Engine { name: qsTr("Rear-view"); role: "camera"; visualElement: root }
+}
+
+
+// alternative/old pathview:
 //            path: Path {
 //                startX: display.width/2 + display.angle*100;
 //                startY: display.height
@@ -127,49 +193,3 @@ Window {
 //                PathAttribute { name: "rotAngle"; value: 90 * display.angle }
 //                PathAttribute { name: "scale"; value: 0.5 *(Math.pow(display.angle,2)+0.5)/3 }
 //            }
-
-
-            PropertyAnimation { target: directionPoints; property: "offset"; from: 0; to: 100; loops: Animation.Infinite; running: true; duration: 25000 }
-        }
-    }
-
-
-    Camera { id: cam;     anchors.fill: parent; visible:  display.showRealCam; z: -99999999; }
-    Image  { id: fakeCam; anchors.fill: parent; visible: !display.showRealCam; z: -99999999; source: "images/view2.png"}
-
-    Image { id: switchButton;
-        anchors.left: parent.left; anchors.leftMargin: 10
-        anchors.bottom: parent.bottom; anchors.bottomMargin: (speedContainer.height - switchButton.height + speedContainer.anchors.bottomMargin)/2
-        source: "images/icon_locate.png"
-
-        MouseArea { anchors.fill: parent; anchors.margins: -parent.anchors.bottomMargin
-            onClicked: { display.showRealCam = !display.showRealCam } }
-    }
-
-    Rectangle {
-    id: speedContainer
-        anchors.bottom: parent.bottom; anchors.bottomMargin: 3
-        anchors.left: switchButton.right; anchors.leftMargin: 10
-        anchors.right: parent.right; anchors.rightMargin: 20; height: 48
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "gray" }
-            GradientStop { position: 1.0; color: "white" }
-        }
-        radius: 16; opacity: 0.7; smooth: true
-        Rectangle {
-            id: speedSlider
-            x: 1; y: 2; width: 50; height: 44
-            radius: 13; smooth: true
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#424242" }
-                GradientStop { position: 1.0; color: "black" }
-            }
-            MouseArea {
-                anchors.fill: parent
-                drag.target: parent; drag.axis: "XAxis"; drag.minimumX: 2; drag.maximumX: speedContainer.width - 52
-            }
-        }
-    }
-
-    Engine { name: qsTr("Rear-view"); role: "camera"; visualElement: root }
-}

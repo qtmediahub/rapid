@@ -20,12 +20,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import QtMobility.location 1.1
 import "../components"
+import ActionMapper 1.0
 
 Window {
     id: root
-
-    focus: true
-
 
     Map {
         id: map
@@ -111,22 +109,17 @@ Window {
     }
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Right) {
+        if (actionmap.eventMatch(event, ActionMapper.Right)) {
             map.pan(100, 0)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Left) {
+        } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
             map.pan(-100, 0)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Up) {
+        } else if (actionmap.eventMatch(event, ActionMapper.Up)) {
             map.pan(0, -100)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Down) {
+        } else if (actionmap.eventMatch(event, ActionMapper.Down)) {
             map.pan(0, 100)
-            event.accepted = true
-        } else if (event.key == Qt.Key_Minus) {
+        } else if (actionmap.eventMatch(event, ActionMapper.ContextualDown)) {
             map.zoomLevel = map.zoomLevel - 1
-            event.accepted = true
-        } else if (event.key == Qt.Key_Plus) {
+        } else if (actionmap.eventMatch(event, ActionMapper.ContextualUp)) {
             map.zoomLevel = map.zoomLevel + 1
             event.accepted = true
         }

@@ -18,22 +18,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
+import ActionMapper 1.0
 
-Item {
+FocusScope {
     id: rapid
 
-    width: 1024
-    height: 768
-//    width: 800
-//    height: 480
+    width: 800
+    height: 480
 
-    property int applicationX: sideBar.width + 3
+    property int applicationX: sideBar.width +3 //or to "maximize: -23
     property int applicationWidht: rapid.width - applicationX
     property int applicationHeight: rapid.height // TODO ... config file?
     property int menuFontPixelSize: 38
-
-    property variant testWindow // TODO benoetigt?
-    property variant test2Window // TODO benoetigt?
 
 
     property variant selectedEngine
@@ -63,6 +59,7 @@ Item {
 //        console.debug("en")
 
         selectedElement.state = "visible"
+        selectedElement.forceActiveFocus()
 
         menu.state = "collapsed"
     }
@@ -90,6 +87,34 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: menu.switchMenu();
+        }
+    }
+
+    Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
+        if (    actionmap.eventMatch(event, ActionMapper.Left) ||
+                actionmap.eventMatch(event, ActionMapper.Up)    ) {
+            if(menu.extended) { menu.oneUp() }
+        }
+        else if(actionmap.eventMatch(event, ActionMapper.Right) ||
+                actionmap.eventMatch(event, ActionMapper.Down)  ) {
+            if(menu.extended) { menu.oneDown() }
+        }
+        else if (actionmap.eventMatch(event, ActionMapper.Forward)) {
+            console.debug("pressed: FORWARD")
+            if(menu.extended) {
+                rapid.setActiveEngine(menu.getCurrent())
+            }
+        }
+        else if (actionmap.eventMatch(event, ActionMapper.Back)) {
+            console.debug("pressed: BACK")
+            if(!menu.extended) {
+                console.debug("     ..... + force")
+                rapid.forceActiveFocus()
+                rapid.focus = true
+                selectedElement.focus = false
+            }
+
+            menu.switchMenu()
         }
     }
 
@@ -150,5 +175,7 @@ Item {
             camLoader.createObject(rapid)
         }
         else if (camLoader.status == Component.Error) { console.log(camLoader.errorString()) }
+
+        rapid.forceActiveFocus()
     }
 }
