@@ -19,19 +19,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
-import Qt.labs.folderlistmodel 1.0
 
 
 Window {
     id: root
 
-    property string basedir: "."
     property string videofile
     property bool vplaying: false
 
     function itemActivated(itemData) {
-        video.source = itemData.filePath
-        video.play()
+        //video.source = itemData.filePath
+        //video.play()
+        videofile = itemData.filePath
         posterView.opacity = 0
         video.opacity = 1
     }
@@ -55,6 +54,16 @@ Window {
         anchors.fill: parent
         volume: 0.5
 
+
+        Timer {
+            id: vcTimer
+            interval: 3000
+            running: videocontrol.state == "visible"
+
+            repeat: false
+            onTriggered: videocontrol.state = ""
+        }
+
         MouseArea {
              anchors.fill: parent
              onClicked: {
@@ -62,32 +71,35 @@ Window {
                  video.play();
                  vplaying = true
              }
+
+             hoverEnabled: true
+             onPositionChanged: {
+                 videocontrol.state = "visible"
+             }
+
         }
 
         Rectangle {
             id: videocontrol
-            opacity: 0.001
             anchors.bottom: parent.bottom
+            anchors.bottomMargin: -height
             anchors.horizontalCenter: parent.horizontalCenter
             width: 300
             height: 70
-            color: "#404040"
+            color: "#80404040"
             radius: 12
 
-            MouseArea {
-                hoverEnabled: true
-                anchors.fill: parent
-                onEntered: {
-                    parent.opacity = 0.5;
-                }
-                onExited: {
-                    videocontrol.opacity = 0.001;
+            states: State {
+                name: "visible"
+                PropertyChanges {
+                    target: videocontrol.anchors
+                    bottomMargin: 0
                 }
             }
 
-            Behavior on opacity {
-                NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
-             }
+            transitions: Transition {
+                NumberAnimation { property: "bottomMargin"; duration: 1000; easing.type: Easing.InOutQuad }
+            }
 
             Image {
                 id: vcrewind
@@ -132,7 +144,13 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        vplaying ? video.pause() : video.play();
+                        if(vplaying) {
+                            video.pause();
+
+                        } else {
+                            video.source = videofile;
+                            video.play();
+                        }
                         vplaying = !vplaying;
                     }
                 }
@@ -164,7 +182,6 @@ Window {
     }
 
     Component.onCompleted: {
-        //videoEngine.pluginProperties.model.setThemeResourcePath(basedir);
         videoEngine.visualElement = root
         !!videoEngine && videoEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }

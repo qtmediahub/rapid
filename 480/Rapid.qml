@@ -22,10 +22,8 @@ import QtQuick 1.0
 Item {
     id: rapid
 
-    width: 1024
-    height: 768
-//    width: 800
-//    height: 480
+    width: 800
+    height: 480
 
     property int applicationX: sideBar.width + 3
     property int applicationWidht: rapid.width - applicationX
