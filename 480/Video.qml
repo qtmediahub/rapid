@@ -159,6 +159,11 @@ Window {
 
         }
 
+        onStatusChanged: {
+            if (status == Video.EndOfMedia)
+                vplaying = false
+        }
+
         Keys.onSpacePressed: {
             vplaying ? video.pause() : video.play();
             vplaying = !vplaying;
