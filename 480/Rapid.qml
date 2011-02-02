@@ -99,13 +99,13 @@ FocusScope {
                 actionmap.eventMatch(event, ActionMapper.Down)  ) {
             if(menu.extended) { menu.oneDown() }
         }
-        else if (actionmap.eventMatch(event, ActionMapper.Forward)) {
+        else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
             console.debug("pressed: FORWARD")
             if(menu.extended) {
                 rapid.setActiveEngine(menu.getCurrent())
             }
         }
-        else if (actionmap.eventMatch(event, ActionMapper.Back)) {
+        else if (actionmap.eventMatch(event, ActionMapper.Menu)) {
             console.debug("pressed: BACK")
             if(!menu.extended) {
                 console.debug("     ..... + force")

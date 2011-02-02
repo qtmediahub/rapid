@@ -33,7 +33,7 @@ Window {
             tiles.ellipseWanted();
         } else if (actionmap.eventMatch(event, ActionMapper.Up)) {
             tiles.figure8Wanted();
-        } else if (actionmap.eventMatch(event, ActionMapper.Forward)) {
+        } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
             tiles.randomWanted();
         } else if (actionmap.eventMatch(event, ActionMapper.Down)) {
             tiles.tiledWanted();
