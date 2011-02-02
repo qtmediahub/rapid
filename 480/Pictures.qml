@@ -60,6 +60,8 @@ Window {
             Image {
                 id: image
                 fillMode: Image.PreserveAspectFit
+                sourceSize.width: imageThumbnail.width > imageThumbnail.height ? parent.width : 0
+                sourceSize.height: imageThumbnail.width <= imageThumbnail.height ? parent.height : 0
                 anchors.fill: parent
                 source: filePath
                 asynchronous: true
