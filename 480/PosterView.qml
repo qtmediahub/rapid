@@ -38,6 +38,7 @@ PathView {
     }
 
     function setPathStyle(style) {
+        console.debug("debug: PathView.setPathStyle( " + style + " )")
         pathView.preferredHighlightBegin = paths[style].highlightPos
         pathView.pathItemCount = paths[style].pathItemCount
         pathView.path = paths[style]
@@ -57,8 +58,16 @@ PathView {
         }
     }
 
-    Component.onCompleted:
+    Component.onCompleted: {
         setPathStyle("carousel")
+    }
+
+    onCountChanged: {
+        if(pathView.count >= 50 && pathView.path != paths["carousel2"])
+            setPathStyle("carousel2")
+        else if(pathView.count < 50 && pathView.path != paths["carousel"])
+            setPathStyle("carousel")
+    }
 
     Keys.onPressed:
         if (actionmap.eventMatch(event, ActionMapper.Right))
@@ -68,64 +77,7 @@ PathView {
 
     QtObject {
         id: paths
-        property PosterPath linearZoom: PosterPath {
-            id: linearZoom
-            startX: -pathView.delegateWidth; startY: (pathView.height - pathView.delegateHeight)/2.0
-            PathAttribute { name: "scale"; value: 1 }
-            PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "opacity"; value: 0.2 }
-            PathLine { x: pathView.width/2.5; y: linearZoom.startY }
-            PathAttribute { name: "scale"; value: 1.0 }
-            PathLine { x: pathView.width/2.0; y: linearZoom.startY }
-            PathAttribute { name: "scale"; value: 1.5 }
-            PathAttribute { name: "z"; value: 2 }
-            PathAttribute { name: "opacity"; value: 1.0 }
-            PathLine { x: pathView.width/1.5; y: linearZoom.startY }
-            PathAttribute { name: "scale"; value: 1.0 }
-            PathLine { x: pathView.width+pathView.delegateWidth; y: linearZoom.startY }
-            PathAttribute { name: "scale"; value: 1 }
-            PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "opacity"; value: 0.2 }
-        }
-        property PosterPath amphitheatreZoom: PosterPath {
-            id: amphitheatreZoom
-            pathItemCount: 10
-            startX: 0; startY: (pathView.height - pathView.delegateHeight)*6.0/7.0
-            PathAttribute { name: "rotation"; value: 90 }
-            PathAttribute { name: "scale"; value: 0.5 }
-            PathAttribute { name: "z"; value: 1 }
-            PathQuad { x: pathView.width/2; y: (pathView.height - pathView.delegateHeight)/2.0; controlX: pathView.width/4.0; controlY: amphitheatreZoom.startY/2 }
-            PathAttribute { name: "scale"; value: 1.4 }
-            PathAttribute { name: "z"; value: 10 }
-            PathQuad { x: pathView.width; y: amphitheatreZoom.startY; controlX: pathView.width*3.0/4.0; controlY: amphitheatreZoom.startY/2 }
-            PathAttribute { name: "rotation"; value: -90 }
-            PathAttribute { name: "scale"; value: 0.5 }
-            PathAttribute { name: "z"; value: 1 }
-        }
-        property PosterPath coverFlood: PosterPath {
-            id: coverFlood
-            pathItemCount: 10
-            startX: 0; startY: (pathView.height - pathView.delegateHeight)/2.0
-            PathAttribute { name: "rotation"; value: 60 }
-            PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "scale"; value: 2.0 }
-            PathLine { x: pathView.width/2 - pathView.delegateHeight/2.0 - 1; y: coverFlood.startY }
-            PathAttribute { name: "rotation"; value: 60 }
-            PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "scale"; value: 2.0 }
-            PathLine { x: pathView.width/2; y: coverFlood.startY }
-            PathAttribute { name: "rotation"; value: 0 }
-            PathAttribute { name: "z"; value: 40 }
-            PathAttribute { name: "scale"; value: 2.0 }
-            PathLine { x: pathView.width/2 + pathView.delegateHeight/2.0 + 1; y: coverFlood.startY }
-            PathAttribute { name: "rotation"; value: -60 }
-            PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "scale"; value: 2.0 }
-            PathLine { x: pathView.width; y: coverFlood.startY }
-            PathAttribute { name: "rotation"; value: -60 }
-            PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "scale"; value: 2.0 }
-        }
+
         property PosterPath carousel: PosterPath {
             id: carousel
             highlightPos: 0.75
@@ -156,6 +108,46 @@ PathView {
             PathAttribute { name: "scale"; value: 2.0 }
             //Origin
             PathQuad { x: carousel.startX; y: carousel.startY; controlX: carousel.horizCenter - carousel.horizHypot; controlY: carousel.vertCenter + carousel.vertHypot }
+        }
+        property PosterPath carousel2: PosterPath {
+            id: carousel2
+            highlightPos: 0.5 // ??
+            pathItemCount: 999999 // ??
+
+            property double horizDamping: 0.85; property double horizDampingINV: 1-horizDamping
+            property double vertDampingBOT: 0.7; property double vertDampingTOP: 0.1//kind of invers of vertDampingBOT
+
+            startX: pathView.width/2.0;                           startY: pathView.height*carousel2.vertDampingTOP
+            PathAttribute { name: "z"; value: 1 }
+            PathAttribute { name: "scale"; value: 0.3 }
+
+            PathQuad{
+                controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingTOP
+                x:         pathView.width*carousel2.horizDamping; y: pathView.height/2.0*carousel2.vertDampingBOT }
+            PathAttribute { name: "z"; value: 5 }
+            PathAttribute { name: "scale"; value: 1.0 }
+            PathPercent { value: 0.47 }
+
+            PathQuad{
+                controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingBOT
+                x: pathView.width/2.0;                            y: pathView.height*carousel2.vertDampingBOT }
+            PathAttribute { name: "z"; value: 10 }
+            PathAttribute { name: "scale"; value: 3.0 }
+            PathPercent { value: 0.5 }
+
+            PathQuad{
+                controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingBOT
+                x:         pathView.width*carousel2.horizDampingINV; y: pathView.height/2.0*carousel2.vertDampingBOT }
+            PathAttribute { name: "z"; value: 5 }
+            PathAttribute { name: "scale"; value: 1.0 }
+            PathPercent { value: 0.53 }
+
+            PathQuad{
+                controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingTOP
+                x:         pathView.width/2.0;                       y: pathView.height*carousel2.vertDampingTOP }
+            PathAttribute { name: "z"; value: 1 }
+            PathAttribute { name: "scale"; value: 0.3 }
+            PathPercent { value: 1.0 }
         }
     }
 }
