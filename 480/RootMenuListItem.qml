@@ -43,6 +43,7 @@ Item {
         transform: Rotation { origin.x: entry.width/2.0; origin.y: entry.height/2.0; axis { x: 1; y: 0; z: 0 } angle: entry.angle }
 
         font.pixelSize: rapid.menuFontPixelSize
+        font.family: "Nokia large"
         color: "white"
         text: model.modelData.name
         horizontalAlignment: Text.AlignRight
