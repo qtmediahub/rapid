@@ -134,8 +134,8 @@ PathView {
             property double horizCenter: pathView.width/2
             property double vertCenter: (pathView.height - pathView.delegateHeight)/2.0
 
-            property double perspectiveFlatteningFactor: 1.6
-            property double offsetWidth: pathView.delegateWidth * 2
+            property double perspectiveFlatteningFactor: 1.5
+            property double offsetWidth: pathView.delegateWidth * 2.5
             property double offsetHeight: pathView.delegateHeight/perspectiveFlatteningFactor
 
             property double horizHypot: offsetWidth/Math.sqrt(2)

@@ -25,6 +25,7 @@ Item {
     Image {
         id: backgroundImage
         anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
         source: model.previewUrl ? model.previewUrl : ""
         anchors.margins: 6
     }

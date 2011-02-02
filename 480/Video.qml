@@ -24,13 +24,12 @@ import QtMultimediaKit 1.1
 Window {
     id: root
 
-    property string videofile
     property bool vplaying: false
 
     function itemActivated(itemData) {
-        //video.source = itemData.filePath
-        //video.play()
-        videofile = itemData.filePath
+        video.source = itemData.filePath
+        video.play()
+        vplaying = true
         posterView.opacity = 0
         video.opacity = 1
     }
@@ -66,17 +65,10 @@ Window {
 
         MouseArea {
              anchors.fill: parent
-             onClicked: {
-                 video.source = videofile;
-                 video.play();
-                 vplaying = true
-             }
-
              hoverEnabled: true
              onPositionChanged: {
                  videocontrol.state = "visible"
              }
-
         }
 
         Rectangle {
@@ -144,13 +136,7 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if(vplaying) {
-                            video.pause();
-
-                        } else {
-                            video.source = videofile;
-                            video.play();
-                        }
+                        vplaying? video.pause() : video.play()
                         vplaying = !vplaying;
                     }
                 }
