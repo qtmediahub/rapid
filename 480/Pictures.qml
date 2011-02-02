@@ -18,13 +18,73 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
+import Playlist 1.0
 
 Window {
     id: root
-    Text { anchors.centerIn: parent; text: "Pictures"; font.pointSize: 80; color: "red" }
-//    Engine { name: qsTr("Pictures"); role: "picture"; visualElement: root }
+
+    function itemActivated(itemData) {
+        var selectedIndex = imagePlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
+        listView.currentIndex = imagePlayList.row(selectedIndex)
+        posterView.opacity = 0
+        listView.opacity = 1
+    }
+
+    Playlist {
+        id: imagePlayList
+        playMode: Playlist.Normal
+    }
+
+    PosterView {
+        id: posterView
+        anchors.fill: parent
+        posterModel: pictureEngine.pluginProperties.model
+
+        onActivated: {
+            if (currentItem.itemdata.type != "AddNewSource")
+                root.itemActivated(currentItem.itemdata)
+        }
+    }
+
+    ListView {
+        id: listView
+        opacity: 0
+        anchors.fill: parent
+        orientation: ListView.Horizontal
+        snapMode: ListView.SnapToItem
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        model: imagePlayList
+        delegate: Item {
+            width: listView.width
+            height: listView.height
+            Image {
+                id: image
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                source: filePath
+                asynchronous: true
+            }
+            Image {
+                id: imageThumbnail
+                anchors.fill: image
+                fillMode: Image.PreserveAspectFit
+                visible: image.status != Image.Ready
+                source: previewUrl
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                //posterView.currentIndex = listView.currentIndex
+                posterView.opacity = 1
+                listView.opacity = 0
+            }
+        }
+    }
 
     Component.onCompleted: {
         pictureEngine.visualElement = root
+        !!pictureEngine && pictureEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }
