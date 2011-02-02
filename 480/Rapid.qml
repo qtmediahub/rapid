@@ -29,7 +29,7 @@ FocusScope {
     property int applicationX: sideBar.width +3 //or to "maximize: -23
     property int applicationWidht: rapid.width - applicationX
     property int applicationHeight: rapid.height // TODO ... config file?
-    property int menuFontPixelSize: 38
+    property int menuFontPixelSize: 48
 
 
     property variant selectedEngine
