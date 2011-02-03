@@ -56,7 +56,7 @@ FocusScope {
         //show(selectedElement) => in the end:
         //selectedElement = element // hier schon gesetz
         //state = "showingSelectedElement"
-//        console.debug("en")
+        //        console.debug("en")
 
         selectedElement.state = "visible"
         selectedElement.forceActiveFocus()
@@ -71,6 +71,14 @@ FocusScope {
         id: menu
         state: "collapsed"
         z: sideBar.z - 1
+
+        onStateChanged: {
+            if(menu.state == "extended") {
+                selectedElement.focus = false
+                rapid.forceActiveFocus()
+                rapid.focus = true
+            }
+        }
     }
 
     BorderImage {
@@ -100,15 +108,12 @@ FocusScope {
             if(menu.extended) { menu.oneDown() }
         }
         else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
-            console.debug("pressed: FORWARD")
             if(menu.extended) {
                 rapid.setActiveEngine(menu.getCurrent())
             }
         }
         else if (actionmap.eventMatch(event, ActionMapper.Menu)) {
-            console.debug("pressed: BACK")
             if(!menu.extended) {
-                console.debug("     ..... + force")
                 rapid.forceActiveFocus()
                 rapid.focus = true
                 selectedElement.focus = false
