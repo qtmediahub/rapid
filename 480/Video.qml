@@ -51,7 +51,7 @@ Window {
         opacity: 0.0
         focus: true
         anchors.fill: parent
-        volume: 0.5
+        volume: 1.0
 
 
         Timer {
