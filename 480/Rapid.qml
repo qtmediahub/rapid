@@ -180,9 +180,8 @@ FocusScope {
         if (qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(rapid)
             qtcube.anchors.top = rapid.top
+            qtcube.anchors.right = rapid.right
             qtcube.z = 9999999
-            qtcube.visible = true
-            Qt.createQmlObject("import QtQuick 1.0; Binding { target: qtcube; property: 'x'; value: rapid.width - qtcube.width }", qtcube)
         } else if (qtCubeLoader.status == Component.Error) {
             backend.log(qtCubeLoader.errorString())
             qtcube = dummyItem
