@@ -98,7 +98,7 @@ Window {
             }
 
         } else {
-            if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
+            if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Up)) {
                 listView.incrementCurrentIndex()
             } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Down)) {
                 listView.decrementCurrentIndex()
