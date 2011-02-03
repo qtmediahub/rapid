@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import Playlist 1.0
+import ActionMapper 1.0
 
 Window {
     id: root
@@ -53,6 +54,7 @@ Window {
         orientation: ListView.Horizontal
         snapMode: ListView.SnapToItem
         highlightRangeMode: ListView.StrictlyEnforceRange
+        highlightMoveSpeed: 1500
         model: imagePlayList
         delegate: Item {
             width: listView.width
@@ -79,6 +81,28 @@ Window {
             anchors.fill: parent
             onClicked: {
                 //posterView.currentIndex = listView.currentIndex
+                posterView.opacity = 1
+                listView.opacity = 0
+            }
+        }
+    }
+
+    Keys.onPressed: {
+        if(posterView.opacity) {
+            if (actionmap.eventMatch(event, ActionMapper.Right)) {
+                posterView.incrementCurrentIndex()
+            } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
+                posterView.decrementCurrentIndex()
+            } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+                posterView.currentItem.activate()
+            }
+
+        } else {
+            if (actionmap.eventMatch(event, ActionMapper.Right)) {
+                listView.incrementCurrentIndex()
+            } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
+                listView.decrementCurrentIndex()
+            } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
                 posterView.opacity = 1
                 listView.opacity = 0
             }

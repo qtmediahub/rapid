@@ -38,7 +38,7 @@ PathView {
     }
 
     function setPathStyle(style) {
-        console.debug("debug: PathView.setPathStyle( " + style + " )")
+        //console.debug("debug: PathView.setPathStyle( " + style + " )")
         pathView.preferredHighlightBegin = paths[style].highlightPos
         pathView.pathItemCount = paths[style].pathItemCount
         pathView.path = paths[style]
