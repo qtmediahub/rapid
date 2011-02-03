@@ -72,20 +72,22 @@ Window {
         }
 
         Rectangle {
+            property real scalefactor: 1.6
             id: videocontrol
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: -height
+            anchors.bottomMargin: -height*scalefactor
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 300
+            width: 290
             height: 70
             color: "#80404040"
             radius: 12
+            scale: scalefactor
 
             states: State {
                 name: "visible"
                 PropertyChanges {
                     target: videocontrol.anchors
-                    bottomMargin: 0
+                    bottomMargin: (videocontrol.height*videocontrol.scalefactor-videocontrol.height)/2
                 }
             }
 
