@@ -98,9 +98,9 @@ Window {
             }
 
         } else {
-            if (actionmap.eventMatch(event, ActionMapper.Right)) {
+            if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
                 listView.incrementCurrentIndex()
-            } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
+            } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Down)) {
                 listView.decrementCurrentIndex()
             } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
                 posterView.opacity = 1
