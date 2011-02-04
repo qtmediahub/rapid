@@ -28,6 +28,18 @@ Item {
         fillMode: Image.PreserveAspectFit
         source: model.previewUrl ? model.previewUrl : ""
         anchors.margins: 6
+
+//        Text {
+//            visible: (type == "Directory")
+//            anchors.bottom: parent.bottom
+//            anchors.horizontalCenter: parent.horizontalCenter
+//            width: parent.width
+//            elide: Text.ElideRight
+//            horizontalAlignment: Text.AlignHCenter
+//            color: "#808080"
+//            text: model.fileName
+//            font.pointSize: 8
+//        }
     }
 
     function activate()
@@ -55,11 +67,5 @@ Item {
                 PathView.view.rightClicked(delegateItem.x + mouseX, delegateItem.y + mouseY)
             }
     }
-
-    Keys.onPressed:
-        if (actionmap.eventMatch(event, ActionMapper.Enter))
-            delegateItem.activate()
-        else if (actionmap.eventMatch(event, ActionMapper.Context))
-            PathView.view.rightClicked(delegateItem.x + delegateItem.width/2, delegateItem.y + delegateItem.height/2)
 }
 

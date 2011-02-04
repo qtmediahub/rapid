@@ -41,10 +41,7 @@ Window {
         anchors.fill: parent
         posterModel: pictureEngine.pluginProperties.model
 
-        onActivated: {
-            if (currentItem.itemdata.type != "AddNewSource")
-                root.itemActivated(currentItem.itemdata)
-        }
+        onActivated: root.itemActivated(currentItem.itemdata)
     }
 
     ListView {
@@ -90,9 +87,9 @@ Window {
     Keys.onPressed: {
         if(posterView.opacity) {
             if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
-                posterView.incrementCurrentIndex()
-            } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
                 posterView.decrementCurrentIndex()
+            } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
+                posterView.incrementCurrentIndex()
             } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
                 posterView.currentItem.activate()
             }

@@ -23,6 +23,7 @@ import ActionMapper 1.0
 PathView {
     id: pathView
 
+    property string style: "carousel"
     property variant posterModel // Not an alias because of QTBUG-16357
     property alias rootIndex : visualDataModel.rootIndex
     signal rootIndexChanged() // Fire signals of aliases manually, QTBUG-14089
@@ -37,7 +38,7 @@ PathView {
         return visualDataModel.modelIndex(currentIndex);
     }
 
-    function setPathStyle(style) {
+    function setPathStyle() {
         //console.debug("debug: PathView.setPathStyle( " + style + " )")
         pathView.preferredHighlightBegin = paths[style].highlightPos
         pathView.pathItemCount = paths[style].pathItemCount
@@ -59,25 +60,47 @@ PathView {
     }
 
     Component.onCompleted: {
-        setPathStyle("carousel")
+        setPathStyle()
     }
 
     onCountChanged: {
-        if(pathView.count >= 50 && pathView.path != paths["carousel2"])
-            setPathStyle("carousel2")
-        else if(pathView.count < 50 && pathView.path != paths["carousel"])
-            setPathStyle("carousel")
+        if(pathView.count >= 50 && style == "carousel") {
+            style = "carousel2"
+            setPathStyle()
+        } else if(pathView.count < 50 && style == "carousel2") {
+            style = "carousel"
+            setPathStyle()
+        }
     }
-
-    Keys.onPressed:
-        if (actionmap.eventMatch(event, ActionMapper.Right))
-            pathView.incrementCurrentIndex()
-        else if (actionmap.eventMatch(event, ActionMapper.Left))
-            pathView.decrementCurrentIndex()
 
     QtObject {
         id: paths
 
+        property PosterPath coverFlood: PosterPath {
+            id: coverFlood
+            highlightPos: 0.5
+            pathItemCount: 7
+            startX: 0; startY: (pathView.height - pathView.delegateHeight)/2.0+40
+            PathAttribute { name: "rotation"; value: 70 }
+            PathAttribute { name: "z"; value: 1.0 }
+            PathAttribute { name: "scale"; value: 2.0 }
+            PathLine { x: pathView.width/2 - pathView.delegateHeight/2.0 - 1; y: coverFlood.startY }
+            PathAttribute { name: "rotation"; value: 55 }
+            PathAttribute { name: "z"; value: 20.0 }
+            PathAttribute { name: "scale"; value: 2.0 }
+            PathLine { x: pathView.width/2; y: coverFlood.startY }
+            PathAttribute { name: "rotation"; value: 0 }
+            PathAttribute { name: "z"; value: 40 }
+            PathAttribute { name: "scale"; value: 2.0 }
+            PathLine { x: pathView.width/2 + pathView.delegateHeight/2.0 + 1; y: coverFlood.startY }
+            PathAttribute { name: "rotation"; value: -55 }
+            PathAttribute { name: "z"; value: 20.0 }
+            PathAttribute { name: "scale"; value: 2.0 }
+            PathLine { x: pathView.width; y: coverFlood.startY }
+            PathAttribute { name: "rotation"; value: -70 }
+            PathAttribute { name: "z"; value: 1.0 }
+            PathAttribute { name: "scale"; value: 2.0 }
+        }
         property PosterPath carousel: PosterPath {
             id: carousel
             highlightPos: 0.75

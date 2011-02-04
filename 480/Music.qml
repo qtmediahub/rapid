@@ -19,12 +19,44 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 
+import QtQuick 1.0
+import Playlist 1.0
+import ActionMapper 1.0
+
 Window {
     id: root
-    Text { anchors.centerIn: parent; text: "Music"; font.pointSize: 80; color: "red"}
 
-//    Engine { name: qsTr("Music"); role: "music"; visualElement: root }
+    function itemActivated(itemData) {
+        var selectedIndex = imagePlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
+        listView.currentIndex = imagePlayList.row(selectedIndex)
+    }
+
+//  Playlist {
+//      id: imagePlayList
+//      playMode: Playlist.Normal
+//  }
+
+    PosterView {
+        id: posterView
+        anchors.fill: parent
+        posterModel: musicEngine.pluginProperties.model
+        style: "coverFlood"
+
+//      onActivated: root.itemActivated(currentItem.itemdata)
+    }
+
+    Keys.onPressed: {
+        if (actionmap.eventMatch(event, ActionMapper.Right)) {
+            posterView.decrementCurrentIndex()
+        } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
+            posterView.incrementCurrentIndex()
+        } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+            posterView.currentItem.activate()
+        }
+    }
+
     Component.onCompleted: {
         musicEngine.visualElement = root
+        !!musicEngine && musicEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }
