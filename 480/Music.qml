@@ -18,14 +18,38 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-
-import QtQuick 1.0
 import Playlist 1.0
 import QtMultimediaKit 1.1
 import ActionMapper 1.0
 
+
 Window {
     id: root
+
+    property variant currentIdx
+
+    function ms2string(ms)
+    {
+        var ret = "";
+
+        if (ms <= 0)
+            return "00:00";
+
+        var h = (ms/(1000*60*60)).toFixed(0);
+        var m = ((ms%(1000*60*60))/(1000*60)).toFixed(0);
+        var s = (((ms%(1000*60*60))%(1000*60))/1000).toFixed(0);
+
+        if (h >= 1) {
+            ret += h < 10 ? "0" + h : h + "";
+            ret += ":";
+        }
+
+        ret += m < 10 ? "0" + m : m + "";
+        ret += ":";
+        ret += s < 10 ? "0" + s : s + "";
+
+        return ret;
+    }
 
     function artistAndTitle(artist, title) {
         if(!artist)
@@ -36,15 +60,16 @@ Window {
     }
 
     function itemActivated(itemData) {
-        console.log("Now playing: "+itemData.filePath)
+        //console.log("Now playing: "+itemData.filePath)
+        currentIdx = musicPlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
         audio.source = itemData.filePath
         audio.play()
     }
 
-//  Playlist {
-//      id: imagePlayList
-//      playMode: Playlist.Normal
-//  }
+    Playlist {
+        id: musicPlayList
+        playMode: Playlist.Normal
+    }
 
     PosterView {
         id: posterView
@@ -67,7 +92,7 @@ Window {
 
         Text {
             id: title
-            text: audio.metaData.title ? audio.metaData.title : qsTr("Unknown Album")
+            text: audio.metaData.title ? audio.metaData.title : qsTr("Unknown Title")
             color: "white"
             font.pointSize: 20
             anchors.left: parent.left
@@ -82,6 +107,15 @@ Window {
             font.pointSize: 14
             anchors.left: parent.left
             anchors.top: title.bottom
+            anchors.margins: 10
+        }
+
+        Text {
+            text: ms2string(audio.position) + " / " + ms2string(audio.duration)
+            color: "white"
+            font.pointSize: 14
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
             anchors.margins: 10
         }
 
@@ -104,12 +138,25 @@ Window {
                 color: "#6090E0"
                 radius: 3
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onReleased: {
+                    audio.position = mouse.x/parent.width*audio.duration
+                }
+            }
         }
     }
 
     Audio {
         id: audio
         volume: 1.0
+
+        onStopped: {
+            currentIdx = musicPlayList.playNextIndex(currentIdx)
+            audio.source = musicPlayList.data(currentIdx, Playlist.FilePathRole)
+            audio.play()
+        }
     }
 
     Keys.onPressed: {
