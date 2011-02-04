@@ -21,14 +21,24 @@ import QtQuick 1.0
 
 import QtQuick 1.0
 import Playlist 1.0
+import QtMultimediaKit 1.1
 import ActionMapper 1.0
 
 Window {
     id: root
 
+    function artistAndTitle(artist, title) {
+        if(!artist)
+            artist = "Unknown Artist"
+        if(!title)
+            title = "Unknown Album"
+        return artist+" - "+title
+    }
+
     function itemActivated(itemData) {
-        var selectedIndex = imagePlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
-        listView.currentIndex = imagePlayList.row(selectedIndex)
+        console.log("Now playing: "+itemData.filePath)
+        audio.source = itemData.filePath
+        audio.play()
     }
 
 //  Playlist {
@@ -42,7 +52,64 @@ Window {
         posterModel: musicEngine.pluginProperties.model
         style: "coverFlood"
 
-//      onActivated: root.itemActivated(currentItem.itemdata)
+        onActivated: root.itemActivated(currentItem.itemdata)
+    }
+
+    Rectangle {
+        id: audiocontrol
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        height: 120
+        color: "#202020"
+        radius: 12
+
+        Text {
+            id: title
+            text: audio.metaData.title ? audio.metaData.title : qsTr("Unknown Album")
+            color: "white"
+            font.pointSize: 20
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.margins: 10
+        }
+
+        Text {
+            id: artistitle
+            text: artistAndTitle(audio.metaData.albumArtist, audio.metaData.albumTitle)
+            color: "lightgrey"
+            font.pointSize: 14
+            anchors.left: parent.left
+            anchors.top: title.bottom
+            anchors.margins: 10
+        }
+
+        Rectangle {
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.bottomMargin: 15
+            anchors.leftMargin: 10
+            height: 10
+            width: parent.width-160
+            color: "#E0E0E0"
+            radius: 4
+
+            Rectangle {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 2
+                height: 6
+                width: audio.position/audio.duration*(parent.width-4)
+                color: "#6090E0"
+                radius: 3
+            }
+        }
+    }
+
+    Audio {
+        id: audio
+        volume: 1.0
     }
 
     Keys.onPressed: {

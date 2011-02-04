@@ -80,7 +80,7 @@ PathView {
             id: coverFlood
             highlightPos: 0.5
             pathItemCount: 7
-            startX: 0; startY: (pathView.height - pathView.delegateHeight)/2.0+40
+            startX: 0; startY: (pathView.height - pathView.delegateHeight)/2.0
             PathAttribute { name: "rotation"; value: 70 }
             PathAttribute { name: "z"; value: 1.0 }
             PathAttribute { name: "scale"; value: 2.0 }
