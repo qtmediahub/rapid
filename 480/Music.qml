@@ -60,6 +60,8 @@ Window {
     }
 
     function itemActivated(itemData) {
+        if(audio.playing)
+            audio.stop()
         //console.log("Now playing: "+itemData.filePath)
         currentIdx = musicPlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
         audio.source = itemData.filePath
@@ -153,9 +155,11 @@ Window {
         volume: 1.0
 
         onStopped: {
-            currentIdx = musicPlayList.playNextIndex(currentIdx)
-            audio.source = musicPlayList.data(currentIdx, Playlist.FilePathRole)
-            audio.play()
+            if(audio.status == Audio.EndOfMedia) {
+                currentIdx = musicPlayList.playNextIndex(currentIdx)
+                audio.source = musicPlayList.data(currentIdx, Playlist.FilePathRole)
+                audio.play()
+            }
         }
     }
 
