@@ -164,6 +164,12 @@ FocusScope {
         }
         else if (camLoader.status == Component.Error) { console.log(camLoader.errorString()) }
 
+        var appsLoader = Qt.createComponent("Apps.qml");
+        if (appsLoader.status == Component.Ready) {
+            appsLoader.createObject(rapid)
+        }
+        else if (appsLoader.status == Component.Error) { console.log(appsLoader.errorString()) }
+
         var qtCubeLoader = Qt.createComponent(backend.resourcePath + "/misc/cube/cube.qml")
         if (qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(rapid)
