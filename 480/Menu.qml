@@ -20,128 +20,119 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 Item {
-    id: menu
-
-    //width: menuPic.width; height: menuPic.height; // TODO
-    width: menuPic.width
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
+    id: root
+    anchors.fill: parent
 
     property bool extended: (menu.state == "extended")
 
     function switchMenu() {
-        if(menu.state == "collapsed")
-            menu.state = "extended"
-        else // if?
-            menu.state = "collapsed"
+        if(root.state == "collapsed")
+            root.state = "extended"
+        else
+            root.state = "collapsed"
     }
-
-    function oneUp() {          rootMenuList.decrementCurrentIndex();   }
-    function oneDown() {        rootMenuList.incrementCurrentIndex();   }
-    function getCurrent() {
-        return rootMenuList.model[ rootMenuList.currentIndex ];
-    }
-
 
     states: [
         State { name: "collapsed"
-            PropertyChanges { target: menu; x: -274; opacity: 0 }  // TODO from const to property ... use in PathView as well ... including font size?
+            PropertyChanges { target: menu; x: -menu.width; opacity: 0 }
+            PropertyChanges { target: sideBarRotation; angle: 0 }
         },
         State { name: "extended"
-            PropertyChanges { target: menu; x: 15; opacity: 0.7}  // TODO from const to property ... use in PathView as well ... including font size?
+            PropertyChanges { target: menu; x: 0; opacity: 0.8}
+            PropertyChanges { target: sideBarRotation; angle: -90 }
         }
     ]
 
     transitions: [
-        Transition { from: "*"; to: "*";
-            NumberAnimation { target: menu; properties: "x,opacity"; duration: 250; easing.type: "Linear"}
+        Transition { to: "extended"
+            SequentialAnimation {
+                NumberAnimation { properties: "angle"; duration: 500; easing.type: Easing.Linear}
+                NumberAnimation { properties: "x,angle,opacity"; duration: 1000; easing.type: Easing.OutBounce}
+            }
+        },
+        Transition { to: "collapsed"
+            SequentialAnimation {
+                NumberAnimation { properties: "x,angle,opacity"; duration: 1000; easing.type: Easing.OutBounce}
+                NumberAnimation { properties: "angle"; duration: 500; easing.type: Easing.Linear}
+            }
         }
     ]
 
-    BorderImage {
-        id: menuPic
-        source: "./images/menu.png"
-
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-
-        border.left: 0; border.top: 90
-        border.right: 0; border.bottom: 90
-    }
-
     MouseArea {
-        enabled: menu.state == "extended"
-        anchors.left: parent.left//menuPic.right
+        enabled: root.state == "extended"
+        anchors.fill: parent
+        onClicked: { root.state = "collapsed" }
+    }
+
+    Item {
+        id: menu
+
+        width: menuPic.width
         anchors.top: parent.top
         anchors.bottom: parent.bottom
 
-        width: rapid.width
+        function oneUp() {          rootMenuList.decrementCurrentIndex();   }
+        function oneDown() {        rootMenuList.incrementCurrentIndex();   }
+        function getCurrent() {
+            return rootMenuList.model[ rootMenuList.currentIndex ];
+        }
 
-        onClicked: { menu.state = "collapsed" }
+        BorderImage {
+            id: menuPic
+            source: "./images/menu.png"
 
-        Rectangle {
-            visible: menu.state == "extended"
-            color: "green"
-            opacity: 0.0
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            border.left: 0; border.top: 90
+            border.right: 0; border.bottom: 90
+        }
+
+        PathView {
+            id: rootMenuList
             anchors.fill: parent
-        }
 
+            pathItemCount: 6
+            path: Path { // TODO... values..
+                startX: menu.width-220
+                startY: -rapid.menuFontPixelSize
+
+                PathQuad {
+                    x: menu.width-230
+                    y: menu.height + rapid.menuFontPixelSize
+                    controlX: menu.width-140
+                    controlY: menu.height/2.0 - rapid.menuFontPixelSize
+                }
+            }
+
+            dragMargin: rootMenuList.width
+
+            preferredHighlightBegin: 0.5
+            preferredHighlightEnd: 0.5
+            highlightRangeMode: PathView.StrictlyEnforceRange
+
+            model: backend.engines
+            delegate: RootMenuListItem { }
+        }
     }
 
+    BorderImage {
+        id: sideBar
+        source: "./images/sidebar.png"
 
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
 
-    PathView {
-        id: rootMenuList
-        anchors.fill: parent
+        border.left: 20; border.top: 90
+        border.right: 0; border.bottom: 90
 
-        pathItemCount: 6
-        path: Path { // TODO... values..
-            startX: menu.width-220;             startY: -rapid.menuFontPixelSize
-
-            PathQuad {
-                controlX: menu.width-140;       controlY: menu.height/2.0 - rapid.menuFontPixelSize;
-                x: menu.width-230 ;             y: menu.height + rapid.menuFontPixelSize;}
+        MouseArea {
+            anchors.fill: parent
+            onClicked: root.switchMenu();
         }
 
-        dragMargin: rootMenuList.width
-
-        preferredHighlightBegin: 0.5
-        preferredHighlightEnd: 0.5
-        highlightRangeMode: PathView.StrictlyEnforceRange
-
-
-        model: backend.engines //menuList
-        delegate:
-            RootMenuListItem { }
-
-        //        signal itemSelected
-        //Oversized fonts being downscaled
-        //        spacing: 30// TODO?
-        //        keyNavigationWraps: true
-        //        focus: true
-
-
-
-        //        highlight: Image {
-        //            source:  themeResourcePath + "/media/black-back2.png"
-        //            opacity:  0.5
-        //        }
-
-        //        onCurrentIndexChanged: {
-        //            background.role = currentItem.role
-        //            !!menuSoundEffect ? menuSoundEffect.play() : undefined
-        //        }
-
-        //        Keys.onEnterPressed:
-        //            currentItem.trigger()
-        //        Keys.onReturnPressed:
-        //            currentItem.trigger()
-        //        Keys.onRightPressed:
-        //            rootMenu.openSubMenu()
-        //        KeyNavigation.left: playMediaButton
-        //        KeyNavigation.tab: playMediaButton
+        transform: Rotation { id: sideBarRotation; origin.x: 0; origin.y: sideBar.height/2.0; axis { x: 0; y: 1; z: 0 } angle: 0}
     }
-
 }
 
 

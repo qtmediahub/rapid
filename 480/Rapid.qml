@@ -26,7 +26,7 @@ FocusScope {
     width: 800
     height: 480
 
-    property int applicationX: sideBar.width +3 //or to "maximize: -23
+    property int applicationX: 0 //or to "maximize: -23
     property int applicationWidht: rapid.width - applicationX
     property int applicationHeight: rapid.height // TODO ... config file?
     property int menuFontPixelSize: 48
@@ -70,7 +70,7 @@ FocusScope {
     Menu {
         id: menu
         state: "collapsed"
-        z: sideBar.z - 1
+        z: 999999999999
 
         onStateChanged: {
             if(menu.state == "extended") {
@@ -78,23 +78,6 @@ FocusScope {
                 rapid.forceActiveFocus()
                 rapid.focus = true
             }
-        }
-    }
-
-    BorderImage {
-        id: sideBar
-        z: 999999999999
-        source: "./images/sidebar.png"
-
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-
-        border.left: 20; border.top: 90
-        border.right: 0; border.bottom: 90
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: menu.switchMenu();
         }
     }
 
