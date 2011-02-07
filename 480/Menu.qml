@@ -45,16 +45,16 @@ Item {
 
     states: [
         State { name: "collapsed"
-            PropertyChanges { target: menu; x: -274 }  // TODO from const to property ... use in PathView as well ... including font size?
+            PropertyChanges { target: menu; x: -274; opacity: 0 }  // TODO from const to property ... use in PathView as well ... including font size?
         },
         State { name: "extended"
-            PropertyChanges { target: menu; x: 15}  // TODO from const to property ... use in PathView as well ... including font size?
+            PropertyChanges { target: menu; x: 15; opacity: 0.7}  // TODO from const to property ... use in PathView as well ... including font size?
         }
     ]
 
     transitions: [
         Transition { from: "*"; to: "*";
-            NumberAnimation { target: menu; property: "x"; duration: 250; easing.type: "Linear"}
+            NumberAnimation { target: menu; properties: "x,opacity"; duration: 250; easing.type: "Linear"}
         }
     ]
 
