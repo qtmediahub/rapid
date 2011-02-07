@@ -51,7 +51,7 @@ Window {
         id: display
         anchors.fill: parent
 
-        property real angle: -1 + ((angleSlider.x -angleSlider.minX) / (angleSlider.maxX-angleSlider.minX) * 2)
+        property real angle: -1// + ((angleSlider.x -angleSlider.minX) / (angleSlider.maxX-angleSlider.minX) * 2)
 
         property int carWidth: display.width// TODO: fixed value...
         property int xOffSet90Degrees: display.height/2.9
@@ -71,6 +71,15 @@ Window {
         property int dXL: 250
         property int dXR: 300
 
+        MouseArea {
+            id: directionMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onPositionChanged: {
+                if (pressed)
+                    display.angle = -1 + (mouseX / directionMouseArea.width) * 2
+            }
+        }
 
         PathView {
             id: directionPoints
@@ -106,55 +115,13 @@ Window {
     Image  { id: fakeCam; anchors.fill: parent; visible: !display.showRealCam; z: -99999999; source: "images/view2.png"}
 
     Image { id: switchButton;
-        anchors.left: parent.left; anchors.leftMargin: 20
-        anchors.bottom: parent.bottom; anchors.bottomMargin: (angleController.height - switchButton.height + angleController.anchors.bottomMargin)/2
+        anchors.right: parent.right
+        anchors.margins: 20
+        anchors.bottom: parent.bottom
         source: "images/icon_locate.png"
 
         MouseArea { anchors.fill: parent; anchors.margins: -parent.anchors.bottomMargin
             onClicked: { display.showRealCam = !display.showRealCam } }
-    }
-
-    Rectangle {
-    id: angleController
-        anchors.bottom: parent.bottom; anchors.bottomMargin: 3
-        anchors.left: switchButton.right; anchors.leftMargin: 10
-        anchors.right: parent.right; anchors.rightMargin: 20;
-
-        height: 48
-        radius: 16;
-        opacity: 0.7;
-        smooth: true
-
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "gray" }
-            GradientStop { position: 1.0; color: "white" }
-        }
-
-        Rectangle {
-            id: angleSlider
-
-            property int margins: 2
-
-            property int minX: margins
-            property int maxX: angleController.width - width - margins
-
-            x: minX;
-            y: margins;
-            height: angleController.height - (2*margins)
-            width: height;
-            radius: 13;
-            smooth: true
-
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#424242" }
-                GradientStop { position: 1.0; color: "black" }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                drag.target: parent; drag.axis: "XAxis"; drag.minimumX: angleSlider.minX; drag.maximumX: angleSlider.maxX
-            }
-        }
     }
 
     Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
