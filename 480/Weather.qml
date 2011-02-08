@@ -127,6 +127,7 @@ Window {
                 text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).temp_c : "0"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
+                anchors.leftMargin: 20
             }
 
             Text {
@@ -146,6 +147,7 @@ Window {
                 source: weatherMeasurements.count > 0 ? mapIcon(weatherMeasurements.get(0).icon) : ""
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                anchors.rightMargin: 20
             }
         }
 
@@ -286,6 +288,7 @@ Window {
                     asynchronous: true
                     source: weatherForecast.count > 0 && weatherForecast.get(index) ? mapIcon(weatherForecast.get(index).icon) : ""
                     anchors.right: parent.right
+                    anchors.rightMargin: 10
                     anchors.bottom: condition.bottom
                 }
             }
