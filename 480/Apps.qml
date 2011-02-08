@@ -23,6 +23,7 @@ import AnimatedTiles 1.0
 
 Window {
     id: root
+    anchors.leftMargin: rapid.additionalLeftMarginMore
     clip: false
 
     // width // x
@@ -50,10 +51,10 @@ Window {
         AnimatedTiles {
             id: tmp1;
             y: (parent.height - height*scale)/2.0 // should be: anchors.verticalCenter: parent.verticalCenter ... bug?
-            anchors.horizontalCenter: parent.horizontalCenter
+            x: (parent.width - width*scale)/2.0   // should be: anchors.horizontalCenter: parent.horizontalCenter ... bug?
             scale: parent.childScale
-            width: rapid.applicationWidht
-            height: rapid.applicationHeight
+            width: root.width
+            height: root.height
         }
     }
 
@@ -68,8 +69,8 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             scale: parent.childScale
-            width: root.applicationWidht
-            height: root.applicationHeight
+            width: root.width
+            height: root.height
 
             source: backend.resourcePath + "/widgets/samegame/samegame.qml"
         }
