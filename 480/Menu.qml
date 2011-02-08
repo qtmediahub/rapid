@@ -23,7 +23,12 @@ Item {
     id: root
     anchors.fill: parent
 
-    property bool extended: (menu.state == "extended")
+    function oneUp() {          rootMenuList.decrementCurrentIndex();   }
+    function oneDown() {        rootMenuList.incrementCurrentIndex();   }
+    function getCurrent() {
+        return rootMenuList.model[ rootMenuList.currentIndex ];
+    }
+
 
     function switchMenu() {
         if(root.state == "collapsed")
@@ -71,11 +76,6 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
 
-        function oneUp() {          rootMenuList.decrementCurrentIndex();   }
-        function oneDown() {        rootMenuList.incrementCurrentIndex();   }
-        function getCurrent() {
-            return rootMenuList.model[ rootMenuList.currentIndex ];
-        }
 
         BorderImage {
             id: menuPic

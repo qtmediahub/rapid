@@ -39,7 +39,6 @@ FocusScope {
 
     function setActiveEngine(engine)
     {
-        console.debug("setActiveEngine(" + engine + ")")
 
         if(selectedEngine != engine)
         {
@@ -84,19 +83,19 @@ FocusScope {
     Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
         if (    actionmap.eventMatch(event, ActionMapper.Left) ||
                 actionmap.eventMatch(event, ActionMapper.Up)    ) {
-            if(menu.extended) { menu.oneUp() }
+            if(menu.state == "extended") { menu.oneUp() }
         }
         else if(actionmap.eventMatch(event, ActionMapper.Right) ||
                 actionmap.eventMatch(event, ActionMapper.Down)  ) {
-            if(menu.extended) { menu.oneDown() }
+            if(menu.state == "extended") { menu.oneDown() }
         }
         else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
-            if(menu.extended) {
+            if(menu.state == "extended") {
                 rapid.setActiveEngine(menu.getCurrent())
             }
         }
         else if (actionmap.eventMatch(event, ActionMapper.Menu)) {
-            if(!menu.extended) {
+            if(!menu.state == "extended") {
                 rapid.forceActiveFocus()
                 rapid.focus = true
                 selectedElement.focus = false
