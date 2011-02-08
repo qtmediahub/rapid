@@ -21,6 +21,9 @@ import QtQuick 1.0
 
 Window {
     id: root
+    anchors.leftMargin: rapid.additionalLeftMarginMore
+    anchors.topMargin: 20
+    anchors.bottomMargin: 20
 
     property string city: "Munich"
 
@@ -28,10 +31,10 @@ Window {
         return ((f-32)*5/9.0).toFixed(0);
     }
 
-//    function showCast(name) {
-//        city=name;
-//        weather.opacity=1.0;
-//    }
+    //    function showCast(name) {
+    //        city=name;
+    //        weather.opacity=1.0;
+    //    }
 
     function fullWeekDay(name) {
         var map = {
@@ -56,216 +59,234 @@ Window {
         return (string.substr(0, string.length-5))
     }
 
-    Row {
-        id: weather
-        anchors.centerIn: parent
-        spacing: 40
 
+    property int smallestFont:  Math.max(Math.min(root.height*0.020, root.width*0.015), 4)
+    property int smallerFont:   Math.max(Math.min(root.height*0.030, root.width*0.020), 6)
+    property int smallFont:     Math.max(Math.min(root.height*0.060, root.width*0.040), 8)
+    property int normalFont:    Math.max(Math.min(root.height*0.100, root.width*0.080), 10)
+    property int bigFont:       Math.max(Math.min(root.height*0.200, root.width*0.160), 12)
+    property int biggerFont:    Math.max(Math.min(root.height*0.400, root.width*0.300), 14)
 
-        Rectangle {
-            width: root.width/3
-            height: root.height - 80
-            color: "#313131"
-            radius: 8
+    Rectangle {
+        id: leftRow
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width * 0.01
+        width: parent.width * 0.46
+        color: "#313131"
+        radius: 8
 
-            MouseArea {
-                width: parent.width
-                height: parent.height
-                onClicked: console.log("width: " + width + "\nheight: " + height)
+        Text {
+            id: currentTempText
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: parent.height*0.01
 
+            color: "white"
+            font.pointSize: root.smallestFont
+            text: qsTr("CURRENT TEMP")
+        }
+
+        Text {
+            id: cityText
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: currentTempText.bottom
+            anchors.topMargin: parent.height*0.01
+
+            horizontalAlignment: Text.AlignHCenter
+            elide: Text.ElideRight
+            color: "white"
+            font.pointSize: root.smallFont
+            text: weatherModel.count > 0 ? weatherModel.get(0).city : ""
+        }
+
+        Text {
+            id: lastUpdated
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cityText.bottom
+            anchors.topMargin: parent.height*0.01
+
+            color: "grey"
+            font.pointSize: root.smallerFont
+            text: weatherModel.count > 0 ? "Last Updated - " + stripLast5(weatherModel.get(0).current_date_time) : ""
+        }
+
+        Item {
+            id: currentTemp
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: lastUpdated.bottom
+            anchors.topMargin: parent.height*0.2
+            height: weatherDegree.height
+            width: parent.width
+
+            Text {
+                id: weatherDegree
+                color: "white"
+                font.pointSize: root.bigFont
+                text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).temp_c : "0"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
             }
 
+            Text {
+                text: qsTr("°C")
+                color: "white"
+                font.pointSize: root.smallFont
+                anchors.verticalCenter: weatherDegree.top
+                anchors.left: weatherDegree.right; anchors.leftMargin: 10
+            }
 
-            Column {
-                anchors.fill: parent
-                anchors.margins: 30
-                spacing: 5
-
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    color: "white"
-                    font.pointSize: 10
-                    text: qsTr("CURRENT TEMP")
-                }
-
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width
-                    horizontalAlignment: Text.AlignHCenter
-                    elide: Text.ElideRight
-                    color: "white"
-                    font.pointSize: 10
-                    text: weatherModel.count > 0 ? weatherModel.get(0).city : ""
-                }
-
-                Text {
-                    color: "grey"
-                    font.pointSize: 8
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: weatherModel.count > 0 ? "Last Updated - " + stripLast5(weatherModel.get(0).current_date_time) : ""
-                }
-
-                Item {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width/1.3
-                    height: 140
-                    Text {
-                        id: weatherDegree
-                        color: "white"
-                        font.pointSize: 48
-                        text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).temp_c : "0"
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                    }
-
-                    Text {
-                        text: qsTr("°C")
-                        color: "white"
-                        font.pointSize: 10
-                        anchors.verticalCenter: weatherDegree.top
-                        anchors.left: weatherDegree.right; anchors.leftMargin: 10
-                    }
-
-                    Image {
-                        id: weatherIcon
-                        width: 80
-                        height: width
-                        smooth: true
-                        asynchronous: true
-                        source: weatherMeasurements.count > 0 ? mapIcon(weatherMeasurements.get(0).icon) : ""
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                Text {
-                    height: 70
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    color: "white"
-                    font.pointSize: 10
-                    text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
-                }
-
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    color: "white"
-                    font.pointSize: 10
-                    text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).humidity : ""
-                }
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    color: "white"
-                    font.pointSize: 10
-                    text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).wind_condition : ""
-                }
+            Image {
+                id: weatherIcon
+                height: parent.height
+                width: parent.height
+                smooth: true
+                asynchronous: true
+                source: weatherMeasurements.count > 0 ? mapIcon(weatherMeasurements.get(0).icon) : ""
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
 
-        Rectangle {
-            width: root.width/3
-            height: root.height - 80
+        Text {
+            id: currentCondition
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: currentTemp.bottom // tmp
+            anchors.topMargin: parent.height*0.01
+            color: "white"
+            font.pointSize: root.smallerFont
+            text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
+        }
 
-            color: "#313131"
-            radius: 8
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: currentWind.top
+            anchors.bottomMargin: parent.height*0.005
 
-            Column {
-                anchors.fill: parent
-                spacing: 30
-                anchors.topMargin: 20
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
+            color: "white"
+            font.pointSize: root.smallerFont
+            text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).humidity : ""
+        }
+        Text {
+            id: currentWind
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
 
-                Text {
+            color: "white"
+            font.pointSize: root.smallerFont
+            text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).wind_condition : ""
+        }
+    }
+
+    Rectangle {
+        id: rightRow
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: leftRow.right
+        anchors.leftMargin: parent.width * 0.04
+        width: parent.width * 0.46
+
+        color: "#313131"
+        radius: 8
+
+        Text {
+            id: weatherForeCastText
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: parent.height*0.01
+            color: "white"
+            font.pointSize: root.smallerFont
+            text: qsTr("WEATHER FORECAST")
+        }
+
+        ListView {
+            id: forecastListView
+
+            anchors.topMargin: parent.height*0.01
+            anchors.top: weatherForeCastText.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            clip: true
+            model: weatherForecast
+            delegate: Item {
+                height: root.smallerFont * 8
+                width: forecastListView.width
+
+                Rectangle {
+                    id: sep
+                    width: forecastListView.width-20
+                    height: 2
+                    radius: 2
+                    color: "#40FFFFFF"
+                    anchors.topMargin: 5
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: "white"
-                    font.pointSize: 10
-                    text: qsTr("WEATHER FORECAST")
                 }
 
-                ListView {
-                    id: forecastListView
-                    height: 360
-                    width: parent.width
-                    clip: true
-                    model: weatherForecast
-                    delegate: Item {
-                        height: 80
-                        width: forecastListView.width
+                Text {
+                    id: dayofweek
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: sep.bottom; anchors.topMargin: root.smallestFont
+                    color: "white"
+                    font.pointSize: root.smallerFont
+                    text: weatherForecast.count > 0 && weatherForecast.get(index) ? fullWeekDay(weatherForecast.get(index).day_of_week) : ""
+                }
 
-                        Rectangle {
-                            id: sep
-                            width: forecastListView.width-20
-                            height: 2
-                            radius: 2
-                            color: "#40FFFFFF"
-                            anchors.topMargin: 5
-                            anchors.horizontalCenter: parent.horizontalCenter
-                        }
+                Text {
+                    id: hightemptext
+                    anchors.top: dayofweek.bottom
+                    smooth: true
+                    font.pointSize: root.smallerFont
+                    color: "grey"
+                    text: qsTr("High: ")
+                }
+                Text {
+                    id: hightempvalue
+                    anchors.top: dayofweek.bottom
+                    anchors.left: hightemptext.right
+                    font.weight: Font.Normal
+                    color: "white"
+                    font.pointSize: root.smallerFont
+                    text: weatherForecast.count > 0 && weatherForecast.get(index) ? root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
+                }
 
-                        Text {
-                            id: dayofweek
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: sep.bottom; anchors.topMargin: 8
-                            color: "white"
-                            font.pointSize: 10
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? fullWeekDay(weatherForecast.get(index).day_of_week) : ""
-                        }
+                Text {
+                    id: lowtemptext
+                    anchors.top: dayofweek.bottom
+                    anchors.left: hightempvalue.right; anchors.leftMargin: 25
+                    smooth: true
+                    font.pointSize: root.smallerFont
+                    color: "grey"
+                    text: qsTr("Low: ")
+                }
+                Text {
+                    anchors.left: lowtemptext.right;
+                    anchors.top: dayofweek.bottom
+                    font.weight: Font.Normal
+                    color: "white"
+                    font.pointSize: root.smallerFont
+                    text: weatherForecast.count > 0 && weatherForecast.get(index) ? root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
+                }
 
-                        Text {
-                            id: hightemptext
-                            anchors.top: dayofweek.bottom
-                            smooth: true
-                            font.pointSize: 10
-                            color: "grey"
-                            text: qsTr("High: ")
-                        }
-                        Text {
-                            id: hightempvalue
-                            anchors.top: dayofweek.bottom
-                            anchors.left: hightemptext.right
-                            font.weight: Font.Normal
-                            color: "white"
-                            font.pointSize: 10
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
-                        }
+                Text {
+                    id: condition
+                    anchors.top: hightemptext.bottom
+                    font.weight: Font.Normal
+                    color: "white"
+                    font.pointSize: root.smallerFont
+                    text: weatherForecast.count > 0 && weatherForecast.get(index) ? weatherForecast.get(index).condition : ""
+                }
 
-                        Text {
-                            id: lowtemptext
-                            anchors.top: dayofweek.bottom
-                            anchors.left: hightempvalue.right; anchors.leftMargin: 25
-                            smooth: true
-                            font.pointSize: 10
-                            color: "grey"
-                            text: qsTr("Low: ")
-                        }
-                        Text {
-                            anchors.left: lowtemptext.right;
-                            anchors.top: dayofweek.bottom
-                            font.weight: Font.Normal
-                            color: "white"
-                            font.pointSize: 10
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
-                        }
-
-                        Text {
-                            id: condition
-                            anchors.top: hightemptext.bottom
-                            font.weight: Font.Normal
-                            color: "white"
-                            font.pointSize: 10
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? weatherForecast.get(index).condition : ""
-                        }
-
-                        Image {
-                            width: parent.height/1.5
-                            height: width
-                            smooth: true
-                            asynchronous: true
-                            source: weatherForecast.count > 0 && weatherForecast.get(index) ? mapIcon(weatherForecast.get(index).icon) : ""
-                            anchors.right: parent.right
-                            anchors.bottom: condition.bottom
-                        }
-                    }
+                Image {
+                    width: parent.height/1.5
+                    height: width
+                    smooth: true
+                    asynchronous: true
+                    source: weatherForecast.count > 0 && weatherForecast.get(index) ? mapIcon(weatherForecast.get(index).icon) : ""
+                    anchors.right: parent.right
+                    anchors.bottom: condition.bottom
                 }
             }
         }
@@ -309,38 +330,38 @@ Window {
 
     }
 
-//    ListModel {
-//        id: cityList
-//        ListElement { name: "Atlanta" }
-//        ListElement { name: "Bangalore" }
-//        ListElement { name: "Bangkok" }
-//        ListElement { name: "Beijing" }
-//        ListElement { name: "Berlin" }
-//        ListElement { name: "Bogota" }
-//        ListElement { name: "Boston" }
-//        ListElement { name: "Cape Town" }
-//        ListElement { name: "Casablanca" }
-//        ListElement { name: "Durban" }
-//        ListElement { name: "Helsinki" }
-//        ListElement { name: "Juneau" }
-//        ListElement { name: "Landshut" }
-//        ListElement { name: "Lhasa" }
-//        ListElement { name: "Lima" }
-//        ListElement { name: "London" }
-//        ListElement { name: "Manila" }
-//        ListElement { name: "Munich" }
-//        ListElement { name: "Moscow" }
-//        ListElement { name: "New York" }
-//        ListElement { name: "Nuuk" }
-//        ListElement { name: "Paris" }
-//        ListElement { name: "Rome" }
-//        ListElement { name: "San Francisco" }
-//        ListElement { name: "Sydney" }
-//        ListElement { name: "Timbuktu" }
-//        ListElement { name: "Tokyo" }
-//        ListElement { name: "Ulm" }
-//        ListElement { name: "Untermarchtal" }
-//    }
+    //    ListModel {
+    //        id: cityList
+    //        ListElement { name: "Atlanta" }
+    //        ListElement { name: "Bangalore" }
+    //        ListElement { name: "Bangkok" }
+    //        ListElement { name: "Beijing" }
+    //        ListElement { name: "Berlin" }
+    //        ListElement { name: "Bogota" }
+    //        ListElement { name: "Boston" }
+    //        ListElement { name: "Cape Town" }
+    //        ListElement { name: "Casablanca" }
+    //        ListElement { name: "Durban" }
+    //        ListElement { name: "Helsinki" }
+    //        ListElement { name: "Juneau" }
+    //        ListElement { name: "Landshut" }
+    //        ListElement { name: "Lhasa" }
+    //        ListElement { name: "Lima" }
+    //        ListElement { name: "London" }
+    //        ListElement { name: "Manila" }
+    //        ListElement { name: "Munich" }
+    //        ListElement { name: "Moscow" }
+    //        ListElement { name: "New York" }
+    //        ListElement { name: "Nuuk" }
+    //        ListElement { name: "Paris" }
+    //        ListElement { name: "Rome" }
+    //        ListElement { name: "San Francisco" }
+    //        ListElement { name: "Sydney" }
+    //        ListElement { name: "Timbuktu" }
+    //        ListElement { name: "Tokyo" }
+    //        ListElement { name: "Ulm" }
+    //        ListElement { name: "Untermarchtal" }
+    //    }
 
     Engine { name: qsTr("Weather"); role: "weather"; visualElement: root }
 
