@@ -68,8 +68,8 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             scale: parent.childScale
-            width: rapid.applicationWidht
-            height: rapid.applicationHeight
+            width: root.applicationWidht
+            height: root.applicationHeight
 
             source: backend.resourcePath + "/widgets/samegame/samegame.qml"
         }

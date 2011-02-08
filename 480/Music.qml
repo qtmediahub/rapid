@@ -25,6 +25,7 @@ import ActionMapper 1.0
 
 Window {
     id: root
+    anchors.leftMargin: rapid.additionalLeftMarginLess
 
     property variant currentIdx
 

@@ -22,6 +22,7 @@ import "qticcontent"
 
 Window {
     id: root
+    anchors.leftMargin: rapid.additionalLeftMarginMore
 
     Rectangle {
         id: mainElement

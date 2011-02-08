@@ -26,9 +26,9 @@ FocusScope {
     width: 800
     height: 480
 
-    property int applicationX: 0 //or to "maximize: -23
-    property int applicationWidht: rapid.width - applicationX
-    property int applicationHeight: rapid.height // TODO ... config file?
+    property int additionalLeftMarginLess: 40
+    property int additionalLeftMarginMore: 60
+
     property int menuFontPixelSize: 48
 
 

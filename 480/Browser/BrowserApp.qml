@@ -41,6 +41,7 @@ import "../../components"
 // the Browser application
 Window {
     id: root
+    anchors.leftMargin: rapid.additionalLeftMarginLess
 
     property alias urlInput: urlInput
 

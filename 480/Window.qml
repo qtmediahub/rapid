@@ -27,9 +27,7 @@ FocusScope {
     opacity: 0;
     visible: !(opacity == 0.0)
 
-    x: rapid.applicationX
-    width: rapid.applicationWidht
-    height: rapid.applicationHeight
+    anchors.fill: parent
 
     states: [
         State { name: "visible"

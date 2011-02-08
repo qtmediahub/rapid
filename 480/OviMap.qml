@@ -66,7 +66,7 @@ Window {
 
     Toolbar {
         anchors.right: parent.right
-        anchors.left: parent.left
+        anchors.left: parent.left; anchors.leftMargin: rapid.additionalLeftMarginLess
         anchors.bottom: parent.bottom
 
         onBtnClicked: { handleToolbarEvent(event) }
