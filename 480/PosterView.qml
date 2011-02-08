@@ -119,16 +119,16 @@ PathView {
             startX: carousel.horizCenter - offsetWidth; startY: carousel.vertCenter
 
             PathAttribute { name: "z"; value: 4 }
-            PathAttribute { name: "scale"; value: 0.6 }
+            PathAttribute { name: "scale"; value: 1 }
             PathQuad { x: carousel.horizCenter; y: carousel.vertCenter - carousel.offsetHeight; controlX: carousel.horizCenter - carousel.horizHypot; controlY: carousel.vertCenter - carousel.vertHypot }
             PathAttribute { name: "z"; value: 1 }
-            PathAttribute { name: "scale"; value: 0.2 }
+            PathAttribute { name: "scale"; value: 0.5 }
             PathQuad { x: carousel.horizCenter + carousel.offsetWidth; y: carousel.vertCenter; controlX: carousel.horizCenter + carousel.horizHypot; controlY: carousel.vertCenter - carousel.vertHypot }
             PathAttribute { name: "z"; value: 4 }
-            PathAttribute { name: "scale"; value: 0.6 }
+            PathAttribute { name: "scale"; value: 1 }
             PathQuad { x: carousel.horizCenter; y: carousel.vertCenter + carousel.offsetHeight; controlX: carousel.horizCenter + carousel.horizHypot; controlY: carousel.vertCenter + carousel.vertHypot }
             PathAttribute { name: "z"; value: 7 }
-            PathAttribute { name: "scale"; value: 2.0 }
+            PathAttribute { name: "scale"; value: 3.0 }
             //Origin
             PathQuad { x: carousel.startX; y: carousel.startY; controlX: carousel.horizCenter - carousel.horizHypot; controlY: carousel.vertCenter + carousel.vertHypot }
         }

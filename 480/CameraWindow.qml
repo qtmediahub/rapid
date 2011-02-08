@@ -119,6 +119,7 @@ Window {
         anchors.margins: 20
         anchors.bottom: parent.bottom
         source: "images/icon_locate.png"
+        scale: 2
 
         MouseArea { anchors.fill: parent; anchors.margins: -parent.anchors.bottomMargin
             onClicked: { display.showRealCam = !display.showRealCam } }

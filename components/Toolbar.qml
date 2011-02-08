@@ -40,10 +40,9 @@ import QtQuick 1.0
 // a set of ToolbarButtons. A button press generates
 // an event that is handled in an observing application
 Item {
-    id: container
+    id: root
 
-    height: 70
-
+//    height: 100
 
     property int bottomMargin: 4
     // model specifies the set of toolbar buttons (ListModel)
@@ -67,16 +66,19 @@ Item {
         color: "black"
         border.color:"white"
         width:  parent.width
-        height: parent.height-bottomMargin
+        height: parent.height
         radius: 15
         opacity: 0.5
     }
 
-    // Yoolbar item drawer is implemented as a list drawer
-
-    Component {
-        id: btnDrawer
-        ToolbarButton {
+    // Arrange the toolbar buttons in a row with ListView.
+    // (Unlike Row, ListView provides selection information for list
+    // elements + automatic indexing)
+    ListView {
+        id: buttons
+        // model information is assigned dynamically on runtime
+        model: {}
+        delegate: ToolbarButton {
             MouseArea {
                 anchors.fill: parent
                 anchors.margins: buttons.spacing/2
@@ -85,47 +87,15 @@ Item {
                     // the button and notify observers
                     if (buttonEnabled) {
                         activateButton(index);
-                        container.btnClicked(event);
+                        root.btnClicked(event);
                     }
                 }
             }
         }
-    }
-
-    // Arrange the toolbar buttons in a row with ListView.
-    // (Unlike Row, ListView provides selection information for list
-    // elements + automatic indexing)
-    ListView {
-        id: buttons
-        x: 20
-        // model information is assigned dynamically on runtime
-        model: {}
-        delegate: btnDrawer
         orientation: "Horizontal"
-        width: container.width
-        height: container.height
+        width: root.width
+        height: root.height
         spacing: 15
         interactive: false
-    }
-
-    // Digital clock is placed at the right end of the toolbar
-    Text {
-        id: digitalClock
-
-        anchors.verticalCenter:  background.verticalCenter
-        anchors.right: container.right
-        anchors.rightMargin: 10
-
-        color: 'white'; font.bold: true; font.pixelSize: 20
-
-        Timer {
-            interval: 10000; running: true; repeat: true
-            triggeredOnStart: true
-            onTriggered: {
-                var datetime=new Date();
-                var hours = datetime.getHours();        hours = hours < 10 ? "0" + hours: hours;
-                var minutes = datetime.getMinutes();    minutes = minutes < 10 ? "0" + minutes: minutes;
-                digitalClock.text = hours + ":" + minutes }
-        }
     }
 }
