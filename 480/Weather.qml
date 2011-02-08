@@ -61,11 +61,20 @@ Window {
         anchors.centerIn: parent
         spacing: 40
 
+
         Rectangle {
-            width: 300
-            height: 400
-            color: "#181818"
+            width: root.width/3
+            height: root.height - 80
+            color: "#313131"
             radius: 8
+
+            MouseArea {
+                width: parent.width
+                height: parent.height
+                onClicked: console.log("width: " + width + "\nheight: " + height)
+
+            }
+
 
             Column {
                 anchors.fill: parent
@@ -153,9 +162,10 @@ Window {
         }
 
         Rectangle {
-            width: 300
-            height: 400
-            color: "#181818"
+            width: root.width/3
+            height: root.height - 80
+
+            color: "#313131"
             radius: 8
 
             Column {
