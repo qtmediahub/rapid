@@ -23,6 +23,7 @@ import ActionMapper 1.0
 
 Window {
     id: root
+    anchors.leftMargin: rapid.additionalLeftMarginMore
 
     function itemActivated(itemData) {
         var selectedIndex = imagePlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
@@ -85,21 +86,16 @@ Window {
     }
 
     Keys.onPressed: {
-        if(posterView.opacity) {
-            if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
-                posterView.decrementCurrentIndex()
-            } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
-                posterView.incrementCurrentIndex()
-            } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+        if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
+            posterView.decrementCurrentIndex()
+            listView.decrementCurrentIndex()
+        } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
+            posterView.incrementCurrentIndex()
+            listView.incrementCurrentIndex()
+        } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+            if(posterView.opacity)
                 posterView.currentItem.activate()
-            }
-
-        } else {
-            if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Up)) {
-                listView.incrementCurrentIndex()
-            } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Down)) {
-                listView.decrementCurrentIndex()
-            } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+            else {
                 posterView.opacity = 1
                 listView.opacity = 0
             }
@@ -108,6 +104,6 @@ Window {
 
     Component.onCompleted: {
         pictureEngine.visualElement = root
-        !!pictureEngine && pictureEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+                !!pictureEngine && pictureEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }

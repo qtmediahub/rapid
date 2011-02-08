@@ -144,29 +144,30 @@ PathView {
             PathAttribute { name: "z"; value: 1 }
             PathAttribute { name: "scale"; value: 0.3 }
 
+
             PathQuad{
-                controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingTOP
-                x:         pathView.width*carousel2.horizDamping; y: pathView.height/2.0*carousel2.vertDampingBOT }
+                controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingTOP
+                x:         pathView.width*carousel2.horizDampingINV; y: pathView.height/2.0*carousel2.vertDampingBOT }
             PathAttribute { name: "z"; value: 5 }
             PathAttribute { name: "scale"; value: 1.0 }
             PathPercent { value: 0.47 }
 
-            PathQuad{
-                controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingBOT
+            PathQuad {
+                controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingBOT
                 x: pathView.width/2.0;                            y: pathView.height*carousel2.vertDampingBOT }
             PathAttribute { name: "z"; value: 10 }
             PathAttribute { name: "scale"; value: 3.0 }
             PathPercent { value: 0.5 }
 
             PathQuad{
-                controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingBOT
-                x:         pathView.width*carousel2.horizDampingINV; y: pathView.height/2.0*carousel2.vertDampingBOT }
+                controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingBOT
+                x:         pathView.width*carousel2.horizDamping; y: pathView.height/2.0*carousel2.vertDampingBOT }
             PathAttribute { name: "z"; value: 5 }
             PathAttribute { name: "scale"; value: 1.0 }
             PathPercent { value: 0.53 }
 
             PathQuad{
-                controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingTOP
+                controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingTOP
                 x:         pathView.width/2.0;                       y: pathView.height*carousel2.vertDampingTOP }
             PathAttribute { name: "z"; value: 1 }
             PathAttribute { name: "scale"; value: 0.3 }
