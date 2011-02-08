@@ -51,9 +51,9 @@ Window {
         id: display
         anchors.fill: parent
 
-        property real angle: -1// + ((angleSlider.x -angleSlider.minX) / (angleSlider.maxX-angleSlider.minX) * 2)
+        property real angle: -1
 
-        property int carWidth: display.width// TODO: fixed value...
+        property int carWidth: display.width
         property int xOffSet90Degrees: display.height/2.9
         property bool showRealCam: false
 
@@ -61,15 +61,15 @@ Window {
         property real control1Dist: 0.8
         property real control2Dist: 0.1
 
-        property int startXOffset: 100
+        property int startXOffset: display.width/7
 
-        property int dYL: 110
-        property int dYR: 100
-        property int dY: 70
-        property int dControllOffsetY: 70
+        property int dYL: display.height/4.4
+        property int dYR: display.height/4.8
+        property int dY: display.height/7
+        property int dControllOffsetY: display.height/7
 
-        property int dXL: 250
-        property int dXR: 300
+        property int dXL: display.width/2.8
+        property int dXR: display.width/2.33
 
         MouseArea {
             id: directionMouseArea
