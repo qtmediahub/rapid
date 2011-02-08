@@ -127,13 +127,13 @@ Window {
     Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
         if (    actionmap.eventMatch(event, ActionMapper.Right) ||
                 actionmap.eventMatch(event, ActionMapper.Up)    ) {
-            if(angleSlider.x < angleSlider.maxX)
-                angleSlider.x+=5;
+            if(display.angle < 1)
+                display.angle+=0.05;
         }
         else if(actionmap.eventMatch(event, ActionMapper.Left) ||
                 actionmap.eventMatch(event, ActionMapper.Down)  ) {
-            if(angleSlider.x > angleSlider.minX)
-                angleSlider.x-=5;
+            if(display.angle > -1)
+                display.angle-=0.05;
         }
     }
 
