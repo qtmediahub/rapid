@@ -120,6 +120,7 @@ Item {
     BookmarkView {
         id: bookmarkView
         anchors.fill: parent
+        anchors.margins: 30
         state: "gridview"
 
         // When clicking on a bookmark, switch to

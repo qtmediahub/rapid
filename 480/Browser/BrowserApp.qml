@@ -41,7 +41,7 @@ import "../../components"
 // the Browser application
 Window {
     id: root
-    anchors.leftMargin: rapid.additionalLeftMarginLess
+    anchors.leftMargin: rapid.additionalLeftMarginMore
 
     property alias urlInput: urlInput
 
@@ -51,24 +51,14 @@ Window {
 
     Toolbar {
         id: toolbar
-        height: 70
+        height: 80
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
-        anchors.leftMargin: 0
-        anchors.rightMargin: 0
+        anchors.margins: 10
         z: 999999
         onBtnClicked: { mainView.handleToolbarEvent(event) }
     }
-
-
-
-    // Properties from DynamicApp
-//    toolbarHandler: mainView
-//    property variant toolbarHandler: mainView
-
-
-//    x: width
 
     // Create toolbar buttons for Browser
     ButtonsDataBookmarks { id: toolbarBtnsBookmarks }

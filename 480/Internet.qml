@@ -23,7 +23,7 @@ import QtWebKit 1.0
 Window {
     id: root
 
-    property int borderMargin: 10
+    property int borderMargin: 0
 
     Flickable {
         id: webViewport

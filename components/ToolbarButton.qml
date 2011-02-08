@@ -46,8 +46,9 @@ Item {
     // Current selection state (on/off)
     property bool selected: false
 
-    width: 50
-    height:  50
+    height: parent.height
+    width: height
+
     // Hidden when disabled, when not
     // active, opacity is 50%
     opacity: buttonEnabled ? 0.5 : 0
@@ -55,29 +56,9 @@ Item {
     // Button icon
     Image {
         id: icon
-
-        anchors.centerIn: parent
         source: iconImage
-
-        // Blinking animation, which
-        // is done if 'blink' property is true
-//        SequentialAnimation {
-//            loops: Animation.Infinite
-//            running: blink
-
-//            PropertyAnimation {
-//                target: icon
-//                property: "opacity"
-//                from: 1.0; to: 0.0
-//                duration: 1000
-//            }
-//            PropertyAnimation {
-//                target: icon
-//                property: "opacity"
-//                from: 0.0; to: 1.0
-//                duration: 1000
-//            }
-//        }
+        anchors.centerIn: parent
+        smooth: true
     }
 
     // Button text below the icon
@@ -91,7 +72,6 @@ Item {
             (shareButtonText != undefined && shareButtonText)
             ? (wrapper.width + buttons.spacing)/2 : 0
         anchors.top: icon.bottom
-        anchors.topMargin: 5
         text: buttonText
         font.pixelSize: 12
         font.bold: true
