@@ -156,9 +156,9 @@ Item {
                     picture: "../images/bookmarks/google.png"
                 }
                 ListElement {
-                    title: "Facebook"
-                    url: "http://touch.facebook.com"
-                    picture: "../images/bookmarks/facebook.png"
+                    title: "Slashdot"
+                    url: "http://slashdot.org/"
+                    picture: "../images/bookmarks/slashdot.png"
                 }
                 ListElement {
                     title: "BBC"
@@ -166,7 +166,7 @@ Item {
                     picture: "../images/bookmarks/bbc.png"
                 }
                 ListElement {
-                    title: "Nokia Europe"
+                    title: "Nokia"
                     url: "http://europe.nokia.com/home"
                     picture: "../images/bookmarks/nokia_europe.png"
                 }
@@ -176,9 +176,9 @@ Item {
                     picture: "../images/bookmarks/qt.png"
                 }
                 ListElement {
-                    title: "AccuWeather"
-                    url: "http://apple.accuweather.com/widget/iphone/index.asp"
-                    picture: "../images/bookmarks/accuweather.png"
+                    title: "Ovi"
+                    url: "http://www.ovi.com/services/"
+                    picture: "../images/bookmarks/ovi.png"
                 }
             }
 
