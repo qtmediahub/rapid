@@ -68,6 +68,7 @@ Window {
         anchors.right: parent.right
         anchors.left: parent.left; anchors.leftMargin: rapid.additionalLeftMarginLess
         anchors.bottom: parent.bottom
+        height: 80
 
         onBtnClicked: { handleToolbarEvent(event) }
         model: ListModel {
