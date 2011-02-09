@@ -108,7 +108,7 @@ Window {
             anchors.topMargin: parent.height*0.01
 
             color: "grey"
-            font.pointSize: root.smallerFont
+            font.pointSize: root.smallestFont
             text: weatherModel.count > 0 ? "Last Updated - " + stripLast5(weatherModel.get(0).current_date_time) : ""
         }
 
