@@ -209,6 +209,7 @@ Window {
             anchors.top: weatherForeCastText.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+            anchors.leftMargin: 10
             anchors.right: parent.right
 
             clip: true
