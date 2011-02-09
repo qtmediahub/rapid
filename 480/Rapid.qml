@@ -23,8 +23,8 @@ import ActionMapper 1.0
 FocusScope {
     id: rapid
 
-    width: 800
-    height: 480
+    width: 1024
+    height: 768
 
     property int additionalLeftMarginLess: 40
     property int additionalLeftMarginMore: 60
@@ -125,13 +125,6 @@ FocusScope {
             /*videoWindow = */videoLoader.createObject(rapid)
         }
         else if (videoLoader.status == Component.Error) { console.log(videoLoader.errorString()) }
-
-
-        var animatedTilesLoader = Qt.createComponent("AnimatedTiles.qml");
-        if (animatedTilesLoader.status == Component.Ready) {
-            /*videoWindow = */animatedTilesLoader.createObject(rapid)
-        }
-        else if (animatedTilesLoader.status == Component.Error) { console.log(animatedTilesLoader.errorString()) }
 
         var weatherLoader = Qt.createComponent("Weather.qml");
         if (weatherLoader.status == Component.Ready) {
