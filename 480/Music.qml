@@ -155,6 +155,9 @@ Window {
         id: audio
         volume: 1.0
 
+        onStarted: { rapid.takeOverAudio(audio) }
+        onResumed: { rapid.takeOverAudio(audio) }
+
         onStopped: {
             if(audio.status == Audio.EndOfMedia) {
                 currentIdx = musicPlayList.playNextIndex(currentIdx)

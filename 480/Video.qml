@@ -53,6 +53,9 @@ Window {
         anchors.fill: parent
         volume: 1.0
 
+        onStarted: { rapid.takeOverAudio(video) }
+        onResumed: { rapid.takeOverAudio(video) }
+
 
         Timer {
             id: vcTimer

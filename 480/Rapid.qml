@@ -37,6 +37,14 @@ FocusScope {
 
     property variant qtcube
 
+
+    property QtObject audioItem
+    function takeOverAudio(item) {
+        if(audioItem !== null && audioItem !== undefined && audioItem !== item)
+            audioItem.stop()
+        audioItem = item
+    }
+
     function setActiveEngine(engine)
     {
 
