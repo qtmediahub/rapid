@@ -3,16 +3,23 @@ import QtQuick 1.0
 Item {
 
     id: cell
+    clip: true
 
-    property double childScale
     property bool isFullScreen: false
     z: isFullScreen ? 10 : 0
 
     property int column
     property int row
+    x: parent.itemWidthWithSpace * column + parent.spacingW*0.5;       width: parent.itemWidthWithSpace-parent.spacingW
+    y: parent.itemHeightWithSpace * row   + parent.spacingH*0.5;       height: parent.itemHeightWithSpace-parent.spacingH
 
-    x: parent.itemWidthWithSpace * column;       width: parent.itemWidthWithSpace-parent.spacingW
-    y: parent.itemHeightWithSpace * row;         height: parent.itemHeightWithSpace-parent.spacingH
+
+    property alias source: loader.source
+    property alias sourceComponent: loader.sourceComponent
+
+    property alias childWidth: loader.width
+    property alias childHeight: loader.height
+
 
     function hijackedMouseClicked() {
         if(cell.isFullScreen === false)
@@ -23,13 +30,13 @@ Item {
 
     states: State {
         when: cell.isFullScreen; name: "fullScreen";
-        PropertyChanges { target: cell; x: 0; y: 0; childScale: 1.0; width: parent.width; height: parent.height }
+        PropertyChanges { target: cell; x: 0; y: 0; width: parent.width; height: parent.height }
         PropertyChanges { target: background; opacity: 1 ; radius: 0 }
         PropertyChanges { target: rapid.qtcube; mouseAreaHijackItem: cell }
     }
 
     transitions: Transition {
-            NumberAnimation { target: cell; properties: "x,y,childScale,width,height"; duration: 600; easing.type: Easing.OutBounce }
+            NumberAnimation { target: cell; properties: "x,y,width,height"; duration: 600; easing.type: Easing.OutBounce }
             NumberAnimation { target: background; properties: "opacity,radius"; duration: 600; }
         }
 
@@ -44,4 +51,17 @@ Item {
         radius: cell.width/5; color: "black";  opacity: 0.4
     }
 
+    Loader {
+        id: loader;
+
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        scale: Math.min(1, Math.min(cell.height/loader.height, cell.width/loader.width))
+
+        source: cell.loaderSource
+        sourceComponent: cell.loaderSourceComponent
+
+        onLoaded: { item.clip = true }
+    }
 }

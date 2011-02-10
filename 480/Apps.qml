@@ -38,94 +38,38 @@ Window {
 
     Rectangle {
         anchors.fill: parent
-        anchors.margins: -500
+        anchors.leftMargin: -rapid.additionalLeftMarginMore
         color: "#001F00"
         z: -999
     }
 
 
-    AppsDelegate { id: a1
-        column: 0; row: 0;
-
-        childScale: Math.min(a1.height, a1.width) / Math.max(tmp1.width, tmp1.height)
-        AnimatedTiles {
-            id: tmp1;
-            y: (parent.height - height*scale)/2.0 // should be: anchors.verticalCenter: parent.verticalCenter ... bug?
-            x: (parent.width - width*scale)/2.0   // should be: anchors.horizontalCenter: parent.horizontalCenter ... bug?
-            scale: parent.childScale
-            width: root.width
-            height: root.height
-            clip: true
-        }
+    AppsDelegate { id: a1;      column: 0; row: 0;
+        childWidth: root.width; childHeight: root.height
+        sourceComponent: AnimatedTiles{}
     }
 
-    AppsDelegate { id: a2
-        column: 1; row: 0;
-
-        childScale: Math.min(height, width) / Math.max(l1.item.width, l1.item.height)
-
-        Loader {
-            id: l1
-
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            scale: parent.childScale
-            width: root.width
-            height: root.height
-
-            source: backend.resourcePath + "/widgets/samegame/samegame.qml"
-            onLoaded: { item.clip = true }
-        }
+    AppsDelegate { id: a2;      column: 1; row: 0;
+        childWidth: root.width; childHeight: root.height
+        source: backend.resourcePath + "/widgets/samegame/samegame.qml"
     }
 
-    AppsDelegate { id: a3;
-        column: 2; row: 0;
-        childScale: Math.min(height, width) / Math.max(remoteController.width, remoteController.height)
-        Loader {
-            id: remoteController;
+    AppsDelegate { id: a3;      column: 2; row: 0;
+        source: backend.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
 
-            anchors.centerIn: parent
-            scale: parent.childScale
-
-            source: backend.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
-            onLoaded: { item.clip = true }
-        }
     }
 
-    AppsDelegate { id: b1
-        column: 0; row: 1;
-
-        childScale: Math.min(height, width) / Math.max(tmp4.width, tmp4.height)
-        Rectangle {
-            anchors.centerIn: parent
-            scale: parent.childScale
-
-            id: tmp4; width: 700; height: 480; color: "magenta";
-        }
+    AppsDelegate { id: b1;      column: 0; row: 1;
+        source: backend.resourcePath + "/widgets/qtflyingbus/main_800_480.qml"
     }
 
-    AppsDelegate { id: b2
-        column: 1; row: 1;
 
-        childScale: Math.min(height, width) / Math.max(tmp5.width, tmp5.height)
-        Rectangle {
-            anchors.centerIn: parent
-            scale: parent.childScale
-
-            id: tmp5; width: 700; height: 480; color: "gray";
-        }
+    AppsDelegate { id: b2;      column: 1; row: 1;
+        source: backend.resourcePath + "/widgets/photoviewer/photoviewer.qml"
     }
 
-    AppsDelegate { id: b3
-        column: 2; row: 1;
-
-        childScale: Math.min(height, width) / Math.max(tmp6.width, tmp6.height)
-        Rectangle {
-            anchors.centerIn: parent
-            scale: parent.childScale
-
-            id: tmp6; width: 700; height: 480; color: "orange";
-        }
+    AppsDelegate { id: b3;      column: 2; row: 1;
+        source: backend.resourcePath + "/widgets/flickr/flickr.qml"
     }
 
 
