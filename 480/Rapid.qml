@@ -116,6 +116,12 @@ FocusScope {
     Component.onCompleted: {
         selectedElement = "empty"
 
+        var qmlComponent = Qt.createComponent("Cursor.qml")
+        if (qmlComponent.status == Component.Ready)
+            qmlComponent.createObject(rapid)
+        else if (qmlComponent.status == Component.Error)
+            backend.log(qmlComponent.errorString())
+
         var musicLoader = Qt.createComponent("Music.qml");
         if (musicLoader.status == Component.Ready) {
             /*musicWindow = */musicLoader.createObject(rapid)
@@ -178,7 +184,6 @@ FocusScope {
             qtcube.z = 9999999
         } else if (qtCubeLoader.status == Component.Error) {
             backend.log(qtCubeLoader.errorString())
-            qtcube = dummyItem
         }
 
 

@@ -256,9 +256,9 @@ Window {
     }
 
     Keys.onPressed: {
-        if (actionmap.eventMatch(event, ActionMapper.Right)) {
+        if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
             posterView.decrementCurrentIndex()
-        } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
+        } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
             posterView.incrementCurrentIndex()
         } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
             posterView.currentItem.activate()

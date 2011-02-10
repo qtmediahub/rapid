@@ -14,8 +14,10 @@ Item {
     y: parent.itemHeightWithSpace * row   + parent.spacingH*0.5;       height: parent.itemHeightWithSpace-parent.spacingH
 
 
-    property alias source: loader.source
-    property alias sourceComponent: loader.sourceComponent
+//    property alias source: loader.source
+//    property alias sourceComponent: loader.sourceComponent
+    property string source: ""
+    property Component sourceComponent: null
 
     property alias childWidth: loader.width
     property alias childHeight: loader.height
@@ -56,6 +58,17 @@ Item {
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+
+        onVisibleChanged: {
+            if(loader.visible == false) {
+                loader.source = ""
+                loader.sourceComponent = null
+            }
+            else if(cell.source !== "")
+                loader.source = cell.source
+            else if(cell.sourceComponent !== null)
+                loader.sourceComponent = cell.sourceComponent
+        }
 
         scale: Math.min(1, Math.min(cell.height/loader.height, cell.width/loader.width))
 
