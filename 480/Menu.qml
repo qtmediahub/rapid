@@ -105,8 +105,6 @@ Item {
                 }
             }
 
-            dragMargin: rootMenuList.width
-
             preferredHighlightBegin: 0.5
             preferredHighlightEnd: 0.5
             highlightRangeMode: PathView.StrictlyEnforceRange
