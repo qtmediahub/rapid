@@ -105,6 +105,8 @@ Item {
                 }
             }
 
+            dragMargin: 1000
+
             preferredHighlightBegin: 0.5
             preferredHighlightEnd: 0.5
             highlightRangeMode: PathView.StrictlyEnforceRange
