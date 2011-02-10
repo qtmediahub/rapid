@@ -55,6 +55,7 @@ Window {
             scale: parent.childScale
             width: root.width
             height: root.height
+            clip: true
         }
     }
 
@@ -73,18 +74,21 @@ Window {
             height: root.height
 
             source: backend.resourcePath + "/widgets/samegame/samegame.qml"
+            onLoaded: { item.clip = true }
         }
     }
 
     AppsDelegate { id: a3;
         column: 2; row: 0;
+        childScale: Math.min(height, width) / Math.max(remoteController.width, remoteController.height)
+        Loader {
+            id: remoteController;
 
-        childScale: Math.min(height, width) / Math.max(tmp3.width, tmp3.height)
-        Rectangle {
             anchors.centerIn: parent
             scale: parent.childScale
 
-            id: tmp3; width: 700; height: 480; color: "red";
+            source: backend.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
+            onLoaded: { item.clip = true }
         }
     }
 
