@@ -151,9 +151,19 @@ Item {
             // bookmarkData is obtained from dummydata
             model: ListModel {
                 ListElement {
-                    title: "Google"
-                    url: "http://www.google.com"
-                    picture: "../images/bookmarks/google.png"
+                    title: "Qt"
+                    url: "http://qt.nokia.com/"
+                    picture: "../images/bookmarks/qt.png"
+                }
+                ListElement {
+                    title: "Nokia"
+                    url: "http://europe.nokia.com/home"
+                    picture: "../images/bookmarks/nokia_europe.png"
+                }
+                ListElement {
+                    title: "Ovi"
+                    url: "http://www.ovi.com/services/"
+                    picture: "../images/bookmarks/ovi.png"
                 }
                 ListElement {
                     title: "Slashdot"
@@ -166,19 +176,9 @@ Item {
                     picture: "../images/bookmarks/bbc.png"
                 }
                 ListElement {
-                    title: "Nokia"
-                    url: "http://europe.nokia.com/home"
-                    picture: "../images/bookmarks/nokia_europe.png"
-                }
-                ListElement {
-                    title: "Qt"
-                    url: "http://qt.nokia.com/"
-                    picture: "../images/bookmarks/qt.png"
-                }
-                ListElement {
-                    title: "Ovi"
-                    url: "http://www.ovi.com/services/"
-                    picture: "../images/bookmarks/ovi.png"
+                    title: "Google"
+                    url: "http://www.google.com"
+                    picture: "../images/bookmarks/google.png"
                 }
             }
 

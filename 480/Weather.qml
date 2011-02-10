@@ -25,7 +25,8 @@ Window {
     anchors.topMargin: 20
     anchors.bottomMargin: 20
 
-    property string city: "Munich"
+//    property string city: "Munich"
+    property string city: "Barcelona"
 
     function fahrenheit2celsius(f) {
         return ((f-32)*5/9.0).toFixed(0);
@@ -62,10 +63,10 @@ Window {
 
     property int smallestFont:  Math.max(Math.min(root.height*0.020, root.width*0.015), 4)
     property int smallerFont:   Math.max(Math.min(root.height*0.030, root.width*0.020), 6)
-    property int smallFont:     Math.max(Math.min(root.height*0.060, root.width*0.040), 8)
+    property int smallFont:     Math.max(Math.min(root.height*0.040, root.width*0.040), 8)
     property int normalFont:    Math.max(Math.min(root.height*0.100, root.width*0.080), 10)
-    property int bigFont:       Math.max(Math.min(root.height*0.200, root.width*0.160), 12)
-    property int biggerFont:    Math.max(Math.min(root.height*0.400, root.width*0.300), 14)
+    property int bigFont:       Math.max(Math.min(root.height*0.160, root.width*0.160), 12)
+    property int biggerFont:    Math.max(Math.min(root.height*0.300, root.width*0.300), 14)
 
     Rectangle {
         id: leftRow
@@ -300,7 +301,7 @@ Window {
                     source: weatherForecast.count > 0 && weatherForecast.get(index) ? mapIcon(weatherForecast.get(index).icon) : ""
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    anchors.bottom: condition.bottom
+                    anchors.top: dayofweek.top
 
                     SequentialAnimation {
                         NumberAnimation { target: weatherIconSmall.anchors; property: "rightMargin"; from: 30; to: 10; duration: 2000; easing.type: Easing.InOutBack }

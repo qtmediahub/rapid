@@ -43,7 +43,7 @@ Item {
             PropertyChanges { target: sideBarRotation; angle: 0 }
         },
         State { name: "extended"
-            PropertyChanges { target: menu; x: 0; opacity: 0.8}
+            PropertyChanges { target: menu; x: -5; opacity: 0.8}
             PropertyChanges { target: sideBarRotation; angle: -90 }
         }
     ]
@@ -104,8 +104,6 @@ Item {
                     controlY: menu.height/2.0 - rapid.menuFontPixelSize
                 }
             }
-
-            dragMargin: rootMenuList.width
 
             preferredHighlightBegin: 0.5
             preferredHighlightEnd: 0.5
