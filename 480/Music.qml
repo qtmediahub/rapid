@@ -104,13 +104,13 @@ Window {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
-        height: 120
+        height: 150
         color: "#202020"
         radius: 12
 
         Text {
             id: title
-            text: audio.metaData.title ? audio.metaData.title : qsTr("Unknown Title")
+            text: audio.playing ? audio.metaData.title ? audio.metaData.title : qsTr("Unknown Title") : qsTr("Title")
             color: "white"
             font.pointSize: 20
             anchors.left: parent.left
@@ -120,7 +120,7 @@ Window {
 
         Text {
             id: artistitle
-            text: artistAndTitle(audio.metaData.albumArtist, audio.metaData.albumTitle)
+            text: audio.playing ? artistAndTitle(audio.metaData.albumArtist, audio.metaData.albumTitle) : qsTr("Album")
             color: "lightgrey"
             font.pointSize: 14
             anchors.left: parent.left
@@ -129,7 +129,7 @@ Window {
         }
 
         Text {
-            text: ms2string(audio.position) + " / " + ms2string(audio.duration)
+            text: audio.playing ? ms2string(audio.position) + " / " + ms2string(audio.duration) : "00:00 / 00:00"
             color: "white"
             font.pointSize: 14
             anchors.right: parent.right
@@ -143,9 +143,14 @@ Window {
             anchors.top: parent.top
             anchors.right: parent.right
 
+            property int childWidth: 100
+            property int childHeight: 100
+
             Image {
                 id: vcrewind
                 source: "./images/OSDRewindFO.png"
+                width: parent.childWidth
+                height: parent.childHeight
 
                 MouseArea {
                     anchors.fill: parent
@@ -156,6 +161,8 @@ Window {
             Image {
                 id: vcstop
                 source: "./images/OSDStopFO.png"
+                width: parent.childWidth
+                height: parent.childHeight
 
                 MouseArea {
                     anchors.fill: parent
@@ -166,6 +173,8 @@ Window {
             Image {
                 id: vcpause
                 source: audio.playing && !audio.paused ? "./images/OSDPauseFO.png" : "./images/OSDPlayFO.png"
+                width: parent.childWidth
+                height: parent.childHeight
 
                 MouseArea {
                     anchors.fill: parent
@@ -176,6 +185,8 @@ Window {
             Image {
                 id: vcforward
                 source: "./images/OSDForwardFO.png"
+                width: parent.childWidth
+                height: parent.childHeight
 
                 MouseArea {
                     anchors.fill: parent
@@ -202,6 +213,7 @@ Window {
                 width: audio.position/audio.duration*(parent.width-4)
                 border.left: 10; border.top: 10
                 border.right: 10; border.bottom: 10
+                source: "./images/ScrollBarV_bar_focus.png"
             }
 
             MouseArea {
