@@ -24,7 +24,7 @@ import AnimatedTiles 1.0
 Window {
     id: root
     anchors.leftMargin: rapid.additionalLeftMarginMore
-    clip: false
+    clip: true
 
     // width // x
     property int coloums: 3
@@ -35,13 +35,6 @@ Window {
     property int rows: 2
     property int spacingH: 30
     property int itemHeightWithSpace: root.height/root.rows
-
-    Rectangle {
-        anchors.fill: parent
-        anchors.leftMargin: -rapid.additionalLeftMarginMore
-        color: "#001F00"
-        z: -999
-    }
 
 
     AppsDelegate { id: a1;      column: 0; row: 0;
