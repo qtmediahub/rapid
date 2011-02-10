@@ -64,10 +64,10 @@ PathView {
     }
 
     onCountChanged: {
-        if(pathView.count >= 50 && style == "carousel") {
+        if(pathView.count >= 15 && style == "carousel") {
             style = "carousel2"
             setPathStyle()
-        } else if(pathView.count < 50 && style == "carousel2") {
+        } else if(pathView.count < 15 && style == "carousel2") {
             style = "carousel"
             setPathStyle()
         }
@@ -134,8 +134,8 @@ PathView {
         }
         property PosterPath carousel2: PosterPath {
             id: carousel2
-            highlightPos: 0.5 // ??
-            pathItemCount: 999999 // ??
+            highlightPos: 0.5
+            pathItemCount: 60
 
             property double horizDamping: 0.85; property double horizDampingINV: 1-horizDamping
             property double vertDampingBOT: 0.7; property double vertDampingTOP: 0.1//kind of invers of vertDampingBOT
@@ -150,7 +150,7 @@ PathView {
                 x:         pathView.width*carousel2.horizDampingINV; y: pathView.height/2.0*carousel2.vertDampingBOT }
             PathAttribute { name: "z"; value: 5 }
             PathAttribute { name: "scale"; value: 1.0 }
-            PathPercent { value: 0.47 }
+            PathPercent { value: 0.40 }
 
             PathQuad {
                 controlX: pathView.width*carousel2.horizDampingINV; controlY: pathView.height*carousel2.vertDampingBOT
@@ -164,7 +164,7 @@ PathView {
                 x:         pathView.width*carousel2.horizDamping; y: pathView.height/2.0*carousel2.vertDampingBOT }
             PathAttribute { name: "z"; value: 5 }
             PathAttribute { name: "scale"; value: 1.0 }
-            PathPercent { value: 0.53 }
+            PathPercent { value: 0.60 }
 
             PathQuad{
                 controlX: pathView.width*carousel2.horizDamping; controlY: pathView.height*carousel2.vertDampingTOP
