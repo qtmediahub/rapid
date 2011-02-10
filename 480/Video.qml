@@ -19,7 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
-
+import ActionMapper 1.0
 
 Window {
     id: root
@@ -175,6 +175,16 @@ Window {
         }
         Keys.onLeftPressed: video.position -= 5000
         Keys.onRightPressed: video.position += 5000
+    }
+
+    Keys.onPressed: {
+        if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
+            posterView.decrementCurrentIndex()
+        } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
+            posterView.incrementCurrentIndex()
+        } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+            posterView.currentItem.activate()
+        }
     }
 
     Component.onCompleted: {
