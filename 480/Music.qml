@@ -82,6 +82,7 @@ Window {
         currentIdx = idx
         audio.source = musicPlayList.data(idx, Playlist.FilePathRole)
         audio.play();
+        posterView.currentIndex = musicPlayList.row(idx)+1;
     }
 
     Playlist {
@@ -96,6 +97,19 @@ Window {
         style: "coverFlood"
 
         onActivated: root.itemActivated(currentItem.itemdata)
+    }
+
+    Text {
+        id: artistText
+        anchors.top: audiocontrol.top
+        anchors.topMargin: -150
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width/2.0
+        wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignHCenter
+        color: "white"
+        text: posterView.currentItem ? posterView.currentItem.itemdata.display : "Artist"
+        font.pointSize: 24
     }
 
     Rectangle {

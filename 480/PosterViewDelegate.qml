@@ -28,18 +28,6 @@ Item {
         fillMode: Image.PreserveAspectFit
         source: model.previewUrl ? model.previewUrl : ""
         anchors.margins: 6
-
-//        Text {
-//            visible: (type == "Directory")
-//            anchors.bottom: parent.bottom
-//            anchors.horizontalCenter: parent.horizontalCenter
-//            width: parent.width
-//            elide: Text.ElideRight
-//            horizontalAlignment: Text.AlignHCenter
-//            color: "#808080"
-//            text: model.fileName
-//            font.pointSize: 8
-//        }
     }
 
     function activate()
