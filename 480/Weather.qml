@@ -301,7 +301,7 @@ Window {
                     source: weatherForecast.count > 0 && weatherForecast.get(index) ? mapIcon(weatherForecast.get(index).icon) : ""
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    anchors.bottom: condition.bottom
+                    anchors.top: dayofweek.top
 
                     SequentialAnimation {
                         NumberAnimation { target: weatherIconSmall.anchors; property: "rightMargin"; from: 30; to: 10; duration: 2000; easing.type: Easing.InOutBack }
