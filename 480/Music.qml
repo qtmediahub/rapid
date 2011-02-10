@@ -69,6 +69,21 @@ Window {
         audio.play()
     }
 
+    function playNext() {
+        playIndex(musicPlayList.playNextIndex(currentIdx));
+    }
+
+    function playPrevious() {
+        playIndex(musicPlayList.playPreviousIndex(currentIdx));
+    }
+
+    function playIndex(idx) {
+        audio.stop();
+        currentIdx = idx
+        audio.source = musicPlayList.data(idx, Playlist.FilePathRole)
+        audio.play();
+    }
+
     Playlist {
         id: musicPlayList
         playMode: Playlist.Normal
@@ -122,24 +137,71 @@ Window {
             anchors.margins: 10
         }
 
+        Row {
+            id: controls
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+
+            Image {
+                id: vcrewind
+                source: "./images/OSDRewindFO.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: playPrevious()
+                }
+            }
+
+            Image {
+                id: vcstop
+                source: "./images/OSDStopFO.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: audio.stop();
+                }
+            }
+
+            Image {
+                id: vcpause
+                source: audio.playing && !audio.paused ? "./images/OSDPauseFO.png" : "./images/OSDPlayFO.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: audio.playing && !audio.paused ? audio.pause() : audio.play()
+                }
+            }
+
+            Image {
+                id: vcforward
+                source: "./images/OSDForwardFO.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: playNext()
+                }
+            }
+        }
+
         Rectangle {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.bottomMargin: 15
             anchors.leftMargin: 10
-            height: 10
+            height: 25
             width: parent.width-160
-            color: "#E0E0E0"
+            color: "black"
             radius: 4
 
-            Rectangle {
+            BorderImage {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 2
-                height: 6
+                height: 25
                 width: audio.position/audio.duration*(parent.width-4)
-                color: "#6090E0"
-                radius: 3
+                border.left: 10; border.top: 10
+                border.right: 10; border.bottom: 10
             }
 
             MouseArea {
