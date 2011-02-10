@@ -135,8 +135,9 @@ Window {
                 color: "white"
                 font.pointSize: root.smallFont
                 anchors.verticalCenter: weatherDegree.top
-                anchors.left: weatherDegree.right; anchors.leftMargin: 10
+                anchors.left: weatherDegree.right
             }
+
 
             Image {
                 id: weatherIcon
@@ -147,7 +148,14 @@ Window {
                 source: weatherMeasurements.count > 0 ? mapIcon(weatherMeasurements.get(0).icon) : ""
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.rightMargin: 20
+                anchors.rightMargin: 15
+                SequentialAnimation {
+                    NumberAnimation { target: weatherIcon.anchors; property: "rightMargin"; from: 40; to: 10; duration: 2000; easing.type: Easing.InOutBack }
+                    NumberAnimation { target: weatherIcon.anchors; property: "rightMargin"; from: 10; to: 40; duration: 2000; easing.type: Easing.InOutBack }
+
+                    running: true
+                    loops: Animation.Infinite
+                }
             }
         }
 
@@ -211,6 +219,7 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.right: parent.right
+            interactive: false
 
             clip: true
             model: weatherForecast
@@ -283,6 +292,7 @@ Window {
                 }
 
                 Image {
+                    id: weatherIconSmall
                     width: parent.height/1.5
                     height: width
                     smooth: true
@@ -291,6 +301,14 @@ Window {
                     anchors.right: parent.right
                     anchors.rightMargin: 10
                     anchors.bottom: condition.bottom
+
+                    SequentialAnimation {
+                        NumberAnimation { target: weatherIconSmall.anchors; property: "rightMargin"; from: 30; to: 10; duration: 2000; easing.type: Easing.InOutBack }
+                        NumberAnimation { target: weatherIconSmall.anchors; property: "rightMargin"; from: 10; to: 30; duration: 2000; easing.type: Easing.InOutBack }
+
+                        running: true
+                        loops: Animation.Infinite
+                    }
                 }
             }
         }
