@@ -59,9 +59,6 @@ Item {
 
         scale: Math.min(1, Math.min(cell.height/loader.height, cell.width/loader.width))
 
-        source: cell.loaderSource
-        sourceComponent: cell.loaderSourceComponent
-
         onLoaded: { item.clip = true }
     }
 }

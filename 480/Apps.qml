@@ -65,7 +65,7 @@ Window {
 
 
     AppsDelegate { id: b2;      column: 1; row: 1;
-        source: backend.resourcePath + "/widgets/photoviewer/photoviewer.qml"
+        source: backend.resourcePath + "/widgets/Reversi/DesktopGame.qml"
     }
 
     AppsDelegate { id: b3;      column: 2; row: 1;
