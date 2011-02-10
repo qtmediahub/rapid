@@ -20,6 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
 import ActionMapper 1.0
+import Playlist 1.0
 
 Window {
     id: root
@@ -27,11 +28,34 @@ Window {
     property bool vplaying: false
 
     function itemActivated(itemData) {
-        video.source = itemData.filePath
-        video.play()
+        play(itemData.mediaInfo)
+    }
+
+    function play(item, role, depth) {
+        if(item != null) {
+            video.currentIndex = playlist.add(item, role ? role : Playlist.Replace, depth ? depth : Playlist.Recursive)
+            playIndex(video.currentIndex)
+        }
+    }
+
+    function playIndex(idx) {
+        video.stop();
+        video.currentIndex = idx
+        video.source = playlist.data(idx, Playlist.FilePathRole)
+        video.play();
         vplaying = true
         posterView.opacity = 0
         video.opacity = 1
+    }
+
+    Playlist {
+        id: playlist
+    }
+
+    // RPC requests
+    Connections {
+        target: mediaPlayerHelper
+        onPlayRemoteSourceRequested: { root.playForeground(mediaPlayerHelper.mediaInfo); mediaItem.position = position }
     }
 
     PosterView {
@@ -52,6 +76,8 @@ Window {
         focus: true
         anchors.fill: parent
         volume: 1.0
+
+        property variant currentIndex
 
         onStarted: { rapid.takeOverAudio(video) }
         onResumed: { rapid.takeOverAudio(video) }
