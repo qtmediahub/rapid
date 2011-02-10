@@ -136,6 +136,9 @@ Window {
             if(display.angle > -1)
                 display.angle-=0.05;
         }
+        else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+            display.showRealCam = !display.showRealCam
+        }
     }
 
     Engine { name: qsTr("Rear-view"); role: "camera"; visualElement: root }
