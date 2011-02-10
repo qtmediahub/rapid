@@ -73,6 +73,6 @@ Window {
     }
 
 
-    Engine { name: qsTr("Apps"); role: "apss"; visualElement: root }
+    Engine { name: qsTr("Applications"); role: "apps"; visualElement: root }
 }
 
