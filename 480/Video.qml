@@ -55,7 +55,7 @@ Window {
     // RPC requests
     Connections {
         target: mediaPlayerHelper
-        onPlayRemoteSourceRequested: { root.playForeground(mediaPlayerHelper.mediaInfo); mediaItem.position = position }
+        onPlayRemoteSourceRequested: { root.play(mediaPlayerHelper.mediaInfo); video.position = position }
     }
 
     PosterView {
