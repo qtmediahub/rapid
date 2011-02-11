@@ -79,8 +79,8 @@ Window {
 
         property variant currentIndex
 
-        onStarted: { rapid.takeOverAudio(video) }
-        onResumed: { rapid.takeOverAudio(video) }
+        onStarted: { rapid.takeOverAudio(video, videoEngine) }
+        onResumed: { rapid.takeOverAudio(video, videoEngine) }
 
 
         Timer {

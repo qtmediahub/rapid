@@ -39,10 +39,13 @@ FocusScope {
 
 
     property QtObject audioItem
-    function takeOverAudio(item) {
+    function takeOverAudio(item, engine) {
         if(audioItem !== null && audioItem !== undefined && audioItem !== item)
             audioItem.stop()
         audioItem = item
+
+        if(engine !== null && engine !== undefined && engine !== selectedEngine)
+            setActiveEngine(engine)
     }
 
     function setActiveEngine(engine)
