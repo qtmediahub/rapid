@@ -176,6 +176,12 @@ FocusScope {
         }
         else if (appsLoader.status == Component.Error) { console.log(appsLoader.errorString()) }
 
+        var tmLoader = Qt.createComponent("TerminalModeWindow.qml");
+        if (tmLoader.status == Component.Ready) {
+            tmLoader.createObject(rapid)
+        }
+        else if (tmLoader.status == Component.Error) { console.log(tmLoader.errorString()) }
+
         var qtCubeLoader = Qt.createComponent(backend.resourcePath + "/misc/cube/cube.qml")
         if (qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(rapid)
