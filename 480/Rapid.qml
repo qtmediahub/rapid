@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import ActionMapper 1.0
+import "cursor.js" as Cursor
 
 FocusScope {
     id: rapid
@@ -119,11 +120,7 @@ FocusScope {
     Component.onCompleted: {
         selectedElement = "empty"
 
-        var qmlComponent = Qt.createComponent("Cursor.qml")
-        if (qmlComponent.status == Component.Ready)
-            qmlComponent.createObject(rapid)
-        else if (qmlComponent.status == Component.Error)
-            backend.log(qmlComponent.errorString())
+        Cursor.initialize()
 
         var musicLoader = Qt.createComponent("Music.qml");
         if (musicLoader.status == Component.Ready) {
