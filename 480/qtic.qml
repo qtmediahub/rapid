@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import Qt 4.7
 import "qticcontent"
+import QMHPlugin 1.0
 
 Window {
     id: root
@@ -116,5 +117,5 @@ Window {
 
     }
 
-    Engine { name: qsTr("Instrument\nCluster"); role: "qtic"; visualElement: root }
+    Engine { name: qsTr("Instrument\nCluster"); role: QMHPlugin.Application; visualElement: root }
 }

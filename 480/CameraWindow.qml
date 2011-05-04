@@ -20,6 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
 import ActionMapper 1.0
+import QMHPlugin 1.0
 
 Window {
     id: root
@@ -141,7 +142,7 @@ Window {
         }
     }
 
-    Engine { name: qsTr("Rear-view"); role: "camera"; visualElement: root }
+    Engine { name: qsTr("Rear-view"); role: QMHPlugin.Application; visualElement: root }
 }
 
 

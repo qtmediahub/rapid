@@ -93,7 +93,7 @@ Window {
     PosterView {
         id: posterView
         anchors.fill: parent
-        posterModel: musicEngine.pluginProperties.model
+        posterModel: musicEngine.model
         style: "coverFlood"
 
         onActivated: root.itemActivated(currentItem.itemdata)
@@ -267,6 +267,6 @@ Window {
 
     Component.onCompleted: {
         musicEngine.visualElement = root
-        !!musicEngine && musicEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+        !!musicEngine && musicEngine.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }

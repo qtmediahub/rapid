@@ -20,6 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import ActionMapper 1.0
 import AnimatedTiles 1.0
+import QMHPlugin 1.0
 
 Window {
     id: root
@@ -66,6 +67,6 @@ Window {
     }
 
 
-    Engine { name: qsTr("Applications"); role: "apps"; visualElement: root }
+    Engine { name: qsTr("Applications"); role: QMHPlugin.Dashboard; visualElement: root }
 }
 

@@ -62,7 +62,7 @@ Window {
         id: posterView
 
         anchors.fill: parent
-        posterModel: videoEngine.pluginProperties.model
+        posterModel: videoEngine.model
 
         onActivated: {
             if (currentItem.itemdata.type != "AddNewSource")
@@ -215,6 +215,6 @@ Window {
 
     Component.onCompleted: {
         videoEngine.visualElement = root
-        !!videoEngine && videoEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+        !!videoEngine && videoEngine.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }

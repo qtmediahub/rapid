@@ -18,6 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
+import QMHPlugin 1.0
 
 Window {
     id: root
@@ -386,6 +387,6 @@ Window {
     //        ListElement { name: "Untermarchtal" }
     //    }
 
-    Engine { name: qsTr("Weather"); role: "weather"; visualElement: root }
+    Engine { name: qsTr("Weather"); role: QMHPlugin.Weather; visualElement: root }
 
 }

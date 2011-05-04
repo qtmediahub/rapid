@@ -40,7 +40,7 @@ Window {
     PosterView {
         id: posterView
         anchors.fill: parent
-        posterModel: pictureEngine.pluginProperties.model
+        posterModel: pictureEngine.model
 
         onActivated: root.itemActivated(currentItem.itemdata)
     }
@@ -104,6 +104,6 @@ Window {
 
     Component.onCompleted: {
         pictureEngine.visualElement = root
-                !!pictureEngine && pictureEngine.pluginProperties.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+                !!pictureEngine && pictureEngine.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
     }
 }

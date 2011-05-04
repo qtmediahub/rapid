@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
 import Qt 4.7
 import "../"
 import "../../components"
+import QMHPlugin 1.0
 
 // BrowserApp is the entry point to
 // the Browser application
@@ -120,6 +121,5 @@ Window {
         }
     ]
 
-
-    Engine { name: qsTr("Internet"); role: "internet"; visualElement: root }
+    Engine { name: qsTr("Internet"); role: QMHPlugin.Web; visualElement: root }
 }
