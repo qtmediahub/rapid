@@ -21,42 +21,33 @@ import QtQuick 1.0
 import QtMultimediaKit 1.1
 import ActionMapper 1.0
 import Playlist 1.0
+import Media 1.0
 
 Window {
     id: root
 
     property bool vplaying: false
 
+
     function itemActivated(itemData) {
-        play(itemData.mediaInfo)
+        playIndex(playlist.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat))
     }
 
-    function play(item, role, depth) {
-        if(item != null) {
-            video.currentIndex = playlist.add(item, role ? role : Playlist.Replace, depth ? depth : Playlist.Recursive)
-            playIndex(video.currentIndex)
-        }
-    }
 
     function playIndex(idx) {
         video.stop();
         video.currentIndex = idx
-        video.source = playlist.data(idx, Playlist.FilePathRole)
+        video.source = playlist.data(idx, Media.FilePathRole)
         video.play();
         vplaying = true
-        posterView.opacity = 0
         video.opacity = 1
+        posterView.opacity = 0
     }
 
     Playlist {
         id: playlist
     }
 
-    // RPC requests
-    Connections {
-        target: mediaPlayerHelper
-        onPlayRemoteSourceRequested: { root.play(mediaPlayerHelper.mediaInfo); video.position = position }
-    }
 
     PosterView {
         id: posterView
@@ -213,8 +204,9 @@ Window {
         }
     }
 
+
+
     Component.onCompleted: {
-        videoEngine.visualElement = root
-        !!videoEngine && videoEngine.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+        videoEngine.model.addSearchPath("/home/tsenyk/media/Videos", "")
     }
 }

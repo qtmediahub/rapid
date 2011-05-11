@@ -22,12 +22,15 @@ Item {
             PathView.view.currentItem = delegateItem
     }
 
+    property int frameMargin: 6
+
     Image {
         id: backgroundImage
-        anchors.fill: parent
-        anchors.margins: 6
-        fillMode: Image.PreserveAspectFit
         source: model.previewUrl ? model.previewUrl : themeResourcePath + "/media/Fanart_Fallback_Music_Small.jpg"
+
+        anchors.centerIn: parent
+        width: (sourceSize.width > sourceSize.height ? delegateItem.width : (sourceSize.width / sourceSize.height) * delegateItem.width) - frameMargin*2
+        height: (sourceSize.width <= sourceSize.height ? delegateItem.height : (sourceSize.height / sourceSize.width) * delegateItem.height) - frameMargin*2
     }
 
     function activate()
@@ -45,7 +48,8 @@ Item {
     }
 
     MouseArea {
-        anchors.fill: parent;
+        anchors.fill: backgroundImage;
+
         acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         onClicked:
