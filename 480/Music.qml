@@ -21,6 +21,7 @@ import QtQuick 1.0
 import Playlist 1.0
 import QtMultimediaKit 1.1
 import ActionMapper 1.0
+import Media 1.0
 
 
 Window {
@@ -63,8 +64,7 @@ Window {
     function itemActivated(itemData) {
         if(audio.playing)
             audio.stop()
-        //console.log("Now playing: "+itemData.filePath)
-        currentIdx = musicPlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
+        currentIdx = musicPlayList.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat)
         audio.source = itemData.filePath
         audio.play()
     }
@@ -80,7 +80,7 @@ Window {
     function playIndex(idx) {
         audio.stop();
         currentIdx = idx
-        audio.source = musicPlayList.data(idx, Playlist.FilePathRole)
+        audio.source = musicPlayList.data(idx, Media.FilePathRole)
         audio.play();
         posterView.currentIndex = musicPlayList.row(idx)+1;
     }
@@ -248,9 +248,7 @@ Window {
 
         onStopped: {
             if(audio.status == Audio.EndOfMedia) {
-                currentIdx = musicPlayList.playNextIndex(currentIdx)
-                audio.source = musicPlayList.data(currentIdx, Playlist.FilePathRole)
-                audio.play()
+                playNext();
             }
         }
     }
@@ -266,7 +264,6 @@ Window {
     }
 
     Component.onCompleted: {
-        musicEngine.visualElement = root
-        !!musicEngine && musicEngine.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+        musicEngine.model.addSearchPath("/home/tsenyk/media/Music", "")
     }
-}
+ }
