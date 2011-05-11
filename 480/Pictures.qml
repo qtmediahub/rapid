@@ -26,7 +26,7 @@ Window {
     anchors.leftMargin: rapid.additionalLeftMarginMore
 
     function itemActivated(itemData) {
-        var selectedIndex = imagePlayList.add(itemData.mediaInfo, Playlist.Replace, Playlist.Flat)
+        var selectedIndex = imagePlayList.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat)
         listView.currentIndex = imagePlayList.row(selectedIndex)
         posterView.opacity = 0
         listView.opacity = 1
@@ -71,14 +71,14 @@ Window {
                 anchors.fill: image
                 fillMode: Image.PreserveAspectFit
                 visible: image.status != Image.Ready
-                source: previewUrl
+                source: previewUrl ? previewUrl : themeResourcePath + "/media/Fanart_Fallback_Music_Small.jpg"
             }
         }
 
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                //posterView.currentIndex = listView.currentIndex
+                posterView.currentIndex = listView.currentIndex
                 posterView.opacity = 1
                 listView.opacity = 0
             }
@@ -103,7 +103,6 @@ Window {
     }
 
     Component.onCompleted: {
-        pictureEngine.visualElement = root
-                !!pictureEngine && pictureEngine.model.setThemeResourcePath(backend.skinPath + "/rapid/components/images/");
+        pictureEngine.model.addSearchPath("/home/tsenyk/media/Pictures", "")
     }
 }

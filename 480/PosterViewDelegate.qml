@@ -25,9 +25,9 @@ Item {
     Image {
         id: backgroundImage
         anchors.fill: parent
-        fillMode: Image.PreserveAspectFit
-        source: model.previewUrl ? model.previewUrl : ""
         anchors.margins: 6
+        fillMode: Image.PreserveAspectFit
+        source: model.previewUrl ? model.previewUrl : themeResourcePath + "/media/Fanart_Fallback_Music_Small.jpg"
     }
 
     function activate()
@@ -35,7 +35,7 @@ Item {
         var visualDataModel = PathView.view.model
         if (model.hasModelChildren) {
             visualDataModel.rootIndex = visualDataModel.modelIndex(index)
-            PathView.view.currentIndex = 0
+            PathView.view.currentIndex = 0 // Not sure what this line does
             PathView.view.rootIndexChanged() // Fire signals of aliases manually, QTBUG-14089
             visualDataModel.model.layoutChanged() // Workaround for QTBUG-16366
         } else {
@@ -56,5 +56,8 @@ Item {
                 PathView.view.rightClicked(delegateItem.x + mouseX, delegateItem.y + mouseY)
             }
     }
+
+    Keys.onPressed:
+        runtime.actionmap.eventMatch(event, ActionMapper.Enter) ? delegateItem.activate() : undefined
 }
 
