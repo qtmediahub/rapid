@@ -65,8 +65,5 @@ Window {
     AppsDelegate { id: b3;      column: 2; row: 1;
         source: backend.resourcePath + "/widgets/flickr/flickr.qml"
     }
-
-
-    Engine { name: qsTr("Applications"); role: QMHPlugin.Dashboard; visualElement: root }
 }
 
