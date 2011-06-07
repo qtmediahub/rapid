@@ -85,6 +85,10 @@ Window {
         posterView.currentIndex = musicPlayList.row(idx)+1;
     }
 
+    function stop() {
+        audio.stop();
+    }
+
     Playlist {
         id: musicPlayList
         playMode: Playlist.Normal
@@ -243,8 +247,8 @@ Window {
         id: audio
         volume: 1.0
 
-        onStarted: { rapid.takeOverAudio(audio) }
-        onResumed: { rapid.takeOverAudio(audio) }
+        onStarted: { rapid.takeOverAudio(root) }
+        onResumed: { rapid.takeOverAudio(root) }
 
         onStopped: {
             if(audio.status == Audio.EndOfMedia) {

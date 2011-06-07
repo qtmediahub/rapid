@@ -34,6 +34,9 @@ Window {
     }
 
 
+    function stop() {
+        video.stop();
+    }
     function playIndex(idx) {
         video.stop();
         video.currentIndex = idx
@@ -70,8 +73,8 @@ Window {
 
         property variant currentIndex
 
-        onStarted: { rapid.takeOverAudio(video, videoEngine) }
-        onResumed: { rapid.takeOverAudio(video, videoEngine) }
+        onStarted: { rapid.takeOverAudio(root) }
+        onResumed: { rapid.takeOverAudio(root) }
 
 
         Timer {
