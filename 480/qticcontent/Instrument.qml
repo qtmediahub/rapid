@@ -40,11 +40,13 @@ import Qt 4.7
 
 
 Item {
-    //color: "#343434"
+    id: root
     width: 680; height: 216
 
     property real speed: speedDial.value
     property real rotation: rotationDial.value
+
+    property bool animationRunning
 
     SpeedDial {
         id: speedDial;
@@ -163,13 +165,14 @@ Item {
         id: saniGasUsage;
         target: reservoirDial; property: "value";
         from: 1.0; to: 0.0; duration: 30000; /* wast whole tank in 1/2 minute ;)*/
-        running: mainElement.ignition
+        running: mainElement.ignition && root.animationRunning
         loops: Animation.Infinite
     }
 
     SequentialAnimation {
         id: simulationAnimation // short: sani
         running: true
+        paused: !root.animationRunning
         loops: Animation.Infinite
 
         //delay at the beginning

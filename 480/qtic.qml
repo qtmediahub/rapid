@@ -44,6 +44,7 @@ Window {
             id: instruments
             anchors.left: parent.left
             anchors.leftMargin: 5
+            animationRunning: root.state == "visible"
         }
 
         DistanceControl {
@@ -116,6 +117,4 @@ Window {
         }
 
     }
-
-    Engine { name: qsTr("Instrument\nCluster"); role: QMHPlugin.Application; visualElement: root }
 }
