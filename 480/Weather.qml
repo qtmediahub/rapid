@@ -387,6 +387,4 @@ Window {
     //        ListElement { name: "Untermarchtal" }
     //    }
 
-    Engine { name: qsTr("Weather"); role: QMHPlugin.Weather; visualElement: root }
-
 }
