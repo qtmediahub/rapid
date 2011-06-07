@@ -141,27 +141,4 @@ Window {
             display.showRealCam = !display.showRealCam
         }
     }
-
-    Engine { name: qsTr("Rear-view"); role: QMHPlugin.Application; visualElement: root }
 }
-
-
-// alternative/old pathview:
-//            path: Path {
-//                startX: display.width/2 + display.angle*100;
-//                startY: display.height
-//                PathAttribute { name: "scale"; value: 1.02 }
-//                PathAttribute { name: "rotAngle"; value: 0 }
-
-//                PathCubic {
-//                    control1Y: 0.5 *display.height /** (display.angle < 0 ? (1+(display.angle*0.2)) : 1);*/
-//                    control2Y: 1.2 * display.xOffSet90Degrees*(Math.pow(display.angle,2)+0.5)/1.5
-//                    y:         display.xOffSet90Degrees*(Math.pow(display.angle,2)+0.5)/1.5 * (display.angle < 0 ? (1-(display.angle*0.1)) : 1)
-
-//                    control1X: display.width/2 +   display.width*display.angle/(display.angle<0 ? 10 : 3)
-//                    control2X: display.width/2 +   display.width/4*display.angle
-//                    x: display.width/2 + (display.width/2*display.angle);
-//                }
-//                PathAttribute { name: "rotAngle"; value: 90 * display.angle }
-//                PathAttribute { name: "scale"; value: 0.5 *(Math.pow(display.angle,2)+0.5)/3 }
-//            }
