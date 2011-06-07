@@ -30,7 +30,7 @@ Item {
 
     function trigger() {
         PathView.view.currentIndex = index
-        rapid.setActiveEngine(model.modelData)
+        rapid.setActiveElementByIndex(index)
     }
 
     Text {
@@ -45,7 +45,7 @@ Item {
         font.pixelSize: rapid.menuFontPixelSize
         font.family: "Nokia large"
         color: "white"
-        text: model.modelData.name
+        text: model.name
         horizontalAlignment: Text.AlignRight
         font.weight: Font.Normal
 

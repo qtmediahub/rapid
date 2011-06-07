@@ -111,7 +111,7 @@ Item {
             preferredHighlightEnd: 0.5
             highlightRangeMode: PathView.StrictlyEnforceRange
 
-            model: backend.advertizedEngines
+            model: rapid.rootMenuModel
             delegate: RootMenuListItem { }
         }
     }

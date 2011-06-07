@@ -21,58 +21,65 @@ import QtQuick 1.0
 import ActionMapper 1.0
 import "cursor.js" as Cursor
 
+import "rootmenumodelitem.js" as RootMenuModelItem
+import QMHPlugin 1.0
+
 FocusScope {
     id: rapid
 
-    width: 1024
-    height: 768
-
     property int additionalLeftMarginLess: 40
     property int additionalLeftMarginMore: 60
-
     property int menuFontPixelSize: 48
 
 
-    property variant selectedEngine
-    property variant selectedElement
-
     property variant qtcube
 
+    property variant musicEngine
+    property variant videoEngine
+    property variant pictureEngine
+
+    property variant selectedElement
+    property variant rootMenuModel: ListModel { }
+    property string themeResourcePath: runtime.skin.path + "/../confluence/3rdparty/skin.confluence"
 
     property QtObject audioItem
-    function takeOverAudio(item, engine) {
-        if(audioItem !== null && audioItem !== undefined && audioItem !== item)
+    function takeOverAudio(item) {
+        if(audioItem != item) {
             audioItem.stop()
-        audioItem = item
+            audioItem = item
 
-        if(engine !== null && engine !== undefined && engine !== selectedEngine)
-            setActiveEngine(engine)
+            setActiveElement(item)      // TODO: test if working with video-push (changing the from Music-Player die Video)
+        }
     }
 
-    function setActiveEngine(engine)
-    {
 
-        if(selectedEngine != engine)
-        {
-            if(selectedElement != "empty") // TODO confluce does this via states and setts "visible" there to make sure it's hidden again ... not sure about that
+    function setActiveElementByIndex(index) { setActiveElement(rootMenuModel.get(index).visualElement)  }
+    function setActiveElement(newElement) {
+        if(newElement !== selectedElement) {
+
+            if(selectedElement != "empty" && typeof(selectedElement) != "undefined")
                 selectedElement.state = "hidden"
-
-            selectedEngine = engine
-            selectedElement = engine.visualElement
-            var elementProperties = engine.visualElementProperties
-            for(var i = 0; i + 2 <= elementProperties.length; i += 2)
-                selectedElement[elementProperties[i]] = elementProperties[i+1]
+            newElement.state = "visible"
+            //selectedElement.forceActiveFocus()
+            selectedElement = newElement;
         }
 
-        //show(selectedElement) => in the end:
-        //selectedElement = element // hier schon gesetz
-        //state = "showingSelectedElement"
-        //        console.debug("en")
-
-        selectedElement.state = "visible"
-        selectedElement.forceActiveFocus()
-
         menu.state = "collapsed"
+    }
+
+
+    function createQmlObjectFromFile(file, properties) {
+        var qmlComponent = Qt.createComponent(file)
+        if (qmlComponent.status == Component.Ready) {
+            return qmlComponent.createObject(rapid, properties ? properties : {})
+        }
+        runtime.backend.log(qmlComponent.errorString())
+        return null
+    }
+
+    function addToRootMenu(obj, activationHandler) {
+        rootMenuModel.append(obj)
+        RootMenuModelItem.activationHandlers[rootMenuModel.count-1] = activationHandler
     }
 
 
@@ -122,77 +129,52 @@ FocusScope {
 
         Cursor.initialize()
 
-        var musicLoader = Qt.createComponent("Music.qml");
-        if (musicLoader.status == Component.Ready) {
-            /*musicWindow = */musicLoader.createObject(rapid)
-        }
-        else if (musicLoader.status == Component.Error) { console.log(musicLoader.errorString()) }
+        runtime.backend.loadEngines()
+        var engineNames = runtime.backend.loadedEngineNames()
 
-        var picturesLoader = Qt.createComponent("Pictures.qml");
-        if (picturesLoader.status == Component.Ready) {
-            /*picturesWindow = */picturesLoader.createObject(rapid)
-        }
-        else if (picturesLoader.status == Component.Error) { console.log(picturesLoader.errorString()) }
-
-        var videoLoader = Qt.createComponent("Video.qml");
-        if (videoLoader.status == Component.Ready) {
-            /*videoWindow = */videoLoader.createObject(rapid)
-        }
-        else if (videoLoader.status == Component.Error) { console.log(videoLoader.errorString()) }
-
-        var weatherLoader = Qt.createComponent("Weather.qml");
-        if (weatherLoader.status == Component.Ready) {
-            weatherLoader.createObject(rapid)
-        }
-        else if (weatherLoader.status == Component.Error) { console.log(weatherLoader.errorString()) }
-
-        var mapLoader = Qt.createComponent("OviMap.qml");
-        if (mapLoader.status == Component.Ready) {
-            mapLoader.createObject(rapid)
-        }
-        else if (mapLoader.status == Component.Error) { console.log(mapLoader.errorString()) }
-
-        var internetLoader = Qt.createComponent("Browser/BrowserApp.qml");
-        if (internetLoader.status == Component.Ready) {
-            internetLoader.createObject(rapid)
-        }
-        else if (internetLoader.status == Component.Error) { console.log(internetLoader.errorString()) }
-
-        var qticLoader = Qt.createComponent("qtic.qml");
-        if (qticLoader.status == Component.Ready) {
-            qticLoader.createObject(rapid)
-        }
-        else if (qticLoader.status == Component.Error) { console.log(qticLoader.errorString()) }
-
-        var camLoader = Qt.createComponent("CameraWindow.qml");
-        if (camLoader.status == Component.Ready) {
-            camLoader.createObject(rapid)
-        }
-        else if (camLoader.status == Component.Error) { console.log(camLoader.errorString()) }
-
-        var appsLoader = Qt.createComponent("Apps.qml");
-        if (appsLoader.status == Component.Ready) {
-            appsLoader.createObject(rapid)
-        }
-        else if (appsLoader.status == Component.Error) { console.log(appsLoader.errorString()) }
-
-        var tmLoader = Qt.createComponent("TerminalModeWindow.qml");
-        if (tmLoader.status == Component.Ready) {
-            tmLoader.createObject(rapid)
-        }
-        else if (tmLoader.status == Component.Error) { console.log(tmLoader.errorString()) }
-
-        var qtCubeLoader = Qt.createComponent(backend.resourcePath + "/misc/cube/cube.qml")
-        if (qtCubeLoader.status == Component.Ready) {
-            qtcube = qtCubeLoader.createObject(rapid)
-            qtcube.anchors.top = rapid.top
-            qtcube.anchors.right = rapid.right
-            qtcube.z = 9999999
-        } else if (qtCubeLoader.status == Component.Error) {
-            backend.log(qtCubeLoader.errorString())
+        if (engineNames.indexOf("music") != -1) {
+            musicEngine = runtime.backend.engine("music")
+            var musicWindow = createQmlObjectFromFile("Music.qml", { /*mediaEngine: musicEngine*/ });
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Music"), QMHPlugin.Music, musicWindow, musicEngine))
+            audioItem = musicWindow
         }
 
+        if (engineNames.indexOf("picture") != -1) {
+            pictureEngine = runtime.backend.engine("picture")
+            var pictureWindow = createQmlObjectFromFile("Pictures.qml", { /*mediaEngine: musicEngine*/ });
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Pictures"), QMHPlugin.Pictures, pictureWindow, pictureEngine))
+        }
 
+        if (engineNames.indexOf("video") != -1) {
+            videoEngine = runtime.backend.engine("video")
+            var videoWindow = createQmlObjectFromFile("Video.qml", { /*mediaEngine: musicEngine*/ });
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Video"), QMHPlugin.Video, videoWindow, videoEngine))
+        }
+
+        var weatherWindow = createQmlObjectFromFile("Weather.qml")
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Weather"), QMHPlugin.Weather, weatherWindow))
+
+        var mapWindow = createQmlObjectFromFile("OviMap.qml")
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Maps"), QMHPlugin.Map, mapWindow))
+
+        var camWindow = createQmlObjectFromFile("CameraWindow.qml")
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("RearView"), QMHPlugin.Application, camWindow))
+
+        var browserWindow = createQmlObjectFromFile("Browser/BrowserApp.qml")
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Browser"), QMHPlugin.Web, browserWindow))
+
+        var qticWindow = createQmlObjectFromFile("qtic.qml")
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Instrument"), QMHPlugin.Application, qticWindow))
+
+//        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Apps"), QMHPlugin.Application, createQmlObjectFromFile("Apps.qml")))
+//        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("TerminalMode"), QMHPlugin.Application, createQmlObjectFromFile("TerminalModeWindow.qml")))
+
+        qtcube =  createQmlObjectFromFile(runtime.backend.resourcePath + "/misc/cube/cube.qml")
+        qtcube.anchors.top = rapid.top
+        qtcube.anchors.right = rapid.right
+        qtcube.z = 9999999
+
+        setActiveElement(qticWindow)
         rapid.forceActiveFocus()
     }
 }
