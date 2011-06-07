@@ -120,6 +120,4 @@ Window {
             ScriptAction { script: urlInput.setVisible(false) }
         }
     ]
-
-    Engine { name: qsTr("Internet"); role: QMHPlugin.Web; visualElement: root }
 }
