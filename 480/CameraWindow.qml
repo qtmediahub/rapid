@@ -107,7 +107,7 @@ Window {
                 PathAttribute { name: "scale"; value: 0.3 }
             }
 
-            PropertyAnimation { target: directionPoints; property: "offset"; from: 0; to: 100; loops: Animation.Infinite; running: true; duration: 25000 }
+            PropertyAnimation { target: directionPoints; property: "offset"; from: 0; to: 100; loops: Animation.Infinite; running: root.state == "visible"; duration: 25000 }
         }
     }
 
