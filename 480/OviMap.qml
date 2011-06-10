@@ -110,17 +110,19 @@ Window {
     }
 
     Keys.onPressed: {
-        if (actionmap.eventMatch(event, ActionMapper.Right)) {
+        var action = runtime.actionMapper.mapKeyEventToAction(event)
+
+        if (action == ActionMapper.Right) {
             map.pan(100, 0)
-        } else if (actionmap.eventMatch(event, ActionMapper.Left)) {
+        } else if (action == ActionMapper.Left) {
             map.pan(-100, 0)
-        } else if (actionmap.eventMatch(event, ActionMapper.Up)) {
+        } else if (action == ActionMapper.Up) {
             map.pan(0, -100)
-        } else if (actionmap.eventMatch(event, ActionMapper.Down)) {
+        } else if (action == ActionMapper.Down) {
             map.pan(0, 100)
-        } else if (actionmap.eventMatch(event, ActionMapper.ContextualDown)) {
+        } else if (action == ActionMapper.ContextualDown) {
             map.zoomLevel = map.zoomLevel - 1
-        } else if (actionmap.eventMatch(event, ActionMapper.ContextualUp)) {
+        } else if (action == ActionMapper.ContextualUp) {
             map.zoomLevel = map.zoomLevel + 1
             event.accepted = true
         }

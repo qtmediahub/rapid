@@ -28,21 +28,22 @@ Window {
     Component {
         id: dot;
         Item {
-            transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: PathView.rotAngle}
+            id: dotItem;
+            transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: dotItem.PathView.rotAngle}
             Rectangle {
                 y: 0
-                x: display.carWidth/2 * PathView.scale* PathView.scale
+                x: display.carWidth/2 * dotItem.PathView.scale* dotItem.PathView.scale
                 smooth: true
                 height: 13; width: height; radius: height
-                scale: PathView.scale
+                scale: dotItem.PathView.scale
                 color: "green"; opacity: 0.99
             }
             Rectangle {
-                x: -display.carWidth/2 * PathView.scale* PathView.scale
+                x: -display.carWidth/2 * dotItem.PathView.scale* dotItem.PathView.scale
                 y: 0
                 smooth: true
                 height: 13; width: height; radius: height
-                scale: PathView.scale
+                scale: dotItem.PathView.scale
                 color: "green"; opacity: 0.99
             }
         }
@@ -127,17 +128,16 @@ Window {
     }
 
     Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
-        if (    actionmap.eventMatch(event, ActionMapper.Right) ||
-                actionmap.eventMatch(event, ActionMapper.Up)    ) {
+        var action = runtime.actionMapper.mapKeyEventToAction(event)
+        if (    action == ActionMapper.Right || action == ActionMapper.Up    ) {
             if(display.angle < 1)
                 display.angle+=0.05;
         }
-        else if(actionmap.eventMatch(event, ActionMapper.Left) ||
-                actionmap.eventMatch(event, ActionMapper.Down)  ) {
+        else if(action == ActionMapper.Left  || action == ActionMapper.Down  ) {
             if(display.angle > -1)
                 display.angle-=0.05;
         }
-        else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+        else if (action == ActionMapper.Enter) {
             display.showRealCam = !display.showRealCam
         }
     }

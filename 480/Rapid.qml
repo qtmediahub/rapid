@@ -60,10 +60,10 @@ FocusScope {
             if(selectedElement != "empty" && typeof(selectedElement) != "undefined")
                 selectedElement.state = "hidden"
             newElement.state = "visible"
-            //selectedElement.forceActiveFocus()
             selectedElement = newElement;
         }
 
+        selectedElement.forceActiveFocus()
         menu.state = "collapsed"
     }
 
@@ -99,27 +99,28 @@ FocusScope {
         }
     }
 
+
     Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
-        if (    actionmap.eventMatch(event, ActionMapper.Left) ||
-                actionmap.eventMatch(event, ActionMapper.Up)    ) {
-            if(menu.state == "extended") { menu.oneUp() }
+        var action = runtime.actionMapper.mapKeyEventToAction(event)
+        if (action == ActionMapper.Left ||
+            action == ActionMapper.Up) {
+            if (menu.state == "extended") { menu.oneUp() }
         }
-        else if(actionmap.eventMatch(event, ActionMapper.Right) ||
-                actionmap.eventMatch(event, ActionMapper.Down)  ) {
+        else if (action == ActionMapper.Right ||
+                 action == ActionMapper.Down) {
             if(menu.state == "extended") { menu.oneDown() }
         }
-        else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+        else if (action == ActionMapper.Enter) {
             if(menu.state == "extended") {
-                rapid.setActiveEngine(menu.getCurrent())
+                rapid.setActiveElementByIndex(menu.getCurrentIndex())
             }
         }
-        else if (actionmap.eventMatch(event, ActionMapper.Menu)) {
+        else if (action == ActionMapper.Menu) {
             if(!menu.state == "extended") {
                 rapid.forceActiveFocus()
                 rapid.focus = true
                 selectedElement.focus = false
             }
-
             menu.switchMenu()
         }
     }

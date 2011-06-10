@@ -29,7 +29,7 @@ Item {
 
 
     function trigger() {
-        PathView.view.currentIndex = index
+        menuItem.PathView.view.currentIndex = index
         rapid.setActiveElementByIndex(index)
     }
 
@@ -52,7 +52,7 @@ Item {
         states: [
             State {
                 name: 'isCurrentItem'
-                when: PathView.isCurrentItem
+                when: menuItem.PathView.isCurrentItem
                 PropertyChanges { target: entry; font.weight: Font.Bold; angle: 360; scale: 1.13 }
             }
         ]

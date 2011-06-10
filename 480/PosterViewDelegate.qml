@@ -4,22 +4,22 @@ import ActionMapper 1.0
 Item {
     id: delegateItem
     property variant itemdata : model
-    width: PathView.view.delegateWidth
-    height: PathView.view.delegateHeight
+    width: delegateItem.PathView.view.delegateWidth
+    height: delegateItem.PathView.view.delegateHeight
     clip: true
-    scale: PathView.scale ? PathView.scale : 1.0
-    opacity : PathView.opacity ? PathView.opacity : 1.0
-    z: PathView.z ? PathView.z : 1
+    scale: delegateItem.PathView.scale ? delegateItem.PathView.scale : 1.0
+    opacity : delegateItem.PathView.opacity ? delegateItem.PathView.opacity : 1.0
+    z: delegateItem.PathView.z ? delegateItem.PathView.z : 1
 
     transform: Rotation {
         axis { x: 0; y: 1; z: 0 }
         origin { x: width/2 }
-        angle: PathView.rotation ? PathView.rotation : 0
+        angle: delegateItem.PathView.rotation ? delegateItem.PathView.rotation : 0
     }
 
     PathView.onIsCurrentItemChanged: { // QTBUG-16347
-        if (PathView.isCurrentItem)
-            PathView.view.currentItem = delegateItem
+        if (delegateItem.PathView.isCurrentItem)
+            delegateItem.PathView.view.currentItem = delegateItem
     }
 
     property int frameMargin: 6
@@ -35,15 +35,15 @@ Item {
 
     function activate()
     {
-        var visualDataModel = PathView.view.model
+        var visualDataModel = delegateItem.PathView.view.model
         if (model.hasModelChildren) {
             visualDataModel.rootIndex = visualDataModel.modelIndex(index)
-            PathView.view.currentIndex = 0 // Not sure what this line does
-            PathView.view.rootIndexChanged() // Fire signals of aliases manually, QTBUG-14089
+            delegateItem.PathView.view.currentIndex = 0 // Not sure what this line does
+            delegateItem.PathView.view.rootIndexChanged() // Fire signals of aliases manually, QTBUG-14089
             visualDataModel.model.layoutChanged() // Workaround for QTBUG-16366
         } else {
-            PathView.view.currentIndex = index;
-            PathView.view.activated()
+            delegateItem.PathView.view.currentIndex = index;
+            delegateItem.PathView.view.activated()
         }
     }
 
@@ -54,7 +54,7 @@ Item {
 
         onClicked:
             if (mouse.button == Qt.LeftButton) {
-                PathView.view.clicked()
+                delegateItem.PathView.view.clicked()
                 delegateItem.activate()
             } else {
                 PathView.view.rightClicked(delegateItem.x + mouseX, delegateItem.y + mouseY)
@@ -62,6 +62,6 @@ Item {
     }
 
     Keys.onPressed:
-        runtime.actionmap.eventMatch(event, ActionMapper.Enter) ? delegateItem.activate() : undefined
+        (runtime.actionMapper.mapKeyEventToAction(event) == ActionMapper.Enter) ? delegateItem.activate() : undefined
 }
 

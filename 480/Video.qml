@@ -189,20 +189,24 @@ Window {
                 vplaying = false
         }
 
+
+        /* TODO: actionmap!!!!
         Keys.onSpacePressed: {
             vplaying ? video.pause() : video.play();
             vplaying = !vplaying;
         }
         Keys.onLeftPressed: video.position -= 5000
-        Keys.onRightPressed: video.position += 5000
+        Keys.onRightPressed: video.position += 5000*/
     }
 
     Keys.onPressed: {
-        if (actionmap.eventMatch(event, ActionMapper.Right) || actionmap.eventMatch(event, ActionMapper.Down)) {
+        var action = runtime.actionMapper.mapKeyEventToAction(event)
+
+        if (action == ActionMapper.Right || action == ActionMapper.Down) {
             posterView.decrementCurrentIndex()
-        } else if (actionmap.eventMatch(event, ActionMapper.Left) || actionmap.eventMatch(event, ActionMapper.Up)) {
+        } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
             posterView.incrementCurrentIndex()
-        } else if (actionmap.eventMatch(event, ActionMapper.Enter)) {
+        } else if (action == ActionMapper.Enter) {
             posterView.currentItem.activate()
         }
     }
