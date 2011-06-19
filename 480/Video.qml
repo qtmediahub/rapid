@@ -96,9 +96,10 @@ Window {
 
         Rectangle {
             property real scalefactor: 1.6
+            property real angle: -20
             id: videocontrol
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: -height*scalefactor
+            anchors.bottomMargin: 25
             anchors.horizontalCenter: parent.horizontalCenter
             width: 290
             height: 70
@@ -106,16 +107,15 @@ Window {
             radius: 12
             scale: scalefactor
 
+            transform: Rotation { origin.x: root.width; origin.y: root.height; axis { x: 0; y: 0; z: 1 } angle: videocontrol.angle }
+
             states: State {
                 name: "visible"
-                PropertyChanges {
-                    target: videocontrol.anchors
-                    bottomMargin: (videocontrol.height*videocontrol.scalefactor-videocontrol.height)/2
-                }
+                PropertyChanges { target: videocontrol; angle: 0 }
             }
 
             transitions: Transition {
-                NumberAnimation { property: "bottomMargin"; duration: 1000; easing.type: Easing.InOutQuad }
+                NumberAnimation { property: "angle"; duration: 500; easing.type: Easing.OutBounce }
             }
 
             Image {
@@ -181,22 +181,12 @@ Window {
                     }
                 }
             }
-
         }
 
         onStatusChanged: {
             if (status == Video.EndOfMedia)
                 vplaying = false
         }
-
-
-        /* TODO: actionmap!!!!
-        Keys.onSpacePressed: {
-            vplaying ? video.pause() : video.play();
-            vplaying = !vplaying;
-        }
-        Keys.onLeftPressed: video.position -= 5000
-        Keys.onRightPressed: video.position += 5000*/
     }
 
     Keys.onPressed: {
@@ -207,7 +197,13 @@ Window {
         } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
             posterView.incrementCurrentIndex()
         } else if (action == ActionMapper.Enter) {
-            posterView.currentItem.activate()
+            if (video.paused || video.playing) {
+                video.stop();
+                posterView.opacity = 1.0;
+                video.opacity = 0.0;
+            } else
+                posterView.currentItem.activate()
+
         } else if    (action == ActionMapper.MediaPlayPause) {
             if(video.paused)
                 video.play()
