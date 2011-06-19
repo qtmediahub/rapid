@@ -171,9 +171,11 @@ FocusScope {
 //        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("TerminalMode"), QMHPlugin.Application, createQmlObjectFromFile("TerminalModeWindow.qml")))
 
         qtcube =  createQmlObjectFromFile(runtime.backend.resourcePath + "/misc/cube/cube.qml")
-        qtcube.anchors.top = rapid.top
-        qtcube.anchors.right = rapid.right
-        qtcube.z = 9999999
+        if(qtcube != undefined) {
+            qtcube.anchors.top = rapid.top
+            qtcube.anchors.right = rapid.right
+            qtcube.z = 9999999
+        }
 
         setActiveElement(qticWindow)
         rapid.forceActiveFocus()
