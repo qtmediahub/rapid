@@ -87,11 +87,11 @@ Window {
         }
 
         MouseArea {
-             anchors.fill: parent
-             hoverEnabled: true
-             onPositionChanged: {
-                 videocontrol.state = "visible"
-             }
+            anchors.fill: parent
+            hoverEnabled: true
+            onPositionChanged: {
+                videocontrol.state = "visible"
+            }
         }
 
         Rectangle {
@@ -208,6 +208,11 @@ Window {
             posterView.incrementCurrentIndex()
         } else if (action == ActionMapper.Enter) {
             posterView.currentItem.activate()
+        } else if    (action == ActionMapper.MediaPlayPause) {
+            if(video.paused)
+                video.play()
+            else
+                video.pause()
         }
     }
 
