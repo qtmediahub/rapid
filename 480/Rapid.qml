@@ -29,7 +29,7 @@ FocusScope {
 
     property int additionalLeftMarginLess: 40
     property int additionalLeftMarginMore: 60
-    property int menuFontPixelSize: 48
+    property int menuFontPixelSize: 34
 
 
     property variant qtcube
@@ -165,7 +165,7 @@ FocusScope {
         rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Browser"), QMHPlugin.Web, browserWindow))
 
         var qticWindow = createQmlObjectFromFile("qtic.qml")
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Instrument"), QMHPlugin.Application, qticWindow))
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Cluster"), QMHPlugin.Application, qticWindow))
 
 //        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Apps"), QMHPlugin.Application, createQmlObjectFromFile("Apps.qml")))
 //        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("TerminalMode"), QMHPlugin.Application, createQmlObjectFromFile("TerminalModeWindow.qml")))

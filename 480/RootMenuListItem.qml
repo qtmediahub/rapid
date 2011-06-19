@@ -53,12 +53,12 @@ Item {
             State {
                 name: 'isCurrentItem'
                 when: menuItem.PathView.isCurrentItem
-                PropertyChanges { target: entry; font.weight: Font.Bold; angle: 360; scale: 1.13 }
+                PropertyChanges { target: entry; angle: 360; font.pixelSize: rapid.menuFontPixelSize * 2}
             }
         ]
         transitions: Transition {
             SequentialAnimation {
-                NumberAnimation { properties: "scale, angle"; duration: 300; easing.type: Easing.Linear }
+                NumberAnimation { properties: "angle, font.pixelSize"; duration: 500; easing.type: Easing.Linear }
             }
         }
     }
@@ -70,10 +70,4 @@ Item {
         opacity: 0.0
         anchors.fill: mr
     }
-//    Rectangle {
-//        id: testMouseArea2
-//        color: "yellow"
-//        opacity: 0.3
-//        anchors.fill: entry
-//    }
 }

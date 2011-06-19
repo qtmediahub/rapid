@@ -20,6 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import Qt 4.7
 import "qticcontent"
 import QMHPlugin 1.0
+import ActionMapper 1.0
 
 Window {
     id: root
@@ -115,6 +116,18 @@ Window {
             NumberAnimation { target: statusBar; property: "distanceBig";   from: 124982;    to: 144982;    duration: 12000000 }
             NumberAnimation { target: statusBar; property: "distanceSmall"; from:    133.82; to:  20133.82; duration: 12000000 }
         }
-
     }
+
+
+    Keys.onPressed: {
+        var action = runtime.actionMapper.mapKeyEventToAction(event)
+
+        if (action == ActionMapper.Right || action == ActionMapper.Down) {
+            gearBar.gear++;
+        } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
+            gearBar.gear--;
+        }
+    }
+
+
 }
