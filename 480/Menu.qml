@@ -26,6 +26,7 @@ Item {
     function oneUp() {          rootMenuList.decrementCurrentIndex();   }
     function oneDown() {        rootMenuList.incrementCurrentIndex();   }
     function getCurrentIndex() { return rootMenuList.currentIndex; }
+    function setCurrentIndex(index) { rootMenuList.currentIndex = index; }
 
 
     function switchMenu() {

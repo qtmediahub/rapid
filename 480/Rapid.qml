@@ -53,7 +53,10 @@ FocusScope {
     }
 
 
-    function setActiveElementByIndex(index) { setActiveElement(rootMenuModel.get(index).visualElement)  }
+    function setActiveElementByIndex(index) {
+        menu.setCurrentIndex(index)
+        setActiveElement(rootMenuModel.get(index).visualElement)
+    }
     function setActiveElement(newElement) {
         if(newElement !== selectedElement) {
 
@@ -102,12 +105,10 @@ FocusScope {
 
     Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
         var action = runtime.actionMapper.mapKeyEventToAction(event)
-        if (action == ActionMapper.Left ||
-            action == ActionMapper.Up) {
+        if (action == ActionMapper.Left || action == ActionMapper.Up) {
             if (menu.state == "extended") { menu.oneUp() }
         }
-        else if (action == ActionMapper.Right ||
-                 action == ActionMapper.Down) {
+        else if (action == ActionMapper.Right || action == ActionMapper.Down) {
             if(menu.state == "extended") { menu.oneDown() }
         }
         else if (action == ActionMapper.Enter) {
@@ -136,48 +137,58 @@ FocusScope {
         if (engineNames.indexOf("music") != -1) {
             musicEngine = runtime.backend.engine("music")
             var musicWindow = createQmlObjectFromFile("Music.qml", { /*mediaEngine: musicEngine*/ });
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Music"), QMHPlugin.Music, musicWindow, musicEngine))
-            audioItem = musicWindow
+            if(musicWindow != null) {
+                rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Music"), QMHPlugin.Music, musicWindow, musicEngine))
+                audioItem = musicWindow
+            }
         }
 
         if (engineNames.indexOf("picture") != -1) {
             pictureEngine = runtime.backend.engine("picture")
             var pictureWindow = createQmlObjectFromFile("Pictures.qml", { /*mediaEngine: musicEngine*/ });
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Pictures"), QMHPlugin.Pictures, pictureWindow, pictureEngine))
+            if(pictureWindow != null)
+                rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Pictures"), QMHPlugin.Pictures, pictureWindow, pictureEngine))
         }
 
         if (engineNames.indexOf("video") != -1) {
             videoEngine = runtime.backend.engine("video")
             var videoWindow = createQmlObjectFromFile("Video.qml", { /*mediaEngine: musicEngine*/ });
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Video"), QMHPlugin.Video, videoWindow, videoEngine))
+            if(videoWindow != null)
+                rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Video"), QMHPlugin.Video, videoWindow, videoEngine))
         }
 
         var weatherWindow = createQmlObjectFromFile("Weather.qml")
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Weather"), QMHPlugin.Weather, weatherWindow))
+        if(weatherWindow != null)
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Weather"), QMHPlugin.Weather, weatherWindow))
 
         var mapWindow = createQmlObjectFromFile("OviMap.qml")
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Maps"), QMHPlugin.Map, mapWindow))
+        if(mapWindow != null)
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Maps"), QMHPlugin.Map, mapWindow))
 
         var camWindow = createQmlObjectFromFile("CameraWindow.qml")
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("RearView"), QMHPlugin.Application, camWindow))
+        if(camWindow != null)
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("RearView"), QMHPlugin.Application, camWindow))
 
         var browserWindow = createQmlObjectFromFile("Browser/BrowserApp.qml")
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Browser"), QMHPlugin.Web, browserWindow))
+        if(browserWindow != null)
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Browser"), QMHPlugin.Web, browserWindow))
 
         var qticWindow = createQmlObjectFromFile("qtic.qml")
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Cluster"), QMHPlugin.Application, qticWindow))
+        if(qticWindow != null)
+            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Cluster"), QMHPlugin.Application, qticWindow))
 
 //        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Apps"), QMHPlugin.Application, createQmlObjectFromFile("Apps.qml")))
 //        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("TerminalMode"), QMHPlugin.Application, createQmlObjectFromFile("TerminalModeWindow.qml")))
 
         qtcube =  createQmlObjectFromFile(runtime.backend.resourcePath + "/misc/cube/cube.qml")
-        if(qtcube != undefined) {
+        if(qtcube != null) {
             qtcube.anchors.top = rapid.top
             qtcube.anchors.right = rapid.right
             qtcube.z = 9999999
         }
 
-        setActiveElement(qticWindow)
+
+        rapid.setActiveElementByIndex(rootMenuModel.count-1)
         rapid.forceActiveFocus()
     }
 }
