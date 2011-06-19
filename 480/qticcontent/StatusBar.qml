@@ -56,7 +56,7 @@ Rectangle {
 
      Text {
          anchors.left: parent.left
-         anchors.leftMargin: 10
+         anchors.leftMargin: 30
          anchors.verticalCenter: parent.verticalCenter
          id: speed
          text: distanceBig + " mi"
@@ -65,7 +65,7 @@ Rectangle {
 
      Text {
          anchors.left: parent.right
-         anchors.leftMargin: -80
+         anchors.leftMargin: -120
          anchors.verticalCenter: parent.verticalCenter
          id: rotation
          text: Math.round(distanceSmall*10)/10 + ( ((Math.round(distanceSmall*10)%10)==0) ? ".0" : "" ) + " mi"

@@ -123,9 +123,15 @@ Window {
         var action = runtime.actionMapper.mapKeyEventToAction(event)
 
         if (action == ActionMapper.Right || action == ActionMapper.Down) {
-            gearBar.gear++;
+            if (mainElement.gearSetter < 6)
+                mainElement.gearSetter++;
+            else
+                mainElement.gearSetter = -2;
         } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
-            gearBar.gear--;
+            if (mainElement.gearSetter > -2)
+                mainElement.gearSetter--;
+            else
+                mainElement.gearSetter = 6;
         }
     }
 

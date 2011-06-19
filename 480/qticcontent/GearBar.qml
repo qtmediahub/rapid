@@ -40,7 +40,7 @@ Item {
             PropertyChanges { target: gearRect; x: p.x - 4 }
         },
         State { when: gear == 0; name: "N"
-            PropertyChanges { target: gearRect; x: n.x - 3 }
+            PropertyChanges { target: gearRect; x: n.x - 2 }
         },
         State { when: gear == 1; name: "1"
             PropertyChanges { target: gearRect; x: g1.x - 4 }
@@ -61,13 +61,6 @@ Item {
             PropertyChanges { target: gearRect; x: g6.x - 4 }
         }
     ]
-
-    onGearChanged: {
-        if (gear > 6)
-            gear = -2;
-        else if (gear < -2)
-            gear = 6;
-    }
 
     transitions: [
         Transition { from: "*"; to: "*";
