@@ -266,6 +266,11 @@ Window {
             posterView.incrementCurrentIndex()
         } else if   (action == ActionMapper.Enter) {
             posterView.currentItem.activate()
+        } else if    (action == ActionMapper.MediaPlayPause) {
+            if(audio.paused)
+                audio.play()
+            else
+                audio.pause()
         }
     }
 
