@@ -53,7 +53,7 @@ Window {
 
     function mapIcon(name) {
         var i = name.lastIndexOf("/")+1;
-        var sn = "../../confluence/3rdparty/skin.confluence/media/weathericons/"+name.substr(i, name.length-i-4)+".png";
+        var sn = runtime.backend.resourcePath + "/misc/weathericons/"+name.substr(i, name.length-i-4)+".png";
         return sn;
     }
 
