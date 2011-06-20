@@ -43,31 +43,23 @@ Item {
         transform: Rotation { origin.x: entry.width/2.0; origin.y: entry.height/2.0; axis { x: 1; y: 0; z: 0 } angle: entry.angle }
 
         font.pixelSize: rapid.menuFontPixelSize
-        font.family: "Nokia large"
+//        font.family: "Nokia large"
         color: "white"
         text: model.name
         horizontalAlignment: Text.AlignRight
-        font.weight: Font.Normal
+        scale: 0.5
 
         states: [
             State {
                 name: 'isCurrentItem'
                 when: menuItem.PathView.isCurrentItem
-                PropertyChanges { target: entry; angle: 360; font.pixelSize: rapid.menuFontPixelSize * 2}
+                PropertyChanges { target: entry; angle: 360; scale: 0.9999}
             }
         ]
         transitions: Transition {
             SequentialAnimation {
-                NumberAnimation { properties: "angle, font.pixelSize"; duration: 500; easing.type: Easing.Linear }
+                NumberAnimation { properties: "angle, scale"; duration: 400; easing.type: Easing.Linear }
             }
         }
-    }
-
-
-    Rectangle {
-        id: testMouseArea
-        color: "blue"
-        opacity: 0.0
-        anchors.fill: mr
     }
 }

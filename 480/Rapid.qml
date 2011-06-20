@@ -29,7 +29,7 @@ FocusScope {
 
     property int additionalLeftMarginLess: 40
     property int additionalLeftMarginMore: 60
-    property int menuFontPixelSize: 34
+    property int menuFontPixelSize: 68
 
 
     property variant qtcube
