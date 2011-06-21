@@ -25,6 +25,8 @@ import ActionMapper 1.0
 Window {
     id: root
 
+    property bool zoomMode: false
+
     Map {
         id: map
         anchors.fill: parent
@@ -102,6 +104,14 @@ Window {
         }
     }
 
+    Image {
+        visible: root.zoomMode
+        source: runtime.backend.resourcePath + "/3rdparty/tango-icon-theme-0.8.90/256x256/actions/system-search.png"
+        anchors.centerIn: parent
+        opacity: 0.3
+    }
+
+
     function handleToolbarEvent(event) {
         if(event == "Street") { map.mapType = Map.StreetMap }
         else if (event == "Satellite") { map.mapType = Map.SatelliteMapDay }
@@ -112,19 +122,32 @@ Window {
     Keys.onPressed: {
         var action = runtime.actionMapper.mapKeyEventToAction(event)
 
-        if (action == ActionMapper.Right) {
-            map.pan(100, 0)
-        } else if (action == ActionMapper.Left) {
-            map.pan(-100, 0)
-        } else if (action == ActionMapper.Up) {
-            map.pan(0, -100)
-        } else if (action == ActionMapper.Down) {
-            map.pan(0, 100)
-        } else if (action == ActionMapper.ContextualDown) {
-            map.zoomLevel = map.zoomLevel - 1
-        } else if (action == ActionMapper.ContextualUp) {
-            map.zoomLevel = map.zoomLevel + 1
-            event.accepted = true
+        if (action == ActionMapper.Enter) {
+           zoomMode = !zoomMode
+        }
+        else  {
+            if(!zoomMode) {
+                if (action == ActionMapper.Right) {
+                    map.pan(100, 0)
+                } else if (action == ActionMapper.Left) {
+                    map.pan(-100, 0)
+                } else if (action == ActionMapper.Up) {
+                    map.pan(0, -100)
+                } else if (action == ActionMapper.Down) {
+                    map.pan(0, 100)
+                } else if (action == ActionMapper.ContextualDown) {
+                    map.zoomLevel = map.zoomLevel - 1
+                } else if (action == ActionMapper.ContextualUp) {
+                    map.zoomLevel = map.zoomLevel + 1
+                }
+            }
+            else {
+                if (action == ActionMapper.Down || action == ActionMapper.Left) {
+                    map.zoomLevel = map.zoomLevel - 1
+                } else if (action == ActionMapper.Up || action == ActionMapper.Right) {
+                    map.zoomLevel = map.zoomLevel + 1
+                }
+            }
         }
     }
 }
