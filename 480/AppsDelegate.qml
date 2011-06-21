@@ -2,7 +2,7 @@ import QtQuick 1.0
 
 Item {
 
-    id: cell
+    id: root
     clip: true
 
     property bool isFullScreen: false
@@ -18,38 +18,42 @@ Item {
     property alias childWidth: loader.width
     property alias childHeight: loader.height
 
+    property bool hasSelectFocus: (parent.focusRow == row && parent.focusColumn == column)
 
     function hijackedMouseClicked() {
-        if(cell.isFullScreen === false)
+        if(root.isFullScreen === false)
             console.debug("WARNING: hijackedMouseClicked(event) but app wasn't fullscreen! This is a bug!")
 
-        cell.isFullScreen = false
+        root.isFullScreen = false
     }
 
     states: State {
-        when: cell.isFullScreen; name: "fullScreen";
-        PropertyChanges { target: cell; x: 0; y: 0; z: 10; width: parent.width; height: parent.height }
-        PropertyChanges { target: rapid.qtcube; mouseAreaHijackItem: cell }
+        when: root.isFullScreen; name: "fullScreen";
+        PropertyChanges { target: root; x: 0; y: 0; z: 10; width: parent.width; height: parent.height }
+        PropertyChanges { target: rapid.qtcube; mouseAreaHijackItem: root }
     }
 
     transitions: [
         Transition { to: "fullScreen"
             SequentialAnimation {
-                PropertyAction { target: cell; properties: "z"; }
-                NumberAnimation { target: cell; properties: "x,y,width,height"; duration: 600; easing.type: Easing.OutBounce }
+                PropertyAction { target: root; properties: "z"; }
+                NumberAnimation { target: root; properties: "x,y,width,height"; duration: 600; easing.type: Easing.OutBounce }
             } },
         Transition { from: "fullScreen"
             SequentialAnimation {
-                NumberAnimation { target: cell; properties: "x,y,width,height"; duration: 600; easing.type: Easing.OutBounce }
-                PropertyAction { target: cell; properties: "z"; }
+                NumberAnimation { target: root; properties: "x,y,width,height"; duration: 600; easing.type: Easing.OutBounce }
+                PropertyAction { target: root; properties: "z"; }
             } }
     ]
 
     MouseArea {
         anchors.fill: parent;
-        onClicked: parent.isFullScreen = true
-        z: cell.isFullScreen ? 0 : 2
-        //enabled: !cell.isFullScreen <= don't do this, mousearea needed as not-able-to-click-through
+        onClicked: {
+            root.isFullScreen = true
+            root.parent.setFocusCoord(root.row, root.column)
+        }
+        z: root.isFullScreen ? 0 : 2
+        //enabled: !root.isFullScreen <= don't do this, mousearea needed as not-able-to-click-through
     }
 
     Item { id: outline;
@@ -57,14 +61,14 @@ Item {
         Rectangle {
             color: "black"
             border.color: "silver"
-            border.width: 2
+            border.width: root.hasSelectFocus ? 8 : 2
             anchors.fill: parent
             anchors.margins: 2
         }
         Rectangle {
             color: "transparent"
             border.color: "white"
-            border.width: 1
+            border.width: root.hasSelectFocus ? 4 : 1
             anchors.fill: parent
             anchors.margins: 7
         }
@@ -81,14 +85,20 @@ Item {
                 loader.source = ""
                 loader.sourceComponent = null
             }
-            else if(cell.source !== "")
-                loader.source = cell.source
-            else if(cell.sourceComponent !== null)
-                loader.sourceComponent = cell.sourceComponent
+            else if(root.source !== "")
+                loader.source = root.source
+            else if(root.sourceComponent !== null)
+                loader.sourceComponent = root.sourceComponent
         }
 
-        scale: Math.min(1, Math.min(cell.height*0.9/loader.height, cell.width*0.9/loader.width))
+        scale: Math.min(1, Math.min(root.height*0.9/loader.height, root.width*0.9/loader.width))
 
         onLoaded: { item.clip = true }
+    }
+
+
+    Component.onCompleted: {
+        parent.addItem(root, row, column)
+//        parent.delegateArray[parent.index(column, row)] = a1
     }
 }

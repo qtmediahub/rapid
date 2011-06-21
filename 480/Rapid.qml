@@ -177,7 +177,8 @@ FocusScope {
         if(qticWindow != null)
             rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Cluster"), QMHPlugin.Application, qticWindow))
 
-//        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Apps"), QMHPlugin.Application, createQmlObjectFromFile("Apps.qml")))
+
+        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Apps"), QMHPlugin.Application, createQmlObjectFromFile("Apps.qml")))
 //        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("TerminalMode"), QMHPlugin.Application, createQmlObjectFromFile("TerminalModeWindow.qml")))
 
         qtcube =  createQmlObjectFromFile(runtime.backend.resourcePath + "/misc/cube/cube.qml")

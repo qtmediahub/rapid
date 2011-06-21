@@ -22,21 +22,33 @@ import ActionMapper 1.0
 import AnimatedTiles 1.0
 import QMHPlugin 1.0
 
+import "cursor.js" as Script
+
 Window {
     id: root
     anchors.leftMargin: rapid.additionalLeftMarginMore
     clip: true
 
     // width // x
-    property int coloums: 3
+    property int columns: 3
     property int spacingW: 30
-    property int itemWidthWithSpace: (root.width)/root.coloums
+    property int itemWidthWithSpace: root.width/root.columns
 
     // height // y
     property int rows: 2
     property int spacingH: 30
     property int itemHeightWithSpace: root.height/root.rows
 
+    property int focusRow: 0
+    property int focusColumn: 0
+
+    function addItem(item, row, column) {
+        Script.addItem(item, row, column)
+    }
+    function setFocusCoord(row, column) {
+        root.focusRow = row
+        root.focusColumn = column
+    }
 
     AppsDelegate { id: a1;      column: 0; row: 0;
         childWidth: root.width; childHeight: root.height
@@ -45,25 +57,49 @@ Window {
 
     AppsDelegate { id: a2;      column: 1; row: 0;
         childWidth: root.width; childHeight: root.height
-        source: backend.resourcePath + "/widgets/samegame/samegame.qml"
+        source: runtime.backend.resourcePath + "/widgets/samegame/samegame.qml"
     }
 
     AppsDelegate { id: a3;      column: 2; row: 0;
-        source: backend.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
+        source: runtime.backend.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
 
     }
 
     AppsDelegate { id: b1;      column: 0; row: 1;
-        source: backend.resourcePath + "/widgets/qtflyingbus/main_800_480.qml"
+//        source: backend.resourcePath + "/widgets/qtflyingbus/main_800_480.qml"
     }
 
 
     AppsDelegate { id: b2;      column: 1; row: 1;
-        source: backend.resourcePath + "/widgets/Reversi/DesktopGame.qml"
+        source: runtime.backend.resourcePath + "/widgets/Reversi/DesktopGame.qml"
     }
 
     AppsDelegate { id: b3;      column: 2; row: 1;
-        source: backend.resourcePath + "/widgets/flickr/flickr.qml"
+        source: runtime.backend.resourcePath + "/widgets/flickr/flickr.qml"
+    }
+
+    Keys.onPressed: {
+        if (Script.getItem(root.focusRow, root.focusColumn).isFullScreen == true) {
+            if(event.key == Qt.Key_Return)  // Keys.onEnterPressed: { ... use as soon the new key-handle is in place
+            Script.getItem(root.focusRow, root.focusColumn).isFullScreen = false
+        }
+        else {
+            if (event.key == Qt.Key_Right)
+                focusColumn = (++focusColumn) % root.columns
+            if (event.key == Qt.Key_Down)
+                focusRow    = (++focusRow)    % root.rows
+            if (event.key == Qt.Key_Left) {
+                --focusColumn;
+                if(focusColumn<0) focusColumn = root.columns-1
+            }
+            if (event.key == Qt.Key_Up) {
+                --focusRow;
+                if(focusRow<0) focusRow = root.rows-1
+            }
+
+            if (event.key == Qt.Key_Return)  // Keys.onEnterPressed: { ... use as soon the new key-handle is in place
+                Script.getItem(root.focusRow, root.focusColumn).isFullScreen = true
+        }
     }
 }
 
