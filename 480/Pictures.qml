@@ -19,7 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import Playlist 1.0
-import ActionMapper 1.0
 
 Window {
     id: root
@@ -86,21 +85,22 @@ Window {
     }
 
     Keys.onPressed: {
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
-
-        if (action == ActionMapper.Right || action == ActionMapper.Down) {
+        if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
             posterView.decrementCurrentIndex()
             listView.decrementCurrentIndex()
-        } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
+            event.accepted = true
+        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
             posterView.incrementCurrentIndex()
             listView.incrementCurrentIndex()
-        } else if (action == ActionMapper.Enter) {
+            event.accepted = true
+        } else if (event.key == Qt.Key_Enter) {
             if(posterView.opacity)
                 posterView.currentItem.activate()
             else {
                 posterView.opacity = 1
                 listView.opacity = 0
             }
+            event.accepted = true
         }
     }
 

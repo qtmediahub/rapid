@@ -19,7 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
-import ActionMapper 1.0
 import Playlist 1.0
 import Media 1.0
 
@@ -190,13 +189,11 @@ Window {
     }
 
     Keys.onPressed: {
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
-
-        if (action == ActionMapper.Right || action == ActionMapper.Down) {
+        if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
             posterView.decrementCurrentIndex()
-        } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
+        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
             posterView.incrementCurrentIndex()
-        } else if (action == ActionMapper.Enter) {
+        } else if (event.key == Qt.Key_Enter) {
             if (video.paused || video.playing) {
                 video.stop();
                 posterView.opacity = 1.0;
@@ -204,7 +201,7 @@ Window {
             } else
                 posterView.currentItem.activate()
 
-        } else if    (action == ActionMapper.MediaPlayPause) {
+        } else if    (event.key == Qt.Key_MediaTogglePlayPause) {
             if(video.paused)
                 video.play()
             else

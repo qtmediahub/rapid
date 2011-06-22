@@ -19,7 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
-import ActionMapper 1.0
 import QMHPlugin 1.0
 
 Window {
@@ -127,18 +126,9 @@ Window {
             onClicked: { display.showRealCam = !display.showRealCam } }
     }
 
-    Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
-        if (    action == ActionMapper.Right || action == ActionMapper.Up    ) {
-            if(display.angle < 1)
-                display.angle+=0.05;
-        }
-        else if(action == ActionMapper.Left  || action == ActionMapper.Down  ) {
-            if(display.angle > -1)
-                display.angle-=0.05;
-        }
-        else if (action == ActionMapper.Enter) {
-            display.showRealCam = !display.showRealCam
-        }
-    }
+    Keys.onRightPressed: { if(display.angle <  1)  display.angle+=0.05; event.accepted = true }
+    Keys.onUpPressed:    { if(display.angle <  1)  display.angle+=0.05; event.accepted = true }
+    Keys.onLeftPressed:  { if(display.angle > -1)  display.angle-=0.05; event.accepted = true }
+    Keys.onDownPressed:  { if(display.angle > -1)  display.angle-=0.05; event.accepted = true }
+    Keys.onEnterPressed: { display.showRealCam = !display.showRealCam;  event.accepted = true }
 }

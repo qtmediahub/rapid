@@ -61,7 +61,6 @@ Item {
             }
     }
 
-    Keys.onPressed:
-        (runtime.actionMapper.mapKeyEventToAction(event) == ActionMapper.Enter) ? delegateItem.activate() : undefined
+    Keys.onEnterPressed: { delegateItem.activate(); event.accepted = true }
 }
 

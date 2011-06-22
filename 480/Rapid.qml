@@ -18,7 +18,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import ActionMapper 1.0
 import "cursor.js" as Cursor
 
 import "rootmenumodelitem.js" as RootMenuModelItem
@@ -103,28 +102,19 @@ FocusScope {
     }
 
 
-    Keys.onPressed: {// Left, Up, Right, Down, Forward, Back,
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
-        if (action == ActionMapper.Left || action == ActionMapper.Up) {
-            if (menu.state == "extended") { menu.oneUp() }
-        }
-        else if (action == ActionMapper.Right || action == ActionMapper.Down) {
-            if(menu.state == "extended") { menu.oneDown() }
-        }
-        else if (action == ActionMapper.Enter) {
-            if(menu.state == "extended") {
-                rapid.setActiveElementByIndex(menu.getCurrentIndex())
-            }
-        }
-        else if (action == ActionMapper.Menu) {
-            if(!menu.state == "extended") {
-                rapid.forceActiveFocus()
-                rapid.focus = true
-                selectedElement.focus = false
-            }
-            menu.switchMenu()
-        }
-    }
+    Keys.onLeftPressed:     if (menu.state == "extended") { menu.oneUp() }
+    Keys.onUpPressed:       if (menu.state == "extended") { menu.oneUp() }
+    Keys.onRightPressed:    if (menu.state == "extended") { menu.oneDown() }
+    Keys.onDownPressed:     if (menu.state == "extended") { menu.oneDown() }
+    Keys.onEnterPressed:    if (menu.state == "extended") {
+                                rapid.setActiveElementByIndex(menu.getCurrentIndex()) }
+    Keys.onMenuPressed: {   if(!menu.state == "extended") {
+                                rapid.forceActiveFocus()
+                                rapid.focus = true
+                                selectedElement.focus = false
+                            }
+                            menu.switchMenu()
+                        }
 
     Component.onCompleted: {
         selectedElement = "empty"

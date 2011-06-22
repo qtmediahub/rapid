@@ -18,7 +18,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import ActionMapper 1.0
 import AnimatedTiles 1.0
 import QMHPlugin 1.0
 
@@ -80,25 +79,35 @@ Window {
 
     Keys.onPressed: {
         if (Script.getItem(root.focusRow, root.focusColumn).isFullScreen == true) {
-            if(event.key == Qt.Key_Return)  // Keys.onEnterPressed: { ... use as soon the new key-handle is in place
-            Script.getItem(root.focusRow, root.focusColumn).isFullScreen = false
+            if(event.key == Qt.Key_Enter) {
+                Script.getItem(root.focusRow, root.focusColumn).isFullScreen = false
+                event.accepted = true
+            }
         }
         else {
-            if (event.key == Qt.Key_Right)
+            if (event.key == Qt.Key_Right) {
                 focusColumn = (++focusColumn) % root.columns
-            if (event.key == Qt.Key_Down)
+                event.accepted = true
+            }
+            if (event.key == Qt.Key_Down) {
                 focusRow    = (++focusRow)    % root.rows
+                event.accepted = true
+            }
             if (event.key == Qt.Key_Left) {
                 --focusColumn;
                 if(focusColumn<0) focusColumn = root.columns-1
+                event.accepted = true
             }
             if (event.key == Qt.Key_Up) {
                 --focusRow;
                 if(focusRow<0) focusRow = root.rows-1
+                event.accepted = true
             }
 
-            if (event.key == Qt.Key_Return)  // Keys.onEnterPressed: { ... use as soon the new key-handle is in place
+            if (event.key == Qt.Key_Enter) {
                 Script.getItem(root.focusRow, root.focusColumn).isFullScreen = true
+                event.accepted = true
+            }
         }
     }
 }

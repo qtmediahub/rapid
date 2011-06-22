@@ -20,7 +20,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import Playlist 1.0
 import QtMultimediaKit 1.1
-import ActionMapper 1.0
 import Media 1.0
 
 
@@ -257,20 +256,17 @@ Window {
         }
     }
 
+    Keys.onRightPressed: { posterView.decrementCurrentIndex();  event.accepted = true }
+    Keys.onDownPressed:  { posterView.decrementCurrentIndex();  event.accepted = true }
+    Keys.onLeftPressed:  { posterView.incrementCurrentIndex();  event.accepted = true }
+    Keys.onUpPressed:    { posterView.incrementCurrentIndex();  event.accepted = true }
+    Keys.onEnterPressed: { posterView.currentItem.activate();   event.accepted = true }
     Keys.onPressed: {
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
+        if (event.key == Qt.Key_MediaTogglePlayPause) {
+            if (audio.paused)   audio.play()
+            else                audio.pause()
 
-        if          (action == ActionMapper.Right || action == ActionMapper.Down) {
-            posterView.decrementCurrentIndex()
-        } else if   (action == ActionMapper.Left  || action == ActionMapper.Up) {
-            posterView.incrementCurrentIndex()
-        } else if   (action == ActionMapper.Enter) {
-            posterView.currentItem.activate()
-        } else if    (action == ActionMapper.MediaPlayPause) {
-            if(audio.paused)
-                audio.play()
-            else
-                audio.pause()
+            event.accepted = true
         }
     }
 

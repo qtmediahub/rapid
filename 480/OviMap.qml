@@ -20,7 +20,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import QtMobility.location 1.2
 import "../components"
-import ActionMapper 1.0
 
 Window {
     id: root
@@ -119,34 +118,37 @@ Window {
         else if (event == "ZoomIn") { map.zoomLevel = map.zoomLevel + 1 }
     }
 
-    Keys.onPressed: {
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
+    Keys.onEnterPressed: { zoomMode = !zoomMode;    event.accepted = true }
 
-        if (action == ActionMapper.Enter) {
-           zoomMode = !zoomMode
-        }
-        else  {
-            if(!zoomMode) {
-                if (action == ActionMapper.Right) {
-                    map.pan(100, 0)
-                } else if (action == ActionMapper.Left) {
-                    map.pan(-100, 0)
-                } else if (action == ActionMapper.Up) {
-                    map.pan(0, -100)
-                } else if (action == ActionMapper.Down) {
-                    map.pan(0, 100)
-                } else if (action == ActionMapper.ContextualDown) {
-                    map.zoomLevel = map.zoomLevel - 1
-                } else if (action == ActionMapper.ContextualUp) {
-                    map.zoomLevel = map.zoomLevel + 1
-                }
+    Keys.onPressed: {
+        if(!zoomMode) {
+            if (event.key == Qt.Key_Right) {
+                map.pan(100, 0)
+                event.accepted = true
+            } else if (event.key == Qt.Key_Left) {
+                map.pan(-100, 0)
+                event.accepted = true
+            } else if (event.key == Qt.Key_Up) {
+                map.pan(0, -100)
+                event.accepted = true
+            } else if (event.key == Qt.Key_Down) {
+                map.pan(0, 100)
+                event.accepted = true
+            } else if (event.key == Qt.Key_PageDown) {
+                map.zoomLevel = map.zoomLevel - 1
+                event.accepted = true
+            } else if (event.key == Qt.Key_PageUp) {
+                map.zoomLevel = map.zoomLevel + 1
+                event.accepted = true
             }
-            else {
-                if (action == ActionMapper.Down || action == ActionMapper.Left) {
-                    map.zoomLevel = map.zoomLevel - 1
-                } else if (action == ActionMapper.Up || action == ActionMapper.Right) {
-                    map.zoomLevel = map.zoomLevel + 1
-                }
+        }
+        else {
+            if (event.key == Qt.Key_Down || event.key == Qt.Key_Left || event.key == Qt.Key_PageDown) {
+                map.zoomLevel = map.zoomLevel - 1
+                event.accepted = true
+            } else if (event.key == Qt.Key_Up || event.key == Qt.Key_Right || event.key == Qt.Key_PageUp) {
+                map.zoomLevel = map.zoomLevel + 1
+                event.accepted = true
             }
         }
     }

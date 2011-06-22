@@ -20,7 +20,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import Qt 4.7
 import "qticcontent"
 import QMHPlugin 1.0
-import ActionMapper 1.0
 
 Window {
     id: root
@@ -120,14 +119,12 @@ Window {
 
 
     Keys.onPressed: {
-        var action = runtime.actionMapper.mapKeyEventToAction(event)
-
-        if (action == ActionMapper.Right || action == ActionMapper.Down) {
+        if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
             if (mainElement.gearSetter < 6)
                 mainElement.gearSetter++;
             else
                 mainElement.gearSetter = -2;
-        } else if (action == ActionMapper.Left || action == ActionMapper.Up) {
+        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
             if (mainElement.gearSetter > -2)
                 mainElement.gearSetter--;
             else
