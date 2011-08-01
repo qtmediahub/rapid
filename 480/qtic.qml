@@ -19,7 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import Qt 4.7
 import "qticcontent"
-import QMHPlugin 1.0
 
 Window {
     id: root

@@ -105,7 +105,7 @@ Window {
 
     Image {
         visible: root.zoomMode
-        source: runtime.backend.resourcePath + "/3rdparty/tango-icon-theme-0.8.90/256x256/actions/system-search.png"
+        source: "images/system-search.png"
         anchors.centerIn: parent
         opacity: 0.3
     }

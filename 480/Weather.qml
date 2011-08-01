@@ -18,7 +18,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import QMHPlugin 1.0
 
 Window {
     id: root
@@ -53,7 +52,7 @@ Window {
 
     function mapIcon(name) {
         var i = name.lastIndexOf("/")+1;
-        var sn = runtime.backend.resourcePath + "/misc/weathericons/"+name.substr(i, name.length-i-4)+".png";
+        var sn = "weathericons/"+name.substr(i, name.length-i-4)+".png";
         return sn;
     }
 

@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import Playlist 1.0
+import MediaModel 1.0
 
 Window {
     id: root
@@ -26,7 +27,7 @@ Window {
 
     function itemActivated(itemData) {
         var selectedIndex = imagePlayList.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat)
-        listView.currentIndex = imagePlayList.row(selectedIndex)
+        //listView.currentIndex = imagePlayList.row(selectedIndex) ###
         posterView.opacity = 0
         listView.opacity = 1
     }
@@ -36,10 +37,16 @@ Window {
         playMode: Playlist.Normal
     }
 
+    MediaModel {
+        id: pictureModel
+        mediaType: "picture"
+        structure: "year|month|filepath"
+    }
+
     PosterView {
         id: posterView
         anchors.fill: parent
-        posterModel: pictureEngine.model
+        posterModel: pictureModel
 
         onActivated: root.itemActivated(currentItem.itemdata)
     }
@@ -62,7 +69,7 @@ Window {
                 sourceSize.width: imageThumbnail.width > imageThumbnail.height ? parent.width : 0
                 sourceSize.height: imageThumbnail.width <= imageThumbnail.height ? parent.height : 0
                 anchors.fill: parent
-                source: filePath
+                source: model.filepath
                 asynchronous: true
             }
             Image {
@@ -102,9 +109,5 @@ Window {
             }
             event.accepted = true
         }
-    }
-
-    Component.onCompleted: {
-        pictureEngine.model.addSearchPath("/home/tsenyk/media/Pictures", "")
     }
 }

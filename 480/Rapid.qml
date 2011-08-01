@@ -21,15 +21,13 @@ import QtQuick 1.0
 import "cursor.js" as Cursor
 
 import "rootmenumodelitem.js" as RootMenuModelItem
-import QMHPlugin 1.0
 
 FocusScope {
     id: rapid
 
     property int additionalLeftMarginLess: 40
     property int additionalLeftMarginMore: 60
-    property int menuFontPixelSize: 68
-
+    property int menuFontPixelSize: 56
 
     property variant qtcube
 
@@ -39,9 +37,10 @@ FocusScope {
 
     property variant selectedElement
     property variant rootMenuModel: ListModel { }
-    property string themeResourcePath: runtime.skin.path + "/../confluence/3rdparty/skin.confluence"
+    property string themeResourcePath: runtime.skin.path + "/480/images"
 
     property QtObject audioItem
+
     function takeOverAudio(item) {
         if(audioItem != item) {
             audioItem.stop()
@@ -54,9 +53,15 @@ FocusScope {
 
     function setActiveElementByIndex(index) {
         menu.setCurrentIndex(index)
-        setActiveElement(rootMenuModel.get(index).visualElement)
+        setActiveElement(rootMenuModel.get(index).visualElement, rootMenuModel.get(index).url)
     }
-    function setActiveElement(newElement) {
+
+    function setActiveElement(newElement, url) {
+
+        if (newElement === undefined) {
+            newElement = createQmlObjectFromFile(url, rapid)
+        }
+
         if(newElement !== selectedElement) {
 
             if(selectedElement != "empty" && typeof(selectedElement) != "undefined")
@@ -70,10 +75,10 @@ FocusScope {
     }
 
 
-    function createQmlObjectFromFile(file, properties) {
+    function createQmlObjectFromFile(file) {
         var qmlComponent = Qt.createComponent(file)
         if (qmlComponent.status == Component.Ready) {
-            return qmlComponent.createObject(rapid, properties ? properties : {})
+            return qmlComponent.createObject(rapid)
         }
         runtime.backend.log(qmlComponent.errorString())
         return null
@@ -122,62 +127,52 @@ FocusScope {
         Cursor.initialize()
 
         runtime.backend.loadEngines()
-        var engineNames = runtime.backend.loadedEngineNames()
 
-        if (engineNames.indexOf("music") != -1) {
-            musicEngine = runtime.backend.engine("music")
-            var musicWindow = createQmlObjectFromFile("Music.qml", { /*mediaEngine: musicEngine*/ });
-            if(musicWindow != null) {
-                rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Music"), QMHPlugin.Music, musicWindow, musicEngine))
-                audioItem = musicWindow
-            }
-        }
+        //var musicWindow = createQmlObjectFromFile("Music.qml")
+        //rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
 
-        if (engineNames.indexOf("picture") != -1) {
-            pictureEngine = runtime.backend.engine("picture")
-            var pictureWindow = createQmlObjectFromFile("Pictures.qml", { /*mediaEngine: musicEngine*/ });
-            if(pictureWindow != null)
-                rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Pictures"), QMHPlugin.Pictures, pictureWindow, pictureEngine))
-        }
+        var pictureWindow = createQmlObjectFromFile("Pictures.qml");
+        rapid.rootMenuModel.append({name: qsTr("Pictures"), visualElement: pictureWindow, icon: themeResourcePath + "Picture.png", url: "Pictures.qml"})
 
-        if (engineNames.indexOf("video") != -1) {
-            videoEngine = runtime.backend.engine("video")
-            var videoWindow = createQmlObjectFromFile("Video.qml", { /*mediaEngine: musicEngine*/ });
-            if(videoWindow != null)
-                rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Video"), QMHPlugin.Video, videoWindow, videoEngine))
-        }
+        //var videoWindow = createQmlObjectFromFile("Video.qml")
+        //rapid.rootMenuModel.append({name: qsTr("Video"), visualElement: videoWindow, url: "Video.qml"})
 
         var weatherWindow = createQmlObjectFromFile("Weather.qml")
-        if(weatherWindow != null)
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Weather"), QMHPlugin.Weather, weatherWindow))
+        rapid.rootMenuModel.append({name: qsTr("Weather"), visualElement: weatherWindow, url: "Weather.qml"})
 
         var mapWindow = createQmlObjectFromFile("OviMap.qml")
-        if(mapWindow != null)
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Maps"), QMHPlugin.Map, mapWindow))
+        rapid.rootMenuModel.append({name: qsTr("Maps"), visualElement: mapWindow, url: "OviMap.qml"})
 
         var camWindow = createQmlObjectFromFile("CameraWindow.qml")
-        if(camWindow != null)
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("RearView"), QMHPlugin.Application, camWindow))
+        rapid.rootMenuModel.append({name: qsTr("RearView"), visualElement: camWindow, url: "CameraWindow.qml"})
 
         var browserWindow = createQmlObjectFromFile("Browser/BrowserApp.qml")
-        if(browserWindow != null)
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Browser"), QMHPlugin.Web, browserWindow))
+        rapid.rootMenuModel.append({name: qsTr("Browser"), visualElement: browserWindow, url: "Browser/BrowserApp.qml"})
 
-        var qticWindow = createQmlObjectFromFile("qtic.qml")
-        if(qticWindow != null)
-            rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Cluster"), QMHPlugin.Application, qticWindow))
-
-
-        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("Apps"), QMHPlugin.Application, createQmlObjectFromFile("Apps.qml")))
-//        rapid.addToRootMenu(new RootMenuModelItem.RootMenuModelItem(qsTr("TerminalMode"), QMHPlugin.Application, createQmlObjectFromFile("TerminalModeWindow.qml")))
-
-        qtcube =  createQmlObjectFromFile(runtime.backend.resourcePath + "/misc/cube/cube.qml")
+        qtcube =  createQmlObjectFromFile("Cube.qml")
         if(qtcube != null) {
             qtcube.anchors.top = rapid.top
             qtcube.anchors.right = rapid.right
             qtcube.z = 9999999
         }
 
+        var apps = runtime.backend.findApplications()
+        for (var idx in apps) {
+            var path = apps[idx]
+            if(path.indexOf('terminalmode') != -1) {
+                var manifest = createQmlObjectFromFile(path + "qmhmanifest.qml", rapid)
+                var uiType = manifest.ui.substring(manifest.ui.lastIndexOf('.')+1)
+                if (uiType == "qml") {
+                    rapid.rootMenuModel.append({ name: manifest.name, visualElement: undefined, icon: manifest.icon != undefined ? path + manifest.icon : themeResourcePath + "Application.png", url: path + manifest.ui })
+                    runtime.frontend.addImportPath(path + "imports")
+                } else {
+                    console.log('Application ' + manifest.name + ' at ' + path + ' with ui:' + manifest.ui + ' could not be loaded.')
+                }
+            }
+        }
+
+        var clusterWindow = createQmlObjectFromFile("qtic.qml")
+        rapid.rootMenuModel.append({name: qsTr("Cluster"), visualElement: clusterWindow, url: "qtic.qml"})
 
         rapid.setActiveElementByIndex(rootMenuModel.count-1)
         rapid.forceActiveFocus()
