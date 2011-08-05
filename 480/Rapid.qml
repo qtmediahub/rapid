@@ -126,8 +126,6 @@ FocusScope {
 
         Cursor.initialize()
 
-        runtime.backend.loadEngines()
-
         //var musicWindow = createQmlObjectFromFile("Music.qml")
         //rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
 
@@ -164,7 +162,7 @@ FocusScope {
                 var uiType = manifest.ui.substring(manifest.ui.lastIndexOf('.')+1)
                 if (uiType == "qml") {
                     rapid.rootMenuModel.append({ name: manifest.name, visualElement: undefined, icon: manifest.icon != undefined ? path + manifest.icon : themeResourcePath + "Application.png", url: path + manifest.ui })
-                    runtime.frontend.addImportPath(path + "imports")
+                    runtime.view.addImportPath(path + "imports")
                 } else {
                     console.log('Application ' + manifest.name + ' at ' + path + ' with ui:' + manifest.ui + ' could not be loaded.')
                 }

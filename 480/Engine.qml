@@ -22,6 +22,6 @@ import QMHPlugin 1.0
 
 QMHPlugin {
     id: engine
-    Component.onCompleted:
-        backend.advertizeEngine(engine)
+    // Component.onCompleted:
+        // skin.advertizeEngine(engine)
 }

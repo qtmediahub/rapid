@@ -56,25 +56,25 @@ Window {
 
     AppsDelegate { id: a2;      column: 1; row: 0;
         childWidth: root.width; childHeight: root.height
-        source: runtime.backend.resourcePath + "/widgets/samegame/samegame.qml"
+        source: runtime.skin.resourcePath + "/widgets/samegame/samegame.qml"
     }
 
     AppsDelegate { id: a3;      column: 2; row: 0;
-        source: runtime.backend.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
+        source: runtime.skin.resourcePath + "/widgets/qmlremotecontrol/qmlremotecontrol.qml"
 
     }
 
     AppsDelegate { id: b1;      column: 0; row: 1;
-//        source: backend.resourcePath + "/widgets/qtflyingbus/main_800_480.qml"
+//        source: skin.resourcePath + "/widgets/qtflyingbus/main_800_480.qml"
     }
 
 
     AppsDelegate { id: b2;      column: 1; row: 1;
-        source: runtime.backend.resourcePath + "/widgets/Reversi/DesktopGame.qml"
+        source: runtime.skin.resourcePath + "/widgets/Reversi/DesktopGame.qml"
     }
 
     AppsDelegate { id: b3;      column: 2; row: 1;
-        source: runtime.backend.resourcePath + "/widgets/flickr/flickr.qml"
+        source: runtime.skin.resourcePath + "/widgets/flickr/flickr.qml"
     }
 
     Keys.onPressed: {
