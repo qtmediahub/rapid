@@ -80,7 +80,7 @@ FocusScope {
         if (qmlComponent.status == Component.Ready) {
             return qmlComponent.createObject(rapid)
         }
-        runtime.backend.log(qmlComponent.errorString())
+        console.log(qmlComponent.errorString())
         return null
     }
 
@@ -147,6 +147,9 @@ FocusScope {
         var browserWindow = createQmlObjectFromFile("Browser/BrowserApp.qml")
         rapid.rootMenuModel.append({name: qsTr("Browser"), visualElement: browserWindow, url: "Browser/BrowserApp.qml"})
 
+        var car3D = createQmlObjectFromFile("Car3D/Car3DMain.qml")
+        rapid.rootMenuModel.append({name: qsTr("Car3D"), visualElement: car3D, url: "Car3D/Car3DMain.qml"})
+
         qtcube =  createQmlObjectFromFile("Cube.qml")
         if(qtcube != null) {
             qtcube.anchors.top = rapid.top
@@ -154,7 +157,7 @@ FocusScope {
             qtcube.z = 9999999
         }
 
-        var apps = runtime.backend.findApplications()
+        var apps = runtime.file.findApplications()
         for (var idx in apps) {
             var path = apps[idx]
             if(path.indexOf('terminalmode') != -1) {
