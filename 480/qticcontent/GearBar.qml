@@ -1,4 +1,4 @@
-import Qt 4.7
+import QtQuick 1.0
 
 Item {
     id: root
@@ -7,15 +7,15 @@ Item {
     width: (g6.x+g6.width) - r.x
     height: 30
 
-    Text { id: r;  text: "R"; font.pointSize: 14}
-    Text { id: p;  text: "P"; anchors.left:  r.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: n;  text: "N"; anchors.left:  p.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: g1; text: "1"; anchors.left:  n.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: g2; text: "2"; anchors.left: g1.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: g3; text: "3"; anchors.left: g2.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: g4; text: "4"; anchors.left: g3.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: g5; text: "5"; anchors.left: g4.right; anchors.leftMargin: 8; font.pointSize: 13 }
-    Text { id: g6; text: "6"; anchors.left: g5.right; anchors.leftMargin: 8; font.pointSize: 13 }
+    Text { id: r;  text: "R"; anchors.left:root.left; anchors.leftMargin: 0; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: p;  text: "P"; anchors.left:  r.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: n;  text: "N"; anchors.left:  p.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: g1; text: "1"; anchors.left:  n.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: g2; text: "2"; anchors.left: g1.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: g3; text: "3"; anchors.left: g2.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: g4; text: "4"; anchors.left: g3.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: g5; text: "5"; anchors.left: g4.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
+    Text { id: g6; text: "6"; anchors.left: g5.right; anchors.leftMargin: 8; font.pointSize: 14; anchors.verticalCenter: parent.verticalCenter }
 
     Rectangle {
         id: gearRect
@@ -25,8 +25,7 @@ Item {
         border.color: "white"
         border.width: 3
 
-        anchors.top: r.top
-        anchors.margins: 1
+        anchors.verticalCenter: parent.verticalCenter
 
         height: 23
         width: 20
@@ -34,13 +33,13 @@ Item {
 
     states: [
         State { when: gear == -2; name: "R"
-            PropertyChanges { target: gearRect; x: r.x - 3 }
+            PropertyChanges { target: gearRect; x: r.x - 4 }
         },
         State { when: gear == -1; name: "P"
             PropertyChanges { target: gearRect; x: p.x - 4 }
         },
         State { when: gear == 0; name: "N"
-            PropertyChanges { target: gearRect; x: n.x - 2 }
+            PropertyChanges { target: gearRect; x: n.x - 4 }
         },
         State { when: gear == 1; name: "1"
             PropertyChanges { target: gearRect; x: g1.x - 4 }
