@@ -36,7 +36,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 
 Rectangle {
     // some values (e.g. width, carImage.y) are kind of crap .. but are working, so keeping for now. TODO: cleanup :)

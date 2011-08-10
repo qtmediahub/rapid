@@ -36,7 +36,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 
 // TODO: rotation and speed are 99% the same "code" ... should be possible to get to 1 codebase
 
