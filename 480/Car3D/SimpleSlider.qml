@@ -13,7 +13,7 @@ Rectangle {
         GradientStop { position: 0.0; color: "gray" }
         GradientStop { position: 1.0; color: "white" }
     }
-    radius: 8; opacity: 0.7; smooth: true
+    radius: 8; opacity: 0.5; smooth: true
     Rectangle {
         id: slider
         x: root.width - 32; y: 1; width: 30; height: 24

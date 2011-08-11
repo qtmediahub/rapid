@@ -80,38 +80,49 @@ Window {
 
         Button {
             id: wheelBtn
-            text: "Check Wheel..."
-            textSize: 20
-            textAnchor.centerIn: wheelBtn
+            textItem.text: "Check Wheel"
+            textItem.font.pixelSize: 22
+            textItem.font.bold: true
+            textItem.anchors.verticalCenter: wheelBtn.verticalCenter
+            textItem.anchors.left: wheelBtn.left
             onClicked: { // TODO: do animation on all
             }
         }
 
         Button {
             id: frontLeftWheelBtn
-            text: "...FrontLeft"
-            textAnchor.right: frontLeftWheelBtn.right
+            textItem.text: "front left"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: frontLeftWheelBtn.verticalCenter
+            textItem.anchors.right: frontLeftWheelBtn.right
+
             onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftFrontWheel; car.blinkWheel(0) }
         }
 
         Button {
             id: frontRightWheelBtn
-            text: "...FrontRight"
-            textAnchor.right: frontRightWheelBtn.right
+            textItem.text: "front right"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: frontRightWheelBtn.verticalCenter
+            textItem.anchors.right: frontRightWheelBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorRightFrontWheel; car.blinkWheel(1) }
         }
 
         Button {
             id: rearLeftWheelBtn
-            text: "...RearLeft"
-            textAnchor.right: rearLeftWheelBtn.right
+            textItem.text: "rear left"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: rearLeftWheelBtn.verticalCenter
+            textItem.anchors.right: rearLeftWheelBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftRearWheel; car.blinkWheel(2) }
         }
 
         Button {
             id: rearRightWheelBtn
-            text: "...RearRight"
-            textAnchor.right: rearRightWheelBtn.right
+            textItem.text: "rear right"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: rearRightWheelBtn.verticalCenter
+            textItem.anchors.right: rearRightWheelBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorRightRearWheel; car.blinkWheel(3) }
         }
         Item { id: spacer1; height: 3; width: 1 }
@@ -119,38 +130,48 @@ Window {
 
         Button {
             id: doorBtn
-            text: "Check Door..."
-            textSize: 20
-            textAnchor.centerIn: doorBtn
+            textItem.text: "Check Door"
+            textItem.font.pixelSize: 22
+            textItem.font.bold: true
+            textItem.anchors.verticalCenter: doorBtn.verticalCenter
+            textItem.anchors.left: doorBtn.left
             onClicked: { // TODO: do animation on all
             }
         }
 
         Button {
             id: frontLeftDoorBtn
-            text: "...FrontLeft"
-            textAnchor.right: frontLeftDoorBtn.right
+            textItem.text: "front left"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: frontLeftDoorBtn.verticalCenter
+            textItem.anchors.right: frontLeftDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(0) }
         }
 
         Button {
             id: frontRightDoorBtn
-            text: "...FrontRight"
-            textAnchor.right: frontRightDoorBtn.right
+            textItem.text: "front right"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: frontRightDoorBtn.verticalCenter
+            textItem.anchors.right: frontRightDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(1) }
         }
 
         Button {
             id: rearLeftDoorBtn
-            text: "...RearLeft"
-            textAnchor.right: rearLeftDoorBtn.right
+            textItem.text: "rear left"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: rearLeftDoorBtn.verticalCenter
+            textItem.anchors.right: rearLeftDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(2) }
         }
 
         Button {
             id: rearRightDoorBtn
-            text: "...RearRight"
-            textAnchor.right: rearRightDoorBtn.right
+            textItem.text: "rear right"
+            textItem.font.pixelSize: 20
+            textItem.anchors.verticalCenter: rearRightDoorBtn.verticalCenter
+            textItem.anchors.right: rearRightDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(3) }
         }
         Item { id: spacer2; height: 3; width: 1 }
@@ -158,8 +179,11 @@ Window {
 
         Button {
             id: normal
-            text: "Reset"
-            textAnchor.centerIn: normal
+            textItem.text: "Reset"
+            textItem.font.pixelSize: 22
+            textItem.font.bold: true
+            textItem.anchors.verticalCenter: normal.verticalCenter
+            textItem.anchors.left: normal.left
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.stopAnimation() }
         }
 
