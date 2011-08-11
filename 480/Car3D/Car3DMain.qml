@@ -24,13 +24,13 @@ import "../"
 
 Window {
     id: root
-//    anchors.leftMargin: rapid.additionalLeftMarginLess
 
     Viewport {
         id: view
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         blending: true
+
+        navigation: false
 
         Light {
             id: l1
@@ -64,90 +64,118 @@ Window {
 
         Car3D {
             id: car
+            leftFrontGlassOpeningDegree: leftFrontGlassSlider.value
+            leftRearGlassOpeningDegree: leftRearGlassSlider.value
+            rightFrontGlassOpeningDegree: rightFrontGlassSlider.value
+            rightRearGlassOpeningDegree: rightRearGlassSlider.value
         }
     }
 
-    Rectangle {
-        id: controls
-        width:  200
-        height: 200
-        anchors.top: parent.top
+    Column {
+        id: checkButtonColumn
+        anchors.bottom: parent.bottom
         anchors.right: parent.right
-        color:  "transparent"
+        anchors.margins: 2
+        spacing:  2
 
-        Column {
-            y: 10
-            spacing:  10
-
-            Button {
-                id: wheelBtn
-                text: "Check Wheel..."
-                onClicked: { // TODO: do animation on all
-                }
-            }
-
-            Button {
-                id: frontLeftWheelBtn
-                text: "...FrontLeft"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftFrontWheel; car.blinkWheel(0) }
-            }
-
-            Button {
-                id: frontRightWheelBtn
-                text: "...FrontRight"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorRightFrontWheel; car.blinkWheel(1) }
-            }
-
-            Button {
-                id: rearLeftWheelBtn
-                text: "...RearLeft"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftRearWheel; car.blinkWheel(2) }
-            }
-
-            Button {
-                id: rearRightWheelBtn
-                text: "...RearRight"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorRightRearWheel; car.blinkWheel(3) }
-            }
-
-
-            Button {
-                id: doorBtn
-                text: "Check Door..."
-                onClicked: { // TODO: do animation on all
-                }
-            }
-
-            Button {
-                id: frontLeftDoorBtn
-                text: "...FrontLeft"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(0) }
-            }
-
-            Button {
-                id: frontRightDoorBtn
-                text: "...FrontRight"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(1) }
-            }
-
-            Button {
-                id: rearLeftDoorBtn
-                text: "...RearLeft"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(2) }
-            }
-
-            Button {
-                id: rearRightDoorBtn
-                text: "...RearRight"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(3) }
-            }
-
-
-            Button {
-                id: normal
-                text: "Reset Camera"
-                onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.stopAnimation() }
+        Button {
+            id: wheelBtn
+            text: "Check Wheel..."
+            textSize: 20
+            textAnchor.centerIn: wheelBtn
+            onClicked: { // TODO: do animation on all
             }
         }
+
+        Button {
+            id: frontLeftWheelBtn
+            text: "...FrontLeft"
+            textAnchor.right: frontLeftWheelBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftFrontWheel; car.blinkWheel(0) }
+        }
+
+        Button {
+            id: frontRightWheelBtn
+            text: "...FrontRight"
+            textAnchor.right: frontRightWheelBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorRightFrontWheel; car.blinkWheel(1) }
+        }
+
+        Button {
+            id: rearLeftWheelBtn
+            text: "...RearLeft"
+            textAnchor.right: rearLeftWheelBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftRearWheel; car.blinkWheel(2) }
+        }
+
+        Button {
+            id: rearRightWheelBtn
+            text: "...RearRight"
+            textAnchor.right: rearRightWheelBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorRightRearWheel; car.blinkWheel(3) }
+        }
+        Item { id: spacer1; height: 3; width: 1 }
+
+
+        Button {
+            id: doorBtn
+            text: "Check Door..."
+            textSize: 20
+            textAnchor.centerIn: doorBtn
+            onClicked: { // TODO: do animation on all
+            }
+        }
+
+        Button {
+            id: frontLeftDoorBtn
+            text: "...FrontLeft"
+            textAnchor.right: frontLeftDoorBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(0) }
+        }
+
+        Button {
+            id: frontRightDoorBtn
+            text: "...FrontRight"
+            textAnchor.right: frontRightDoorBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(1) }
+        }
+
+        Button {
+            id: rearLeftDoorBtn
+            text: "...RearLeft"
+            textAnchor.right: rearLeftDoorBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(2) }
+        }
+
+        Button {
+            id: rearRightDoorBtn
+            text: "...RearRight"
+            textAnchor.right: rearRightDoorBtn.right
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(3) }
+        }
+        Item { id: spacer2; height: 3; width: 1 }
+
+
+        Button {
+            id: normal
+            text: "Reset"
+            textAnchor.centerIn: normal
+            onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.stopAnimation() }
+        }
+
+
+
+    }
+
+    Column {
+        anchors.bottom: parent.bottom
+        anchors.right: checkButtonColumn.left
+        anchors.margins: 2
+        spacing:  2
+
+        SimpleSlider { id: leftFrontGlassSlider }
+        SimpleSlider { id: rightFrontGlassSlider }
+        SimpleSlider { id: leftRearGlassSlider }
+        SimpleSlider { id: rightRearGlassSlider }
     }
 }

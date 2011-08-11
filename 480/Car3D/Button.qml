@@ -25,14 +25,16 @@ Rectangle {
     signal clicked
 
     property alias text: buttonText.text
+    property alias textSize: buttonText.font.pixelSize
+    property alias textAnchor: buttonText.anchors
 
-    x: 10
+//    anchors.left: parent.left
     width: 180
     height:  30
     color:  "#456789"
     radius: 5
 
-    Text { id: buttonText; anchors.centerIn: parent; font.family: "Arial"; font.pixelSize: 24; color: "#ffffff"}
+    Text { id: buttonText; anchors.margins: 10;  font.family: "Arial"; font.pixelSize: 23; color: "#ffffff"}
 
     MouseArea { anchors.fill: parent; onClicked: root.clicked() }
 }

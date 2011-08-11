@@ -33,6 +33,11 @@ Item3D {
     pretransform: Translation3D{ translate: Qt.vector3d(0.76, -1.44, -0.02) } // move center of car (between driver and shotgun) to center of world (0,0,0)
 
 
+    property real leftFrontGlassOpeningDegree:  0.0
+    property real rightFrontGlassOpeningDegree: 0.0
+    property real leftRearGlassOpeningDegree:   0.0
+    property real rightRearGlassOpeningDegree:  0.0
+
 
     // ------------------ Functions
     Item { id: animCont
@@ -96,12 +101,13 @@ Item3D {
 
     Item3D { mesh: meshes.glass_back;                   effect: glass; }
     Item3D { mesh: meshes.glass_front;                  effect: glass; }
-    Item3D { mesh: meshes.glass_left_front;             effect: glass;          transform: leftFrontDoorRotation  }
-    Item3D { mesh: meshes.glass_left_rear_big;          effect: glass;          transform: leftRearDoorRotation   }
+    Item3D { mesh: meshes.glass_left_front;             effect: glass;          transform: [leftFrontDoorRotation, leftFrontGlassOpeningTranslation]  }
+    Item3D { mesh: meshes.glass_left_rear_big;          effect: glass;          transform: [leftRearDoorRotation, leftRearGlassOpeningTranslation]   }
     Item3D { mesh: meshes.glass_left_rear_small;        effect: glass;          transform: leftRearDoorRotation   }
-    Item3D { mesh: meshes.glass_right_front;            effect: glass;          transform: rightFrontDoorRotation }
-    Item3D { mesh: meshes.glass_right_rear_big;         effect: glass;          transform: rightRearDoorRotation  }
+    Item3D { mesh: meshes.glass_right_front;            effect: glass;          transform: [rightFrontDoorRotation, rightFrontGlassOpeningTranslation] }
+    Item3D { mesh: meshes.glass_right_rear_big;         effect: glass;          transform: [rightRearDoorRotation, rightRearGlassOpeningTranslation]  }
     Item3D { mesh: meshes.glass_right_rear_small;       effect: glass;          transform: rightRearDoorRotation  }
+
 
     Item3D { mesh: meshes.headlight_left_back; }
     Item3D { mesh: meshes.headlight_left_front; }
@@ -209,4 +215,10 @@ Item3D {
         NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200; /*easing.type: Easing.OutBounce*/}
         NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200; /*easing.type: Easing.OutCubic*/}
         NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200; /*easing.type: Easing.OutCubic*/}    }
+
+
+    Translation3D {id: leftFrontGlassOpeningTranslation;  translate: Qt.vector3d(0, -1*leftFrontGlassOpeningDegree, 0) }
+    Translation3D {id: rightFrontGlassOpeningTranslation; translate: Qt.vector3d(0, -1*rightFrontGlassOpeningDegree, 0) }
+    Translation3D {id: leftRearGlassOpeningTranslation;   translate: Qt.vector3d(0, -1*leftRearGlassOpeningDegree, 0) }
+    Translation3D {id: rightRearGlassOpeningTranslation;  translate: Qt.vector3d(0, -1*rightRearGlassOpeningDegree, 0) }
 }
