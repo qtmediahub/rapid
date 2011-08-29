@@ -17,30 +17,31 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ****************************************************************************/
 
-import QtQuick 1.0
-import Playlist 1.0
+import QtQuick 1.1
 import MediaModel 1.0
 
 Window {
     id: root
     anchors.leftMargin: rapid.additionalLeftMarginMore
 
-    function itemActivated(itemData) {
-        var selectedIndex = imagePlayList.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat)
-        //listView.currentIndex = imagePlayList.row(selectedIndex) ###
-        posterView.opacity = 0
-        listView.opacity = 1
-    }
+    function itemActivated() {
+        if(posterView.opacity != 0) {
+            listView.currentIndex = posterView.currentIndex
+            posterView.opacity = 0
+            listView.opacity = 1
+        }
+        else {
+            posterView.currentIndex = listView.currentIndex
+            posterView.opacity = 1
+            listView.opacity = 0
 
-    Playlist {
-        id: imagePlayList
-        playMode: Playlist.Normal
+        }
     }
 
     MediaModel {
         id: pictureModel
         mediaType: "picture"
-        structure: "year|month|filepath"
+        structure: "title"
     }
 
     PosterView {
@@ -48,7 +49,7 @@ Window {
         anchors.fill: parent
         posterModel: pictureModel
 
-        onActivated: root.itemActivated(currentItem.itemdata)
+        onActivated: root.itemActivated()
     }
 
     ListView {
@@ -58,13 +59,16 @@ Window {
         orientation: ListView.Horizontal
         snapMode: ListView.SnapToItem
         highlightRangeMode: ListView.StrictlyEnforceRange
-        highlightMoveSpeed: 1500
-        model: imagePlayList
+        highlightMoveSpeed: opacity < 1 ? 99999999 : 1500
+        keyNavigationWraps: true
+
+        model: pictureModel
         delegate: Item {
             width: listView.width
             height: listView.height
             Image {
                 id: image
+                cache: false
                 fillMode: Image.PreserveAspectFit
                 sourceSize.width: imageThumbnail.width > imageThumbnail.height ? parent.width : 0
                 sourceSize.height: imageThumbnail.width <= imageThumbnail.height ? parent.height : 0
@@ -84,29 +88,28 @@ Window {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                posterView.currentIndex = listView.currentIndex
-                posterView.opacity = 1
-                listView.opacity = 0
+                root.itemActivated()
             }
         }
     }
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
-            posterView.decrementCurrentIndex()
-            listView.decrementCurrentIndex()
+            if(posterView.opacity)
+                posterView.decrementCurrentIndex()
+            else
+                listView.decrementCurrentIndex()
+
             event.accepted = true
         } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
-            posterView.incrementCurrentIndex()
-            listView.incrementCurrentIndex()
+            if(posterView.opacity)
+                posterView.incrementCurrentIndex()
+            else
+                listView.incrementCurrentIndex()
+
             event.accepted = true
         } else if (event.key == Qt.Key_Enter) {
-            if(posterView.opacity)
-                posterView.currentItem.activate()
-            else {
-                posterView.opacity = 1
-                listView.opacity = 0
-            }
+            root.itemActivated()
             event.accepted = true
         }
     }
