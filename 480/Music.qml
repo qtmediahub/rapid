@@ -19,227 +19,32 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import Playlist 1.0
+import MediaModel 1.0
 import QtMultimediaKit 1.1
-import Media 1.0
-
 
 Window {
     id: root
     anchors.leftMargin: rapid.additionalLeftMarginLess
 
-    property variant currentIdx
-
-    function ms2string(ms)
-    {
-        var ret = "";
-
-        if (ms <= 0)
-            return "00:00";
-
-        var h = (ms/(1000*60*60)).toFixed(0);
-        var m = ((ms%(1000*60*60))/(1000*60)).toFixed(0);
-        var s = (((ms%(1000*60*60))%(1000*60))/1000).toFixed(0);
-
-        if (h >= 1) {
-            ret += h < 10 ? "0" + h : h + "";
-            ret += ":";
-        }
-
-        ret += m < 10 ? "0" + m : m + "";
-        ret += ":";
-        ret += s < 10 ? "0" + s : s + "";
-
-        return ret;
-    }
-
-    function artistAndTitle(artist, title) {
-        if(!artist)
-            artist = "Unknown Artist"
-        if(!title)
-            title = "Unknown Album"
-        return artist+" - "+title
-    }
-
-    function itemActivated(itemData) {
-        if(audio.playing)
-            audio.stop()
-        currentIdx = musicPlayList.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat)
-        audio.source = itemData.filePath
-        audio.play()
-    }
-
     function playNext() {
-        playIndex(musicPlayList.playNextIndex(currentIdx));
+        mediaListView.incrementCurrentIndex()
+        playCurrentIndex()
     }
 
     function playPrevious() {
-        playIndex(musicPlayList.playPreviousIndex(currentIdx));
+        mediaListView.decrementCurrentIndex()
+        playCurrentIndex()
     }
 
-    function playIndex(idx) {
+    function playCurrentIndex() {
         audio.stop();
-        currentIdx = idx
-        audio.source = musicPlayList.data(idx, Media.FilePathRole)
+        audio.source =  mediaListView.currentItem.itemdata.filepath
         audio.play();
-        posterView.currentIndex = musicPlayList.row(idx)+1;
     }
 
     function stop() {
         audio.stop();
-    }
-
-    Playlist {
-        id: musicPlayList
-        playMode: Playlist.Normal
-    }
-
-    PosterView {
-        id: posterView
-        anchors.fill: parent
-        posterModel: musicEngine.model
-        style: "coverFlood"
-
-        onActivated: root.itemActivated(currentItem.itemdata)
-    }
-
-    Text {
-        id: artistText
-        anchors.top: audiocontrol.top
-        anchors.topMargin: -150
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width/2.0
-        wrapMode: Text.WordWrap
-        horizontalAlignment: Text.AlignHCenter
-        color: "white"
-        text: posterView.currentItem ? posterView.currentItem.itemdata.display : "Artist"
-        font.pointSize: 24
-    }
-
-    Rectangle {
-        id: audiocontrol
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 10
-        height: 150
-        color: "#202020"
-        radius: 12
-
-        Text {
-            id: title
-            text: audio.playing ? audio.metaData.title ? audio.metaData.title : qsTr("Unknown Title") : qsTr("Title")
-            color: "white"
-            font.pointSize: 20
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.margins: 10
-        }
-
-        Text {
-            id: artistitle
-            text: audio.playing ? artistAndTitle(audio.metaData.albumArtist, audio.metaData.albumTitle) : qsTr("Album")
-            color: "lightgrey"
-            font.pointSize: 14
-            anchors.left: parent.left
-            anchors.top: title.bottom
-            anchors.margins: 10
-        }
-
-        Text {
-            text: audio.playing ? ms2string(audio.position) + " / " + ms2string(audio.duration) : "00:00 / 00:00"
-            color: "white"
-            font.pointSize: 14
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.margins: 10
-        }
-
-        Row {
-            id: controls
-
-            anchors.top: parent.top
-            anchors.right: parent.right
-
-            property int childWidth: 100
-            property int childHeight: 100
-
-            Image {
-                id: vcrewind
-                source: "./images/OSDRewindFO.png"
-                width: parent.childWidth
-                height: parent.childHeight
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: playPrevious()
-                }
-            }
-
-            Image {
-                id: vcstop
-                source: "./images/OSDStopFO.png"
-                width: parent.childWidth
-                height: parent.childHeight
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: audio.stop();
-                }
-            }
-
-            Image {
-                id: vcpause
-                source: audio.playing && !audio.paused ? "./images/OSDPauseFO.png" : "./images/OSDPlayFO.png"
-                width: parent.childWidth
-                height: parent.childHeight
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: audio.playing && !audio.paused ? audio.pause() : audio.play()
-                }
-            }
-
-            Image {
-                id: vcforward
-                source: "./images/OSDForwardFO.png"
-                width: parent.childWidth
-                height: parent.childHeight
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: playNext()
-                }
-            }
-        }
-
-        Rectangle {
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.bottomMargin: 15
-            anchors.leftMargin: 10
-            height: 25
-            width: parent.width-160
-            color: "black"
-            radius: 4
-
-            BorderImage {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.margins: 2
-                height: 25
-                width: audio.position/audio.duration*(parent.width-4)
-                border.left: 10; border.top: 10
-                border.right: 10; border.bottom: 10
-                source: "./images/ScrollBarV_bar_focus.png"
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onReleased: {
-                    audio.position = mouse.x/parent.width*audio.duration
-                }
-            }
-        }
+        mediaListView.currentIndex = -1 // Is this right?
     }
 
     Audio {
@@ -256,21 +61,157 @@ Window {
         }
     }
 
-    Keys.onRightPressed: { posterView.decrementCurrentIndex();  event.accepted = true }
-    Keys.onDownPressed:  { posterView.decrementCurrentIndex();  event.accepted = true }
-    Keys.onLeftPressed:  { posterView.incrementCurrentIndex();  event.accepted = true }
-    Keys.onUpPressed:    { posterView.incrementCurrentIndex();  event.accepted = true }
-    Keys.onEnterPressed: { posterView.currentItem.activate();   event.accepted = true }
-    Keys.onPressed: {
-        if (event.key == Qt.Key_MediaTogglePlayPause) {
-            if (audio.paused)   audio.play()
-            else                audio.pause()
 
-            event.accepted = true
+    MediaModel {
+        id: musicModel
+        mediaType: "music"
+        structure: "artist|album|title"
+    }
+
+    ListView {
+        id: mediaListView
+        model: musicModel
+
+        width: parent.width*0.66
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.margins: 50
+
+        focus: true
+        clip: true
+        highlightRangeMode: ListView.NoHighlightRange
+        highlightMoveDuration: 250
+        keyNavigationWraps: false
+
+        highlight: Rectangle {
+            opacity: 0.4
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "white" }
+                GradientStop { position: 0.5; color: "lightsteelblue" }
+                GradientStop { position: 0.51; color: "steelblue" }
+                GradientStop { position: 1.0; color: "lightsteelblue" }
+            }
         }
+
+
+        ScrollBar {
+            flickable: parent
+        }
+
+        delegate: Item {
+            id: delegateItem
+
+            property variant itemdata : model
+            property alias iconItem : delegateIcon
+
+            width: delegateItem.ListView.view.width
+            height: sourceText.height + 8
+            transformOrigin: Item.Left
+
+            function activate() {
+                if (model.isLeaf) {
+                    mediaListView.currentIndex = index
+                    root.playCurrentIndex();
+                }
+                else
+                    musicModel.enter(index)
+            }
+
+            Image {
+                id: delegateIcon
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height
+                clip:  true
+                source: {
+                    var icon;
+                    if (model.dotdot)
+                        return "";
+                    else if (model.previewUrl != "")
+                        return model.previewUrl;
+                    else if (delegateItem.ListView.view.model.part == "artist")
+                        icon = "DefaultFolder.png";
+                    else if (delegateItem.ListView.view.model.part == "album")
+                        icon = "DefaultFolder.png";
+                    else
+                        icon = "DefaultAudio.png";
+                    return themeResourcePath + "/" + icon;
+                }
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+            }
+
+            Text {
+                id: sourceText
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: delegateIcon.right
+                anchors.leftMargin: 10
+                text: model.dotdot ? " -- UP --" : (delegateItem.ListView.view.model.part == "artist" ? model.artist : (delegateItem.ListView.view.model.part == "album" ? model.album : model.title))
+                font.pointSize: 16
+                font.weight: Font.Light
+                color: "white"
+            }
+
+            ListView.onAdd:
+                SequentialAnimation {
+                NumberAnimation {
+                    target: delegateItem
+                    properties: "scale, opacity"
+                    from: 0
+                    to: 1
+                    duration: 200+index*40
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent;
+
+                /*hoverEnabled: true
+                acceptedButtons: Qt.LeftButton
+                onEntered: {
+                    delegateItem.ListView.view.currentIndex = index
+                    if (delegateItem.ListView.view.currentItem)
+                        delegateItem.ListView.view.currentItem.focus = true
+                }*/
+
+                onClicked: delegateItem.activate()
+            }
+
+            Keys.onEnterPressed: delegateItem.activate()
+        }
+
+        Keys.onLeftPressed: {
+            var pageItemCount = height/currentItem.height;
+            if (mediaListView.currentIndex - pageItemCount < 0)
+                mediaListView.currentIndex = 0;
+            else
+                mediaListView.currentIndex -= pageItemCount;
+        }
+        Keys.onRightPressed: {
+            var pageItemCount = height/currentItem.height;
+            if (mediaListView.currentIndex + pageItemCount > mediaListView.count-1)
+                mediaListView.currentIndex = mediaListView.count-1;
+            else
+                mediaListView.currentIndex += pageItemCount;
+        }
+
+        Keys.onBackPressed: musicModel.back()
     }
 
-    Component.onCompleted: {
-        musicEngine.model.addSearchPath("/home/tsenyk/media/Music", "")
+    Image {
+        id: coverArt
+        anchors.left: mediaListView.right
+        anchors.leftMargin: 65
+        anchors.right: parent.right
+        anchors.rightMargin: 30
+        anchors.bottom: mediaListView.bottom
+        anchors.top: mediaListView.top
+        clip:  true
+        source: mediaListView.currentItem ? mediaListView.currentItem.iconItem.source : ""
+        fillMode: Image.PreserveAspectFit
     }
- }
+
+    Keys.onContext1Pressed: delphin.showOptionDialog(actionList)
+}
+
+

@@ -128,8 +128,8 @@ FocusScope {
 
         Cursor.initialize()
 
-//        var musicWindow = createQmlObjectFromFile("Music.qml")
-//        rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
+        var musicWindow = createQmlObjectFromFile("Music.qml")
+        rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
 
         var pictureWindow = createQmlObjectFromFile("Pictures.qml");
         rapid.rootMenuModel.append({name: qsTr("Pictures"), visualElement: pictureWindow, icon: themeResourcePath + "Picture.png", url: "Pictures.qml"})
