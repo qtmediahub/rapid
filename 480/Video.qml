@@ -35,7 +35,7 @@ Window {
         posterView.opacity = 0.0
         root.vplaying = true
     }
-    function stopPlaying() {
+    function stop() {
         video.stop();
         video.opacity = 0.0;
         posterView.opacity = 1.0;
@@ -138,7 +138,7 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        root.stopPlaying()
+                        root.stop()
                     }
                 }
             }
@@ -190,7 +190,7 @@ Window {
             } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
                 video.position -= 5000
             } else if (event.key == Qt.Key_Enter) {
-                root.stopPlaying()
+                root.stop()
             }
         }
         else {

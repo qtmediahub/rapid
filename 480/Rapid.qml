@@ -42,14 +42,13 @@ FocusScope {
     property QtObject audioItem
 
     function takeOverAudio(item) {
-//        if(audioItem != item) {
-//            if(audioItem != null)
-//                audioItem.stop()
+        if(audioItem != item) {
+            if(audioItem != null)
+                audioItem.stop()
 
-//            audioItem = item
-
-//            setActiveElement(item)      // TODO: test if working with video-push (changing the from Music-Player die Video)
-//        }
+            audioItem = item
+            setActiveElement(item)      // TODO: test if working with video-push (changing the from Music-Player die Video)
+        }
     }
 
 
