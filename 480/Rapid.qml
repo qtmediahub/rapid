@@ -42,12 +42,14 @@ FocusScope {
     property QtObject audioItem
 
     function takeOverAudio(item) {
-        if(audioItem != item) {
-            audioItem.stop()
-            audioItem = item
+//        if(audioItem != item) {
+//            if(audioItem != null)
+//                audioItem.stop()
 
-            setActiveElement(item)      // TODO: test if working with video-push (changing the from Music-Player die Video)
-        }
+//            audioItem = item
+
+//            setActiveElement(item)      // TODO: test if working with video-push (changing the from Music-Player die Video)
+//        }
     }
 
 
@@ -126,14 +128,14 @@ FocusScope {
 
         Cursor.initialize()
 
-        //var musicWindow = createQmlObjectFromFile("Music.qml")
-        //rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
+//        var musicWindow = createQmlObjectFromFile("Music.qml")
+//        rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
 
         var pictureWindow = createQmlObjectFromFile("Pictures.qml");
         rapid.rootMenuModel.append({name: qsTr("Pictures"), visualElement: pictureWindow, icon: themeResourcePath + "Picture.png", url: "Pictures.qml"})
 
-        //var videoWindow = createQmlObjectFromFile("Video.qml")
-        //rapid.rootMenuModel.append({name: qsTr("Video"), visualElement: videoWindow, url: "Video.qml"})
+        var videoWindow = createQmlObjectFromFile("Video.qml")
+        rapid.rootMenuModel.append({name: qsTr("Video"), visualElement: videoWindow, url: "Video.qml"})
 
         var weatherWindow = createQmlObjectFromFile("Weather.qml")
         rapid.rootMenuModel.append({name: qsTr("Weather"), visualElement: weatherWindow, url: "Weather.qml"})

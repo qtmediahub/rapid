@@ -20,46 +20,42 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
 import Playlist 1.0
-import Media 1.0
+import MediaModel 1.0
 
 Window {
     id: root
 
     property bool vplaying: false
 
-
-    function itemActivated(itemData) {
-        playIndex(playlist.add(itemData.modelIndex, Playlist.Replace, Playlist.Flat))
-    }
-
-
-    function stop() {
+    function playCurrentIndex() {
         video.stop();
-    }
-    function playIndex(idx) {
-        video.stop();
-        video.currentIndex = idx
-        video.source = playlist.data(idx, Media.FilePathRole)
+        video.source = posterView.currentItem.itemdata.filepath
         video.play();
-        vplaying = true
-        video.opacity = 1
-        posterView.opacity = 0
+        video.opacity = 1.0
+        posterView.opacity = 0.0
+        root.vplaying = true
+    }
+    function stopPlaying() {
+        video.stop();
+        video.opacity = 0.0;
+        posterView.opacity = 1.0;
+        root.vplaying = false
     }
 
-    Playlist {
-        id: playlist
+    MediaModel {
+        id: videoModel
+        mediaType: "video"
+        structure: "title"
     }
-
 
     PosterView {
         id: posterView
 
         anchors.fill: parent
-        posterModel: videoEngine.model
+        posterModel: videoModel
 
         onActivated: {
-            if (currentItem.itemdata.type != "AddNewSource")
-                root.itemActivated(currentItem.itemdata)
+            root.playCurrentIndex()
         }
     }
 
@@ -95,7 +91,7 @@ Window {
 
         Rectangle {
             property real scalefactor: 1.6
-            property real angle: -20
+            property real angle: -15
             id: videocontrol
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 25
@@ -114,7 +110,7 @@ Window {
             }
 
             transitions: Transition {
-                NumberAnimation { property: "angle"; duration: 500; easing.type: Easing.OutBounce }
+                NumberAnimation { property: "angle"; duration: 600; easing.type: Easing.OutElastic }
             }
 
             Image {
@@ -142,10 +138,7 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        video.stop();
-                        vplaying = false
-                        posterView.opacity = 1.0;
-                        video.opacity = 0.0;
+                        root.stopPlaying()
                     }
                 }
             }
@@ -160,7 +153,7 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        vplaying? video.pause() : video.play()
+                        if (vplaying) video.pause(); else video.play();
                         vplaying = !vplaying;
                     }
                 }
@@ -183,35 +176,36 @@ Window {
         }
 
         onStatusChanged: {
-            if (status == Video.EndOfMedia)
-                vplaying = false
+            if (status == Video.EndOfMedia) {
+                posterView.decrementCurrentIndex()
+                playCurrentIndex()
+            }
         }
     }
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
-            posterView.decrementCurrentIndex()
-        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
-            posterView.incrementCurrentIndex()
-        } else if (event.key == Qt.Key_Enter) {
-            if (video.paused || video.playing) {
-                video.stop();
-                posterView.opacity = 1.0;
-                video.opacity = 0.0;
-            } else
-                posterView.currentItem.activate()
-
-        } else if    (event.key == Qt.Key_MediaTogglePlayPause) {
-            if(video.paused)
-                video.play()
-            else
-                video.pause()
+        if (video.paused || video.playing) {
+            if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
+                video.position += 5000
+            } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
+                video.position -= 5000
+            } else if (event.key == Qt.Key_Enter) {
+                root.stopPlaying()
+            }
         }
-    }
-
-
-
-    Component.onCompleted: {
-        videoEngine.model.addSearchPath("/home/tsenyk/media/Videos", "")
+        else {
+            if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
+                posterView.decrementCurrentIndex()
+            } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
+                posterView.incrementCurrentIndex()
+            } else if (event.key == Qt.Key_Enter) {
+                posterView.currentItem.activate()
+            } else if (event.key == Qt.Key_MediaTogglePlayPause) {
+                if(video.paused)
+                    video.play()
+                else
+                    video.pause()
+            }
+        }
     }
 }
