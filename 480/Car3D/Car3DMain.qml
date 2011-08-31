@@ -1,6 +1,6 @@
 /****************************************************************************
 
-This file is part of the QtMediaHub project on http://www.gitorious.org.
+This file is part of the Car3D project on http://www.gitorious.org.
 
 Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).*
 All rights reserved.
@@ -19,7 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import Qt3D 1.0
-import Qt3D.Shapes 1.0
 import "../"
 
 Window {
@@ -31,14 +30,9 @@ Window {
         blending: true
 
         navigation: false
-
-        Light {
-            id: l1
-            position: Qt.vector3d(1, -1, 0)
-            ambientColor: "#ffffff"
-        }
-
         camera: Camera {
+            id: viewCamera
+            eye: cameraVectorStandartLeft
 
             property variant cameraVectorTop:             Qt.vector3d(0,20,5)
             property variant cameraVectorStandartLeft:    Qt.vector3d(10,10,10)
@@ -51,23 +45,20 @@ Window {
             property variant cameraVectorRightFrontHeadlight: Qt.vector3d(-2.625450372695923, 0.09611012041568756, 8.244413375854492)
             property variant cameraVectorLeftFrontHeadlight:  Qt.vector3d( 2.7446298599243164, 0.20685024559497833, 8.203463554382324)
 
-            id: viewCamera
-            eye: cameraVectorStandartLeft
-
             Behavior on eye {
                 SequentialAnimation {
-                    Vector3dAnimation { duration: 300; easing.type: "OutQuad"; to: viewCamera.cameraVectorTop }
-                    Vector3dAnimation { duration: 1000; easing.type: "InOutQuart" }
+                    Vector3dAnimation { duration:  300; easing.type:   "OutQuad"; to: viewCamera.cameraVectorTop }
+                    Vector3dAnimation { duration: 1000; easing.type: "InOutQuad" }
                 }
             }
         }
 
         Car3D {
             id: car
-            leftFrontGlassOpeningDegree: leftFrontGlassSlider.value
-            leftRearGlassOpeningDegree: leftRearGlassSlider.value
+            leftFrontGlassOpeningDegree:  leftFrontGlassSlider.value
+            leftRearGlassOpeningDegree:   leftRearGlassSlider.value
             rightFrontGlassOpeningDegree: rightFrontGlassSlider.value
-            rightRearGlassOpeningDegree: rightRearGlassSlider.value
+            rightRearGlassOpeningDegree:  rightRearGlassSlider.value
         }
     }
 
@@ -85,8 +76,7 @@ Window {
             textItem.font.bold: true
             textItem.anchors.verticalCenter: wheelBtn.verticalCenter
             textItem.anchors.left: wheelBtn.left
-            onClicked: { // TODO: do animation on all
-            }
+            onClicked: { }
         }
 
         Button {
@@ -135,8 +125,7 @@ Window {
             textItem.font.bold: true
             textItem.anchors.verticalCenter: doorBtn.verticalCenter
             textItem.anchors.left: doorBtn.left
-            onClicked: { // TODO: do animation on all
-            }
+            onClicked: { }
         }
 
         Button {
@@ -186,9 +175,6 @@ Window {
             textItem.anchors.left: normal.left
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.stopAnimation() }
         }
-
-
-
     }
 
     Column {

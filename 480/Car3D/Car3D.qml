@@ -1,6 +1,6 @@
 /****************************************************************************
 
-This file is part of the QtMediaHub project on http://www.gitorious.org.
+This file is part of the Car3D project on http://www.gitorious.org.
 
 Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).*
 All rights reserved.
@@ -19,19 +19,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import Qt3D 1.0
-import Qt3D.Shapes 1.0
 
 import "HyundaiGenesis_sliced_0.2"
 
 
 // NOTE
-// try to avoid doing translate (and rotate only around 0,0,0) on this item! .. it will most probably break other animations!
+// try to avoid doing translate (and rotate only around 0,0,0) on this item! .. it might break other animations
 
 
 Item3D {
     id: root
     pretransform: Translation3D{ translate: Qt.vector3d(0.76, -1.44, -0.02) } // move center of car (between driver and shotgun) to center of world (0,0,0)
-
 
     property real leftFrontGlassOpeningDegree:  0.0
     property real rightFrontGlassOpeningDegree: 0.0
@@ -40,50 +38,50 @@ Item3D {
 
 
     // ------------------ Functions
-    Item { id: animCont
-        property variant lastScaleAnim: null
+    Item { id: animationContainer
+        property variant currentAnimation: null
     }
 
     function stopAnimation() {
-        if(animCont.lastScaleAnim != null) {
-            animCont.lastScaleAnim.loops = 1
+        if (animationContainer.currentAnimation != null) {
+            animationContainer.currentAnimation.loops = 1
         }
-        animCont.lastScaleAnim = null;
+        animationContainer.currentAnimation = null;
     }
 
     function blinkWheel(wheelId) {
         stopAnimation()
 
-        if(wheelId == 0)
-            animCont.lastScaleAnim = leftFrontWheelPulseAnimation
-        else if(wheelId == 1)
-            animCont.lastScaleAnim = rightFrontWheelPulseAnimation
-        else if(wheelId == 2)
-            animCont.lastScaleAnim = leftRearWheelPulseAnimation
-        else if(wheelId == 3)
-            animCont.lastScaleAnim = rightRearWheelPulseAnimation
+        if (wheelId == 0)
+            animationContainer.currentAnimation = leftFrontWheelPulseAnimation
+        else if (wheelId == 1)
+            animationContainer.currentAnimation = rightFrontWheelPulseAnimation
+        else if (wheelId == 2)
+            animationContainer.currentAnimation = leftRearWheelPulseAnimation
+        else if (wheelId == 3)
+            animationContainer.currentAnimation = rightRearWheelPulseAnimation
 
-        if(animCont.lastScaleAnim != null) {
-            animCont.lastScaleAnim.loops = Animation.Infinite
-            animCont.lastScaleAnim.start()
+        if (animationContainer.currentAnimation != null) {
+            animationContainer.currentAnimation.loops = Animation.Infinite
+            animationContainer.currentAnimation.start()
         }
     }
 
     function swingDoor(doorId) {
         stopAnimation()
 
-        if(doorId == 0)
-            animCont.lastScaleAnim = leftFrontDoorRotationAnimation
-        else if(doorId == 1)
-            animCont.lastScaleAnim = rightFrontDoorRotationAnimation
-        else if(doorId == 2)
-            animCont.lastScaleAnim = leftRearDoorRotationAnimation
-        else if(doorId == 3)
-            animCont.lastScaleAnim = rightRearDoorRotationAnimation
+        if (doorId == 0)
+            animationContainer.currentAnimation = leftFrontDoorRotationAnimation
+        else if (doorId == 1)
+            animationContainer.currentAnimation = rightFrontDoorRotationAnimation
+        else if (doorId == 2)
+            animationContainer.currentAnimation = leftRearDoorRotationAnimation
+        else if (doorId == 3)
+            animationContainer.currentAnimation = rightRearDoorRotationAnimation
 
-        if(animCont.lastScaleAnim != null) {
-            animCont.lastScaleAnim.loops = Animation.Infinite
-            animCont.lastScaleAnim.start()
+        if (animationContainer.currentAnimation != null) {
+            animationContainer.currentAnimation.loops = Animation.Infinite
+            animationContainer.currentAnimation.start()
         }
     }
 
@@ -174,47 +172,45 @@ Item3D {
         NumberAnimation { target: rightRearDoorRotation; property: "angle"; from: 30; to : 0.0; duration: 500; easing.type: Easing.OutCubic}    }
 
 
-
-
     Scale3D {
         id: leftFrontWheelPulse
         scale: 1.0
-        origin: Qt.vector3d(0.654, 0.536, 2.587)
+        origin: meshes.leftFrontWheelCenter
     }
-    SequentialAnimation { id: leftFrontWheelPulseAnimation; //running: true; loops: Animation.Infinite
-        NumberAnimation { target: leftFrontWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200; /*easing.type: Easing.OutBounce*/}
-        NumberAnimation { target: leftFrontWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200; /*easing.type: Easing.OutCubic*/}
-        NumberAnimation { target: leftFrontWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200; /*easing.type: Easing.OutCubic*/}    }
+    SequentialAnimation { id: leftFrontWheelPulseAnimation; /*running: true; loops: Animation.Infinite*/
+        NumberAnimation { target: leftFrontWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200;}
+        NumberAnimation { target: leftFrontWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200;}
+        NumberAnimation { target: leftFrontWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200;}    }
 
     Scale3D {
         id: rightFrontWheelPulse
         scale: 1.0
-        origin: Qt.vector3d(-2.120, 0.536, 2.587)
+        origin: meshes.rightFrontWheelCenter
     }
     SequentialAnimation { id: rightFrontWheelPulseAnimation; /*running: true; loops: Animation.Infinite*/
-        NumberAnimation { target: rightFrontWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200; /*easing.type: Easing.OutBounce*/}
-        NumberAnimation { target: rightFrontWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200; /*easing.type: Easing.OutCubic*/}
-        NumberAnimation { target: rightFrontWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200; /*easing.type: Easing.OutCubic*/}    }
+        NumberAnimation { target: rightFrontWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200;}
+        NumberAnimation { target: rightFrontWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200;}
+        NumberAnimation { target: rightFrontWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200;}    }
 
     Scale3D {
         id: leftRearWheelPulse
         scale: 1.0
-        origin: Qt.vector3d(0.654, 0.536, -2.110 /* -? */)
+        origin: meshes.leftRearWheelCenter
     }
     SequentialAnimation { id: leftRearWheelPulseAnimation; /*running: true; loops: Animation.Infinite*/
-        NumberAnimation { target: leftRearWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200; /*easing.type: Easing.OutBounce*/}
-        NumberAnimation { target: leftRearWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200; /*easing.type: Easing.OutCubic*/}
-        NumberAnimation { target: leftRearWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200; /*easing.type: Easing.OutCubic*/}    }
+        NumberAnimation { target: leftRearWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200;}
+        NumberAnimation { target: leftRearWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200;}
+        NumberAnimation { target: leftRearWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200;}    }
 
     Scale3D {
         id: rightRearWheelPulse
         scale: 1.0
-        origin: Qt.vector3d(-2.120, 0.536, -2.110 /* -? */)
+        origin: meshes.rightRearWheelCenter
     }
     SequentialAnimation { id: rightRearWheelPulseAnimation; /*running: true; loops: Animation.Infinite*/
-        NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200; /*easing.type: Easing.OutBounce*/}
-        NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200; /*easing.type: Easing.OutCubic*/}
-        NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200; /*easing.type: Easing.OutCubic*/}    }
+        NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 1.0;  to: 1.05; duration: 200;}
+        NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 1.05; to: 0.9;  duration: 200;}
+        NumberAnimation { target: rightRearWheelPulse; property: "scale"; from: 0.9;  to: 1.0;  duration: 200;}    }
 
 
     Translation3D {id: leftFrontGlassOpeningTranslation;  translate: Qt.vector3d(0, -1*leftFrontGlassOpeningDegree, 0) }

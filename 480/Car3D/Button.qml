@@ -1,6 +1,6 @@
 /****************************************************************************
 
-This file is part of the QtMediaHub project on http://www.gitorious.org.
+This file is part of the Car3D project on http://www.gitorious.org.
 
 Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).*
 All rights reserved.
@@ -26,7 +26,6 @@ Rectangle {
 
     property alias textItem: buttonText
 
-//    anchors.left: parent.left
     width: 180
     height:  30
     color:  "#88456789"
@@ -36,7 +35,3 @@ Rectangle {
 
     MouseArea { anchors.fill: parent; onClicked: root.clicked() }
 }
-
-
-//                    onClicked: { view.state = "back" }
-//                      onClicked: { console.debug( "xOrg: " + car.xOrg + " yOrg: " + car.yOrg + " zOrg: " + car.zOrg) }
