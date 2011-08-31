@@ -72,9 +72,8 @@ Window {
         Button {
             id: wheelBtn
             textItem.text: "Check Wheel"
-            textItem.font.pixelSize: 22
+            textItem.font.pointSize: 22
             textItem.font.bold: true
-            textItem.anchors.verticalCenter: wheelBtn.verticalCenter
             textItem.anchors.left: wheelBtn.left
             onClicked: { }
         }
@@ -82,8 +81,7 @@ Window {
         Button {
             id: frontLeftWheelBtn
             textItem.text: "front left"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: frontLeftWheelBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: frontLeftWheelBtn.right
 
             onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftFrontWheel; car.blinkWheel(0) }
@@ -92,8 +90,7 @@ Window {
         Button {
             id: frontRightWheelBtn
             textItem.text: "front right"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: frontRightWheelBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: frontRightWheelBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorRightFrontWheel; car.blinkWheel(1) }
         }
@@ -101,8 +98,7 @@ Window {
         Button {
             id: rearLeftWheelBtn
             textItem.text: "rear left"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: rearLeftWheelBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: rearLeftWheelBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorLeftRearWheel; car.blinkWheel(2) }
         }
@@ -110,8 +106,7 @@ Window {
         Button {
             id: rearRightWheelBtn
             textItem.text: "rear right"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: rearRightWheelBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: rearRightWheelBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorRightRearWheel; car.blinkWheel(3) }
         }
@@ -121,9 +116,8 @@ Window {
         Button {
             id: doorBtn
             textItem.text: "Check Door"
-            textItem.font.pixelSize: 22
+            textItem.font.pointSize: 22
             textItem.font.bold: true
-            textItem.anchors.verticalCenter: doorBtn.verticalCenter
             textItem.anchors.left: doorBtn.left
             onClicked: { }
         }
@@ -131,8 +125,7 @@ Window {
         Button {
             id: frontLeftDoorBtn
             textItem.text: "front left"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: frontLeftDoorBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: frontLeftDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(0) }
         }
@@ -140,8 +133,7 @@ Window {
         Button {
             id: frontRightDoorBtn
             textItem.text: "front right"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: frontRightDoorBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: frontRightDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(1) }
         }
@@ -149,8 +141,7 @@ Window {
         Button {
             id: rearLeftDoorBtn
             textItem.text: "rear left"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: rearLeftDoorBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: rearLeftDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.swingDoor(2) }
         }
@@ -158,8 +149,7 @@ Window {
         Button {
             id: rearRightDoorBtn
             textItem.text: "rear right"
-            textItem.font.pixelSize: 20
-            textItem.anchors.verticalCenter: rearRightDoorBtn.verticalCenter
+            textItem.font.pointSize: 20
             textItem.anchors.right: rearRightDoorBtn.right
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartRight; car.swingDoor(3) }
         }
@@ -169,9 +159,8 @@ Window {
         Button {
             id: normal
             textItem.text: "Reset"
-            textItem.font.pixelSize: 22
+            textItem.font.pointSize: 22
             textItem.font.bold: true
-            textItem.anchors.verticalCenter: normal.verticalCenter
             textItem.anchors.left: normal.left
             onClicked: { viewCamera.eye = viewCamera.cameraVectorStandartLeft; car.stopAnimation() }
         }
