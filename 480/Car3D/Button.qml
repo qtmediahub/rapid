@@ -26,12 +26,10 @@ Rectangle {
 
     property alias textItem: buttonText
 
-    width: 210
-    height:  buttonText.height + 5
     color:  "#88456789"
     radius: 8
 
-    Text { id: buttonText; anchors.verticalCenter: root.verticalCenter; anchors.margins: 5;  font.family: "Arial"; font.pointSize: 23; color: "#ffffff"}
+    Text { id: buttonText; anchors.verticalCenter: root.verticalCenter; anchors.margins: 5;  font.family: "Arial"; font.pixelSize: root.height*0.8; color: "#ffffff"}
 
     MouseArea { anchors.fill: parent; onClicked: root.clicked() }
 }
