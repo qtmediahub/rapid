@@ -147,8 +147,7 @@ Window {
                 anchors.left: delegateIcon.right
                 anchors.leftMargin: 10
                 text: model.dotdot ? " -- UP --" : (delegateItem.ListView.view.model.part == "artist" ? model.artist : (delegateItem.ListView.view.model.part == "album" ? model.album : model.title))
-                font.pointSize: 16
-                font.weight: Font.Light
+                font.pixelSize: 24
                 color: "white"
             }
 

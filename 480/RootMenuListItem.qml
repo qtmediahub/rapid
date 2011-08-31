@@ -47,7 +47,7 @@ Item {
         color: "white"
         text: model.name
         horizontalAlignment: Text.AlignRight
-        scale: 0.5
+        scale: 0.6
 
         states: [
             State {

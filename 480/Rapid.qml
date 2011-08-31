@@ -27,7 +27,7 @@ FocusScope {
 
     property int additionalLeftMarginLess: 40
     property int additionalLeftMarginMore: 60
-    property int menuFontPixelSize: 56
+    property int menuFontPixelSize: 68          // this is a magic number, because of the menu background width
 
     property variant qtcube
 
