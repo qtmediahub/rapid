@@ -96,16 +96,16 @@ Window {
     Keys.onPressed: {
         if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
             if(posterView.opacity)
-                posterView.decrementCurrentIndex()
+                posterView.incrementCurrentIndex()
             else
-                listView.decrementCurrentIndex()
+                listView.incrementCurrentIndex()
 
             event.accepted = true
         } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
             if(posterView.opacity)
-                posterView.incrementCurrentIndex()
+                posterView.decrementCurrentIndex()
             else
-                listView.incrementCurrentIndex()
+                listView.decrementCurrentIndex()
 
             event.accepted = true
         } else if (event.key == Qt.Key_Enter) {
