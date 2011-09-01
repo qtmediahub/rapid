@@ -111,8 +111,22 @@ Window {
     }
 
 
-    Camera { id: cam;     anchors.fill: parent; visible:  display.showRealCam; z: -99999999; }
-    Image  { id: fakeCam; anchors.fill: parent; visible: !display.showRealCam; z: -99999999; source: "images/view2.png"}
+    Camera {
+        id: cam;
+        anchors.fill: parent;
+        z: -99999999;
+        opacity: display.showRealCam ?  1 : 0;
+        Behavior on opacity { PropertyAnimation{  duration: 500; } }
+
+    }
+    Image  {
+        id: fakeCam;
+        anchors.fill: parent;
+        z: -99999999;
+        source: "images/view2.png"
+        opacity: display.showRealCam ?  0 : 1;
+        Behavior on opacity { PropertyAnimation{  duration: 500; } }
+    }
 
     Image { id: switchButton;
         anchors.right: parent.right
