@@ -24,6 +24,10 @@ Item {
     width: parent.width;
     height: entry.height
 
+    function trigger() {
+        menuItem.PathView.view.currentIndex = index
+        rapid.setActiveElementByIndex(index)
+    }
     MouseArea {
         id: mr;
         anchors.fill: menuItem;
@@ -31,39 +35,29 @@ Item {
         onClicked: { trigger() }
     }
 
-
-    function trigger() {
-        menuItem.PathView.view.currentIndex = index
-        rapid.setActiveElementByIndex(index)
-    }
-
     Text {
         id: entry
-        property int angle: 0
+        anchors.right: parent.right;
+        anchors.verticalCenter: parent.verticalCenter
 
-        anchors { right: parent.right; verticalCenter: parent.verticalCenter }
-
-        transformOrigin: Item.Right
-        transform: Rotation { origin.x: entry.width/2.0; origin.y: entry.height/2.0; axis { x: 1; y: 0; z: 0 } angle: entry.angle }
-
-        font.pixelSize: rapid.menuFontPixelSize
-//        font.family: "Nokia large"
-        color: "white"
         text: model.name
         horizontalAlignment: Text.AlignRight
-        scale: 0.6
+        transformOrigin: Item.Right                 // This is for proper alignment, not for the rotation!
+        //      font.family: "Nokia large"
+        font.pixelSize: rapid.menuFontPixelSize
 
-        states: [
-            State {
-                name: 'isCurrentItem'
-                when: menuItem.PathView.view.currentIndex == index
-                PropertyChanges { target: entry; angle: 360; scale: 0.9999}
-            }
-        ]
-        transitions: Transition {
-            SequentialAnimation {
-                NumberAnimation { properties: "angle, scale"; duration: 400; easing.type: Easing.Linear }
-            }
-        }
+
+        property int indexOffSet: Math.abs(menuItem.PathView.view.currentIndex - index)
+        property int focusAnimationDuration: 400
+
+        scale: indexOffSet == 0 ? 0.9999 : 0.6;
+        Behavior on scale {  NumberAnimation { duration: entry.focusAnimationDuration; } }
+
+        property int angle: indexOffSet == 0 ? 0 : 360
+        Behavior on angle {  NumberAnimation { duration: entry.focusAnimationDuration; } }
+        transform: Rotation { origin.x: entry.width/2.0; origin.y: entry.height/2.0; axis { x: 1; y: 0; z: 0 } angle: entry.angle }
+
+        color: indexOffSet == 0 ? "green" : "white"
+        Behavior on color { ColorAnimation { duration: entry.focusAnimationDuration; } }
     }
 }
