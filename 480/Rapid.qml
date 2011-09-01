@@ -127,29 +127,14 @@ FocusScope {
 
         Cursor.initialize()
 
-        var musicWindow = createQmlObjectFromFile("Music.qml")
-        rapid.rootMenuModel.append({name: qsTr("Music"), visualElement: musicWindow, url: "Music.qml"})
-
-        var pictureWindow = createQmlObjectFromFile("Pictures.qml");
-        rapid.rootMenuModel.append({name: qsTr("Pictures"), visualElement: pictureWindow, icon: themeResourcePath + "Picture.png", url: "Pictures.qml"})
-
-        var videoWindow = createQmlObjectFromFile("Video.qml")
-        rapid.rootMenuModel.append({name: qsTr("Video"), visualElement: videoWindow, url: "Video.qml"})
-
-        var weatherWindow = createQmlObjectFromFile("Weather.qml")
-        rapid.rootMenuModel.append({name: qsTr("Weather"), visualElement: weatherWindow, url: "Weather.qml"})
-
-        var mapWindow = createQmlObjectFromFile("OviMap.qml")
-        rapid.rootMenuModel.append({name: qsTr("Maps"), visualElement: mapWindow, url: "OviMap.qml"})
-
-        var camWindow = createQmlObjectFromFile("CameraWindow.qml")
-        rapid.rootMenuModel.append({name: qsTr("RearView"), visualElement: camWindow, url: "CameraWindow.qml"})
-
-        var browserWindow = createQmlObjectFromFile("Browser/BrowserApp.qml")
-        rapid.rootMenuModel.append({name: qsTr("Browser"), visualElement: browserWindow, url: "Browser/BrowserApp.qml"})
-
-        var car3D = createQmlObjectFromFile("Car3D/Car3DMain.qml")
-        rapid.rootMenuModel.append({name: qsTr("Car3D"), visualElement: car3D, url: "Car3D/Car3DMain.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Music"),    url: "Music.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Pictures"), url: "Pictures.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Video"),    url: "Video.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Weather"),  url: "Weather.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Maps"),     url: "OviMap.qml"})
+        rapid.rootMenuModel.append({name: qsTr("RearView"), url: "CameraWindow.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Browser"),  url: "Browser/BrowserApp.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Car3D"),    url: "Car3D/Car3DMain.qml"})
 
         qtcube =  createQmlObjectFromFile("Cube.qml")
         if(qtcube != null) {
@@ -173,10 +158,7 @@ FocusScope {
             }
         }
 
-        var clusterWindow = createQmlObjectFromFile("qtic.qml")
-        rapid.rootMenuModel.append({name: qsTr("Cluster"), visualElement: clusterWindow, url: "qtic.qml"})
-
-        rapid.setActiveElementByIndex(rootMenuModel.count-1)
-        rapid.forceActiveFocus()
+        rapid.rootMenuModel.append({name: qsTr("Cluster"), url: "qtic.qml"})
+        rapid.setActiveElementByIndex(rootMenuModel.count-2)
     }
 }

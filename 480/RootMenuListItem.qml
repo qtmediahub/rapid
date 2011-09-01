@@ -21,9 +21,13 @@ import QtQuick 1.0
 
 Item {
     id: menuItem
-    width: parent.width; height: entry.height
+    width: parent.width;
+    height: entry.height
 
-    MouseArea { id: mr; anchors.fill: menuItem; anchors.margins: -15
+    MouseArea {
+        id: mr;
+        anchors.fill: menuItem;
+        anchors.margins: -15
         onClicked: { trigger() }
     }
 
@@ -52,7 +56,7 @@ Item {
         states: [
             State {
                 name: 'isCurrentItem'
-                when: menuItem.PathView.isCurrentItem
+                when: menuItem.PathView.view.currentIndex == index
                 PropertyChanges { target: entry; angle: 360; scale: 0.9999}
             }
         ]
