@@ -191,6 +191,11 @@ Window {
                 video.position -= 5000
             } else if (event.key == Qt.Key_Enter) {
                 root.stop()
+            } else if (event.key == Qt.Key_MediaTogglePlayPause) {
+                if(video.paused)
+                    video.play()
+                else
+                    video.pause()
             }
         }
         else {
@@ -198,13 +203,8 @@ Window {
                 posterView.decrementCurrentIndex()
             } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
                 posterView.incrementCurrentIndex()
-            } else if (event.key == Qt.Key_Enter) {
+            } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_MediaTogglePlayPause) {
                 posterView.currentItem.activate()
-            } else if (event.key == Qt.Key_MediaTogglePlayPause) {
-                if(video.paused)
-                    video.play()
-                else
-                    video.pause()
             }
         }
     }
