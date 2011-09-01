@@ -86,8 +86,11 @@ Window {
                 shareButtonText: ""
             }
             // Add one padding element to create space between elements
-            ListElement {buttonText: ""; event: ""; iconImage: ""; buttonEnabled: false; blink: false; shareButtonText: ""
-            }
+            ListElement {buttonText: ""; event: ""; iconImage: ""; buttonEnabled: false; blink: false; shareButtonText: ""}
+            ListElement {buttonText: ""; event: ""; iconImage: ""; buttonEnabled: false; blink: false; shareButtonText: ""}
+            ListElement {buttonText: ""; event: ""; iconImage: ""; buttonEnabled: false; blink: false; shareButtonText: ""}
+            ListElement {buttonText: ""; event: ""; iconImage: ""; buttonEnabled: false; blink: false; shareButtonText: ""}
+
             ListElement { buttonText: "ZOOM"; event: "ZoomIn"
                 iconImage: "./images/icon_zoom_in.png"
                 buttonEnabled: true
