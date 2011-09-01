@@ -192,4 +192,29 @@ Window {
         SimpleSlider { id: leftRearGlassSlider;   height: (root.height / 15)-2; width: root.width/3 }
         SimpleSlider { id: rightRearGlassSlider;  height: (root.height / 15)-2; width: root.width/3 }
     }
+
+
+
+    Keys.onPressed: {
+        if (event.key == Qt.Key_Down){
+            viewCamera.eye = viewCamera.cameraVectorLeftFrontWheel
+            event.accepted = true
+        } else if (event.key == Qt.Key_Up) {
+            viewCamera.eye = viewCamera.cameraVectorRightFrontWheel
+            event.accepted = true
+        } else if (event.key == Qt.Key_Left) {
+            viewCamera.eye = viewCamera.cameraVectorStandartRight
+            event.accepted = true
+        } else if (event.key == Qt.Key_Right) {
+            viewCamera.eye = viewCamera.cameraVectorStandartLeft
+            event.accepted = true
+        } else if (event.key == Qt.Key_Enter) {
+            var doorId = car.swingNextDoor();
+            if (doorId % 2 == 0)
+                viewCamera.eye = viewCamera.cameraVectorStandartLeft
+            else
+                viewCamera.eye = viewCamera.cameraVectorStandartRight
+            event.accepted = true
+        }
+    }
 }

@@ -85,6 +85,22 @@ Item3D {
         }
     }
 
+    function swingNextDoor() {
+        var nextDoorId = 0;
+
+        if (animationContainer.currentAnimation == leftFrontDoorRotationAnimation)
+            nextDoorId = 1
+        else if (animationContainer.currentAnimation == rightFrontDoorRotationAnimation)
+            nextDoorId = 2
+        else if (animationContainer.currentAnimation == leftRearDoorRotationAnimation)
+            nextDoorId = 3
+        else if (animationContainer.currentAnimation == rightRearDoorRotationAnimation)
+            nextDoorId = 0
+
+        swingDoor(nextDoorId);
+
+        return nextDoorId;
+    }
 
 
     // ------------------ Meshes ------------------
