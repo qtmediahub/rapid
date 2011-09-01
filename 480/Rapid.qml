@@ -54,7 +54,8 @@ FocusScope {
 
     function setActiveElementByIndex(index) {
         menu.setCurrentIndex(index)
-        setActiveElement(rootMenuModel.get(index).visualElement, rootMenuModel.get(index).url)
+        var newElement = setActiveElement(rootMenuModel.get(index).visualElement, rootMenuModel.get(index).url)
+        rootMenuModel.get(index).visualElement = newElement
     }
 
     function setActiveElement(newElement, url) {
@@ -73,6 +74,8 @@ FocusScope {
 
         selectedElement.forceActiveFocus()
         menu.state = "collapsed"
+
+        return selectedElement
     }
 
 
