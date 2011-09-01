@@ -65,7 +65,8 @@ Viewport {
         ]
 
         effect: Effect {
-            color: "#aaca00"
+            blending: true
+            color: "#8880C342"
             texture: "images/qtlogo.png"
             decal: true
         }
