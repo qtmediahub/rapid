@@ -87,15 +87,16 @@ Window {
         highlight: Rectangle {
             opacity: 0.4
             gradient: Gradient {
-                GradientStop { position: 0.0; color: "white" }
-                GradientStop { position: 0.5; color: "lightsteelblue" }
-                GradientStop { position: 0.51; color: "steelblue" }
-                GradientStop { position: 1.0; color: "lightsteelblue" }
+                GradientStop { position: 0.0; color: "#88FF70" }
+                GradientStop { position: 0.5; color: "#50BB50" }
+                GradientStop { position: 0.51; color: "#20B810" }
+                GradientStop { position: 1.0; color: "lightgreen" }
             }
         }
 
 
         ScrollBar {
+            id:  listViewScollBar
             flickable: parent
         }
 
@@ -105,7 +106,7 @@ Window {
             property variant itemdata : model
             property alias iconItem : delegateIcon
 
-            width: delegateItem.ListView.view.width
+            width: delegateItem.ListView.view.width - listViewScollBar.width
             height: sourceText.height + 8
             transformOrigin: Item.Left
 
