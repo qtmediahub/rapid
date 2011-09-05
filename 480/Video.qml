@@ -70,16 +70,7 @@ Window {
 
         onStarted: { rapid.takeOverAudio(root) }
         onResumed: { rapid.takeOverAudio(root) }
-
-
-        Timer {
-            id: vcTimer
-            interval: 3000
-            running: videocontrol.state == "visible"
-
-            repeat: false
-            onTriggered: videocontrol.state = ""
-        }
+        onStopped: { videocontrol.state = "" }
 
         MouseArea {
             anchors.fill: parent
@@ -89,98 +80,131 @@ Window {
             }
         }
 
-        Rectangle {
-            property real scalefactor: 1.6
-            property real angle: -15
-            id: videocontrol
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 25
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: 290
-            height: 70
-            color: "#80404040"
-            radius: 12
-            scale: scalefactor
-
-            transform: Rotation { origin.x: root.width; origin.y: root.height; axis { x: 0; y: 0; z: 1 } angle: videocontrol.angle }
-
-            states: State {
-                name: "visible"
-                PropertyChanges { target: videocontrol; angle: 0 }
-            }
-
-            transitions: Transition {
-                NumberAnimation { property: "angle"; duration: 600; easing.type: Easing.OutElastic }
-            }
-
-            Image {
-                id: vcrewind
-                source: "./images/OSDRewindFO.png"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        video.position -= 5000
-                    }
-                }
-            }
-
-            Image {
-                id: vcstop
-                source: "./images/OSDStopFO.png"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: vcrewind.right
-                anchors.leftMargin: 20
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        root.stop()
-                    }
-                }
-            }
-
-            Image {
-                id: vcpause
-                source: vplaying ? "./images/OSDPauseFO.png" : "./images/OSDPlayFO.png"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: vcstop.right
-                anchors.leftMargin: 20
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if (vplaying) video.pause(); else video.play();
-                        vplaying = !vplaying;
-                    }
-                }
-            }
-
-            Image {
-                id: vcforward
-                source: "./images/OSDForwardFO.png"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: vcpause.right
-                anchors.leftMargin: 20
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        video.position += 5000
-                    }
-                }
-            }
-        }
-
         onStatusChanged: {
             if (status == Video.EndOfMedia) {
                 posterView.decrementCurrentIndex()
                 playCurrentIndex()
             }
         }
+    }
+
+    Timer {
+        id: vcTimer
+        interval: 3000
+        running: videocontrol.state == "visible"
+
+        repeat: false
+        onTriggered: videocontrol.state = ""
+    }
+
+    Rectangle {
+        property real scalefactor: 1.6
+        property real angle: -15
+        id: videocontrol
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 25
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: 290
+        height: 60
+        color: "#80404040"
+        radius: 12
+        scale: scalefactor
+
+        Rectangle {
+            id: processBar
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            color: "#80106010"
+            width: (video.position / video.duration) * parent.width
+            height: parent.height - (width >= radius*2 ? 0 : ((radius*2)-width))
+            radius: 12
+
+            Behavior on width { NumberAnimation { duration: 100 } }
+        }
+
+        transform: Rotation { origin.x: root.width; origin.y: root.height; axis { x: 0; y: 0; z: 1 } angle: videocontrol.angle }
+
+        states: State {
+            name: "visible"
+            PropertyChanges { target: videocontrol; angle: 0 }
+        }
+
+        transitions: Transition {
+            NumberAnimation { property: "angle"; duration: 600; easing.type: Easing.OutElastic }
+        }
+
+        Image {
+            id: vcrewind
+            source: "./images/OSDRewindFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if(video.playbackRate > 0.125) video.playbackRate /= 2
+                }
+            }
+        }
+
+        Image {
+            id: vcstop
+            source: "./images/OSDStopFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: vcrewind.right
+            anchors.leftMargin: 20
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    root.stop()
+                }
+            }
+        }
+
+        Image {
+            id: vcpause
+            source: vplaying ? "./images/OSDPauseFO.png" : "./images/OSDPlayFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: vcstop.right
+            anchors.leftMargin: 20
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if (vplaying) video.pause(); else video.play();
+                    vplaying = !vplaying;
+                }
+            }
+        }
+
+        Image {
+            id: vcforward
+            source: "./images/OSDForwardFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: vcpause.right
+            anchors.leftMargin: 20
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if(video.playbackRate < 16)  video.playbackRate *= 2
+                }
+            }
+        }
+    }
+
+    Text {
+        id: playbackRateText
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        visible: video.playbackRate != 1
+
+        text: video.playbackRate > 1 ? video.playbackRate+"x" : "1/"+1/video.playbackRate
+
+        font.pixelSize: parent.height / 5
+        color: "green"
     }
 
     Keys.onPressed: {
