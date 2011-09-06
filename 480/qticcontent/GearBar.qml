@@ -28,7 +28,7 @@ Item {
         border.width: 3
 
         anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: p.verticalCenter
+        anchors.horizontalCenter: p.horizontalCenter
 
         height: 23
         width: 20
