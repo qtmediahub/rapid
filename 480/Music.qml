@@ -20,47 +20,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import Playlist 1.0
 import MediaModel 1.0
-import QtMultimediaKit 1.1
+//import QtMultimediaKit 1.1
+import QtMediaHub.components.media 1.0
 
 Window {
     id: root
-    anchors.leftMargin: rapid.additionalLeftMarginLess
+    anchors.leftMargin: rapid.additionalLeftMarginMore
 
-    function playNext() {
-        mediaListView.incrementCurrentIndex()
-        playCurrentIndex()
+    // TODO: move to rapid
+    QMHPlayer {
+        id: qmhPlayer
     }
-
-    function playPrevious() {
-        mediaListView.decrementCurrentIndex()
-        playCurrentIndex()
-    }
-
-    function playCurrentIndex() {
-        audio.stop();
-        audio.source =  mediaListView.currentItem.itemdata.filepath
-        audio.play();
-    }
-
-    function stop() {
-        audio.stop();
-        mediaListView.currentIndex = -1 // Is this right?
-    }
-
-    Audio {
-        id: audio
-        volume: 1.0
-
-        onStarted: { rapid.takeOverAudio(root) }
-        onResumed: { rapid.takeOverAudio(root) }
-
-        onStopped: {
-            if(audio.status == Audio.EndOfMedia) {
-                playNext();
-            }
-        }
-    }
-
 
     MediaModel {
         id: musicModel
@@ -76,13 +46,16 @@ Window {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.margins: 50
+        anchors.topMargin: 20
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 70
 
         focus: true
         clip: true
         highlightRangeMode: ListView.NoHighlightRange
         highlightMoveDuration: 250
         keyNavigationWraps: false
+        currentIndex: qmhPlayer.mediaPlaylist.currentIndex+1
 
         highlight: Rectangle {
             opacity: 0.4
@@ -102,6 +75,7 @@ Window {
 
         delegate: Item {
             id: delegateItem
+            clip: true
 
             property variant itemdata : model
             property alias iconItem : delegateIcon
@@ -111,10 +85,8 @@ Window {
             transformOrigin: Item.Left
 
             function activate() {
-                if (model.isLeaf) {
-                    mediaListView.currentIndex = index
-                    root.playCurrentIndex();
-                }
+                if (model.isLeaf)
+                    qmhPlayer.play(musicModel, index)
                 else
                     musicModel.enter(index)
             }
@@ -130,22 +102,24 @@ Window {
                         return "";
                     else if (model.previewUrl != "")
                         return model.previewUrl;
-                    else if (delegateItem.ListView.view.model.part == "artist")
-                        icon = "DefaultFolder.png";
-                    else if (delegateItem.ListView.view.model.part == "album")
-                        icon = "DefaultFolder.png";
                     else
-                        icon = "DefaultAudio.png";
-                    return themeResourcePath + "/" + icon;
+                        return ""
                 }
                 fillMode: Image.PreserveAspectFit
                 smooth: true
             }
 
+            Item {
+                id: spacer
+                anchors.left: delegateIcon.right
+                width: delegateIcon.source == "" ? 36 : 0 // Magic number ... no other solution possible ... change all that longterm
+                height: 1
+            }
+
             Text {
                 id: sourceText
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: delegateIcon.right
+                anchors.left: spacer.right
                 anchors.leftMargin: 10
                 text: model.dotdot ? " -- UP --" : (delegateItem.ListView.view.model.part == "artist" ? model.artist : (delegateItem.ListView.view.model.part == "album" ? model.album : model.title))
                 font.pixelSize: 24
@@ -165,15 +139,6 @@ Window {
 
             MouseArea {
                 anchors.fill: parent;
-
-                /*hoverEnabled: true
-                acceptedButtons: Qt.LeftButton
-                onEntered: {
-                    delegateItem.ListView.view.currentIndex = index
-                    if (delegateItem.ListView.view.currentItem)
-                        delegateItem.ListView.view.currentItem.focus = true
-                }*/
-
                 onClicked: delegateItem.activate()
             }
 
@@ -198,20 +163,89 @@ Window {
         Keys.onBackPressed: musicModel.back()
     }
 
-    Image {
-        id: coverArt
+    MusicInfo {
+        mediaInfo: qmhPlayer.mediaInfo
+        position: qmhPlayer.position
+        duration: qmhPlayer.duration
+
         anchors.left: mediaListView.right
-        anchors.leftMargin: 65
+        anchors.leftMargin: 5
         anchors.right: parent.right
-        anchors.rightMargin: 30
-        anchors.bottom: mediaListView.bottom
-        anchors.top: mediaListView.top
+        anchors.rightMargin: 5
+        anchors.bottom: root.bottom
+        anchors.top: root.top
         clip:  true
-        source: mediaListView.currentItem ? mediaListView.currentItem.iconItem.source : ""
-        fillMode: Image.PreserveAspectFit
     }
 
-    Keys.onContext1Pressed: delphin.showOptionDialog(actionList)
+
+    Rectangle {
+        id: audiocontrol
+        anchors.bottom: parent.bottom
+        //        anchors.bottomMargin: 25
+        anchors.horizontalCenter: mediaListView.horizontalCenter
+        width: 250
+        height: 60
+        color: "#80404040"
+        radius: 12
+
+        Image {
+            id: acrewind
+            source: "./images/OSDRewindFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: acpause.left
+            anchors.rightMargin: 30
+
+            MouseArea {
+                id: rewindMouseArea
+                anchors.fill: parent
+                anchors.margins: -15
+
+                property int timerCount: 0
+                onPressed: { rewindTimer.start(); }
+                onReleased: { rewindTimer.stop(); if (rewindMouseArea.timerCount <= (700/rewindTimer.interval) ) qmhPlayer.playPrevious(); rewindMouseArea.timerCount=0 }
+                Timer { id: rewindTimer; interval: 150; repeat: true; onTriggered: { qmhPlayer.seekBackward(); rewindMouseArea.timerCount++; } }
+            }
+        }
+
+        Image {
+            id: acpause
+            source: (qmhPlayer.playing && !qmhPlayer.paused) ? "./images/OSDPauseFO.png" : "./images/OSDPlayFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            MouseArea {
+                anchors.fill: parent
+                anchors.margins: -15
+                onClicked: {
+                    if (qmhPlayer.paused) qmhPlayer.resume(); else qmhPlayer.pause();
+                }
+            }
+        }
+
+        Image {
+            id: acforward
+            source: "./images/OSDForwardFO.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: acpause.right
+            anchors.leftMargin: 30
+
+            MouseArea {
+                id: forwardMouseArea
+                anchors.fill: parent
+                anchors.margins: -10
+
+                property int timerCount: 0
+                onPressed: { forwardTimer.start(); }
+                onReleased: { forwardTimer.stop(); if (forwardMouseArea.timerCount <= (700/forwardTimer.interval) ) qmhPlayer.playNext(); forwardMouseArea.timerCount=0 }
+                Timer { id: forwardTimer; interval: 150; repeat: true;
+                    onTriggered: {
+                        qmhPlayer.seekForward();
+                        forwardMouseArea.timerCount++;
+                    }
+                }
+            }
+        }
+    }
 }
 
 
