@@ -162,7 +162,7 @@ Item {
                 }
                 ListElement {
                     title: "QtMediaHub"
-                    url: "http://www.qtmediahub.org/"
+                    url: "http://www.qtmediahub.com/"
                     picture: "../images/bookmarks/QMHLogo.png"
                 }
                 ListElement {
