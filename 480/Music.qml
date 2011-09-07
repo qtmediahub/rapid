@@ -255,15 +255,12 @@ Window {
     }
 
 
-    Keys.onEnterPressed: if(musicListView.currentIndex == qmhPlayer.mediaPlaylist.currentIndex+1)
-                             qmhPlayer.togglePlayPause()
-                         else
-                             if(musicListView.currentIndex != -1) musicListView.currentItem.activate()
+    Keys.onEnterPressed: if(musicListView.currentIndex != -1) musicListView.currentItem.activate()
 
-    Keys.onDownPressed:  if(qmhPlayer.hasMedia && musicListView.currentIndex < musicListView.count-1)
-                             musicListView.currentIndex++; else musicListView.currentIndex=0;
-    Keys.onUpPressed:    if(qmhPlayer.hasMedia && musicListView.currentIndex > 0)
-                             musicListView.currentIndex--; else musicListView.currentIndex=musicListView.count-1;
+    Keys.onDownPressed:  if(qmhPlayer.hasMedia && musicListView.currentIndex < musicListView.count-1) musicListView.currentIndex++;
+                         else musicListView.currentIndex=0;
+    Keys.onUpPressed:    if(qmhPlayer.hasMedia && musicListView.currentIndex > 0) musicListView.currentIndex--;
+                         else musicListView.currentIndex=musicListView.count-1;
     Keys.onLeftPressed:  if(qmhPlayer.playing) qmhPlayer.seekBackward();
     Keys.onRightPressed: if(qmhPlayer.playing) qmhPlayer.seekForward();
 
