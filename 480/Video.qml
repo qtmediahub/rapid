@@ -224,9 +224,9 @@ Window {
         }
         else {
             if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
-                posterView.decrementCurrentIndex()
-            } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
                 posterView.incrementCurrentIndex()
+            } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
+                posterView.decrementCurrentIndex()
             } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_MediaTogglePlayPause) {
                 posterView.currentItem.activate()
             }
