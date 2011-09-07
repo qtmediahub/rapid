@@ -121,7 +121,8 @@ FocusScope {
                                 rapid.forceActiveFocus()
                                 rapid.focus = true
                                 selectedElement.focus = false
-                            }
+                            } else
+                                selectedElement.forceActiveFocus()
                             menu.switchMenu()
                         }
 
