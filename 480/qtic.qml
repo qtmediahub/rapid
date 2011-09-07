@@ -118,12 +118,12 @@ Window {
 
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Right || event.key == Qt.Key_Up) {
+        if (event.key == Qt.Key_Right || event.key == Qt.Key_Down) {
             if (mainElement.gearSetter < 6)
                 mainElement.gearSetter++;
             else
                 mainElement.gearSetter = -2;
-        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Down) {
+        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up) {
             if (mainElement.gearSetter > -2)
                 mainElement.gearSetter--;
             else

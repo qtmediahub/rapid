@@ -140,8 +140,8 @@ Window {
     }
 
     Keys.onRightPressed: { if(display.angle <  1)  display.angle+=0.05; event.accepted = true }
-    Keys.onUpPressed:    { if(display.angle <  1)  display.angle+=0.05; event.accepted = true }
+    Keys.onDownPressed:  { if(display.angle <  1)  display.angle+=0.05; event.accepted = true }
     Keys.onLeftPressed:  { if(display.angle > -1)  display.angle-=0.05; event.accepted = true }
-    Keys.onDownPressed:  { if(display.angle > -1)  display.angle-=0.05; event.accepted = true }
+    Keys.onUpPressed:    { if(display.angle > -1)  display.angle-=0.05; event.accepted = true }
     Keys.onEnterPressed: { display.showRealCam = !display.showRealCam;  event.accepted = true }
 }
