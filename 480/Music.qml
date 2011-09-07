@@ -27,11 +27,18 @@ Window {
     id: root
     anchors.leftMargin: rapid.additionalLeftMarginMore
 
+    function stop() {
+        qmhPlayer.stop()
+    }
+
     // TODO: move to rapid
     QMHPlayer {
         id: qmhPlayer
 
         mediaPlaylist.onCurrentIndexChanged: { musicListView.currentIndex = qmhPlayer.mediaPlaylist.currentIndex+1 }
+
+        onPausedChanged:  { if(qmhPlayer.playing && !qmhPlayer.paused) rapid.takeOverAudio(root); }
+        onPlayingChanged: { if(qmhPlayer.playing && !qmhPlayer.paused) rapid.takeOverAudio(root); }
     }
 
     MediaModel {
