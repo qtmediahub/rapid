@@ -161,9 +161,9 @@ Item {
                     picture: "../images/bookmarks/nokia_europe.png"
                 }
                 ListElement {
-                    title: "Ovi"
-                    url: "http://www.ovi.com/services/"
-                    picture: "../images/bookmarks/ovi.png"
+                    title: "QtMediaHub"
+                    url: "http://www.qtmediahub.org/"
+                    picture: "../images/bookmarks/QMHLogo.png"
                 }
                 ListElement {
                     title: "Slashdot"
