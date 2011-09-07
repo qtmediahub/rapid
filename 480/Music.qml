@@ -30,6 +30,8 @@ Window {
     // TODO: move to rapid
     QMHPlayer {
         id: qmhPlayer
+
+        mediaPlaylist.onCurrentIndexChanged: { musicListView.currentIndex = qmhPlayer.mediaPlaylist.currentIndex+1 }
     }
 
     MediaModel {
@@ -39,7 +41,7 @@ Window {
     }
 
     ListView {
-        id: mediaListView
+        id: musicListView
         model: musicModel
 
         width: parent.width*0.66
@@ -55,7 +57,7 @@ Window {
         highlightRangeMode: ListView.NoHighlightRange
         highlightMoveDuration: 250
         keyNavigationWraps: false
-        currentIndex: qmhPlayer.mediaPlaylist.currentIndex+1
+        currentIndex: -1
 
         highlight: Rectangle {
             opacity: 0.4
@@ -87,8 +89,10 @@ Window {
             function activate() {
                 if (model.isLeaf)
                     qmhPlayer.play(musicModel, index)
-                else
+                else {
+                    musicListView.currentIndex = 0
                     musicModel.enter(index)
+                }
             }
 
             Image {
@@ -142,25 +146,9 @@ Window {
                 onClicked: delegateItem.activate()
             }
 
-            Keys.onEnterPressed: delegateItem.activate()
+
         }
 
-        Keys.onLeftPressed: {
-            var pageItemCount = height/currentItem.height;
-            if (mediaListView.currentIndex - pageItemCount < 0)
-                mediaListView.currentIndex = 0;
-            else
-                mediaListView.currentIndex -= pageItemCount;
-        }
-        Keys.onRightPressed: {
-            var pageItemCount = height/currentItem.height;
-            if (mediaListView.currentIndex + pageItemCount > mediaListView.count-1)
-                mediaListView.currentIndex = mediaListView.count-1;
-            else
-                mediaListView.currentIndex += pageItemCount;
-        }
-
-        Keys.onBackPressed: musicModel.back()
     }
 
     MusicInfo {
@@ -168,7 +156,7 @@ Window {
         position: qmhPlayer.position
         duration: qmhPlayer.duration
 
-        anchors.left: mediaListView.right
+        anchors.left: musicListView.right
         anchors.leftMargin: 5
         anchors.right: parent.right
         anchors.rightMargin: 5
@@ -182,7 +170,7 @@ Window {
         id: audiocontrol
         anchors.bottom: parent.bottom
         //        anchors.bottomMargin: 25
-        anchors.horizontalCenter: mediaListView.horizontalCenter
+        anchors.horizontalCenter: musicListView.horizontalCenter
         width: 250
         height: 60
         color: "#80404040"
@@ -200,10 +188,8 @@ Window {
                 anchors.fill: parent
                 anchors.margins: -15
 
-                property int timerCount: 0
-                onPressed: { rewindTimer.start(); }
-                onReleased: { rewindTimer.stop(); if (rewindMouseArea.timerCount <= (700/rewindTimer.interval) ) qmhPlayer.playPrevious(); rewindMouseArea.timerCount=0 }
-                Timer { id: rewindTimer; interval: 150; repeat: true; onTriggered: { qmhPlayer.seekBackward(); rewindMouseArea.timerCount++; } }
+                onPressed: { smartSeek.startRewind() }
+                onReleased: { smartSeek.stop()  }
             }
         }
 
@@ -233,19 +219,54 @@ Window {
                 id: forwardMouseArea
                 anchors.fill: parent
                 anchors.margins: -10
-
-                property int timerCount: 0
-                onPressed: { forwardTimer.start(); }
-                onReleased: { forwardTimer.stop(); if (forwardMouseArea.timerCount <= (700/forwardTimer.interval) ) qmhPlayer.playNext(); forwardMouseArea.timerCount=0 }
-                Timer { id: forwardTimer; interval: 150; repeat: true;
-                    onTriggered: {
-                        qmhPlayer.seekForward();
-                        forwardMouseArea.timerCount++;
-                    }
-                }
+                onPressed: { smartSeek.startForward() }
+                onReleased: { smartSeek.stop() }
             }
         }
     }
+
+    Item {
+        id: smartSeek
+        property int timerCount: 0
+        property bool rewind: false
+
+        function startForward() { rewind = false; start() }
+        function startRewind()  { rewind = true;  start() }
+        function start() {
+            timerCount = 0
+            seekTimer.start();
+        }
+
+        function stop() {
+            seekTimer.stop();
+            if (timerCount <= (700/seekTimer.interval) ) {
+                if(rewind) qmhPlayer.playPrevious()
+                else       qmhPlayer.playNext();
+            }
+            timerCount = 0
+        }
+
+
+        Timer { id: seekTimer; interval: 100; repeat: true;
+            onTriggered: {
+                if(smartSeek.rewind) qmhPlayer.seekBackward();
+                else                 qmhPlayer.seekForward();
+                smartSeek.timerCount++;
+            }
+        }
+    }
+
+
+    Keys.onEnterPressed: if(musicListView.currentIndex != -1) musicListView.currentItem.activate()
+
+    Keys.onDownPressed:  if(musicListView.currentIndex < musicListView.count-1) musicListView.currentIndex++; else musicListView.currentIndex=0;
+    Keys.onUpPressed:    if(musicListView.currentIndex > 0) musicListView.currentIndex--; else musicListView.currentIndex=musicListView.count-1;
+
+    Keys.onLeftPressed: qmhPlayer.seekBackward();
+    Keys.onRightPressed: qmhPlayer.seekForward();
+
+    Keys.onBackPressed: musicModel.back()
+
 }
 
 
