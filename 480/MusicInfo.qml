@@ -16,7 +16,7 @@ Item {
     {
         var ret = "";
 
-        if (ms == 0)
+        if (ms <= 0)
             return "00:00";
 
         var h = Math.floor(ms/(1000*60*60))

@@ -187,9 +187,8 @@ Window {
                 id: rewindMouseArea
                 anchors.fill: parent
                 anchors.margins: -15
-
-                onPressed: { smartSeek.startRewind() }
-                onReleased: { smartSeek.stop()  }
+                onPressed:  smartSeek.startRewind()
+                onReleased: smartSeek.stop()
             }
         }
 
@@ -202,9 +201,7 @@ Window {
             MouseArea {
                 anchors.fill: parent
                 anchors.margins: -15
-                onClicked: {
-                    if (qmhPlayer.paused) qmhPlayer.resume(); else qmhPlayer.pause();
-                }
+                onClicked:  qmhPlayer.togglePlayPause()
             }
         }
 
@@ -219,8 +216,8 @@ Window {
                 id: forwardMouseArea
                 anchors.fill: parent
                 anchors.margins: -10
-                onPressed: { smartSeek.startForward() }
-                onReleased: { smartSeek.stop() }
+                onPressed:  smartSeek.startForward()
+                onReleased: smartSeek.stop()
             }
         }
     }
@@ -234,7 +231,8 @@ Window {
         function startRewind()  { rewind = true;  start() }
         function start() {
             timerCount = 0
-            seekTimer.start();
+            if(qmhPlayer.playing)
+                seekTimer.start();
         }
 
         function stop() {
@@ -257,13 +255,17 @@ Window {
     }
 
 
-    Keys.onEnterPressed: if(musicListView.currentIndex != -1) musicListView.currentItem.activate()
+    Keys.onEnterPressed: if(musicListView.currentIndex == qmhPlayer.mediaPlaylist.currentIndex+1)
+                             qmhPlayer.togglePlayPause()
+                         else
+                             if(musicListView.currentIndex != -1) musicListView.currentItem.activate()
 
-    Keys.onDownPressed:  if(musicListView.currentIndex < musicListView.count-1) musicListView.currentIndex++; else musicListView.currentIndex=0;
-    Keys.onUpPressed:    if(musicListView.currentIndex > 0) musicListView.currentIndex--; else musicListView.currentIndex=musicListView.count-1;
-
-    Keys.onLeftPressed: qmhPlayer.seekBackward();
-    Keys.onRightPressed: qmhPlayer.seekForward();
+    Keys.onDownPressed:  if(qmhPlayer.hasMedia && musicListView.currentIndex < musicListView.count-1)
+                             musicListView.currentIndex++; else musicListView.currentIndex=0;
+    Keys.onUpPressed:    if(qmhPlayer.hasMedia && musicListView.currentIndex > 0)
+                             musicListView.currentIndex--; else musicListView.currentIndex=musicListView.count-1;
+    Keys.onLeftPressed:  if(qmhPlayer.playing) qmhPlayer.seekBackward();
+    Keys.onRightPressed: if(qmhPlayer.playing) qmhPlayer.seekForward();
 
     Keys.onBackPressed: musicModel.back()
 
