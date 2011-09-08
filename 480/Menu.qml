@@ -50,14 +50,15 @@ Item {
     transitions: [
         Transition { to: "extended"
             SequentialAnimation {
+                ScriptAction { script: rapid.forceActiveFocus() }
                 NumberAnimation { properties: "angle"; duration: 500; easing.type: Easing.Linear}
-                NumberAnimation { properties: "x,angle,opacity"; duration: 1000; easing.type: Easing.OutBounce}
+                NumberAnimation { properties: "x,opacity"; duration: 1000; easing.type: Easing.OutBounce}
             }
         },
         Transition { to: "collapsed"
             SequentialAnimation {
                 NumberAnimation { properties: "x,angle,opacity"; duration: 1000; easing.type: Easing.OutBounce}
-                NumberAnimation { properties: "angle"; duration: 500; easing.type: Easing.Linear}
+                ScriptAction { script: rapid.selectedElement.forceActiveFocus() }
             }
         }
     ]
