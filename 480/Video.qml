@@ -35,6 +35,22 @@ Window {
         posterView.opacity = 0.0
         root.vplaying = true
     }
+
+    function togglePlayPause()  {
+        if (video.paused || video.playing) {
+            if (vplaying) video.pause(); else video.play();
+            vplaying = !vplaying;
+        }
+    }
+    function playPrevious()     {
+        posterView.decrementCurrentIndex()
+        playCurrentIndex()
+    }
+    function playNext()         {
+        posterView.incrementCurrentIndex()
+        playCurrentIndex()
+    }
+
     function stop() {
         video.stop();
         video.opacity = 0.0;
@@ -80,12 +96,7 @@ Window {
             }
         }
 
-        onStatusChanged: {
-            if (status == Video.EndOfMedia) {
-                posterView.decrementCurrentIndex()
-                playCurrentIndex()
-            }
-        }
+        onStatusChanged: if (status == Video.EndOfMedia) root.playNext()
     }
 
     Timer {
@@ -172,10 +183,7 @@ Window {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: {
-                    if (vplaying) video.pause(); else video.play();
-                    vplaying = !vplaying;
-                }
+                onClicked: togglePlayPause()
             }
         }
 

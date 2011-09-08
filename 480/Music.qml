@@ -27,11 +27,12 @@ Window {
     id: root
     anchors.leftMargin: rapid.additionalLeftMarginMore
 
-    function stop() {
-        qmhPlayer.stop()
-    }
-
     // TODO: move to rapid
+    function togglePlayPause()  { qmhPlayer.togglePlayPause() }
+    function stop()             { qmhPlayer.stop() }
+    function playPrevious()     { qmhPlayer.playPrevious() }
+    function playNext()         { qmhPlayer.playNext() }
+
     QMHPlayer {
         id: qmhPlayer
 

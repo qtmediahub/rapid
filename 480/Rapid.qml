@@ -126,6 +126,18 @@ FocusScope {
                             menu.switchMenu()
                         }
 
+    Keys.onPressed: {
+        if (event.key == Qt.Key_MediaTogglePlayPause) {
+            audioItem.togglePlayPause()
+        } else if (event.key == Qt.Key_MediaStop) {
+            audioItem.stop()
+        } else if (event.key == Qt.Key_MediaPrevious) {
+            audioItem.playPrevious()
+        } else if (event.key == Qt.Key_MediaNext) {
+            audioItem.playNext()
+        }
+    }
+
     Component.onCompleted: {
         selectedElement = "empty"
 
