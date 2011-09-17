@@ -1,4 +1,7 @@
 {
+    "name": "Rapid",
+    "version": "0.8",
+
     "resolutions": {
         "480p": {
             "file": "480/Rapid.qml"
