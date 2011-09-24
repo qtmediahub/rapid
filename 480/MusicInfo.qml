@@ -5,7 +5,7 @@ import QtMediaHub.components.media 1.0
 Item {
     id: root
 
-    property variant mediaInfo
+    property variant player
     property int position
     property int duration                       // TODO: duration is not working in QMHPlayer!!
 
@@ -40,7 +40,7 @@ Item {
 
     Image {
         id: coverArt
-        source: mediaInfo.thumbnail
+        source: player.thumbnail
         fillMode: Image.PreserveAspectFit
         height: root.height * 0.25
     }
@@ -63,7 +63,7 @@ Item {
         Text {
             color: "white"
             font.pixelSize: root.textPixelSize;
-            text: mediaInfo.artist
+            text: player.artist
             width: parent.width
             wrapMode: Text.Wrap
         }
@@ -85,7 +85,7 @@ Item {
         Text {
             color: "white"
             font.pixelSize: root.textPixelSize;
-            text: mediaInfo.title
+            text: player.title
             width: parent.width
             wrapMode: Text.Wrap
         }
@@ -107,7 +107,7 @@ Item {
         Text {
             color: "white"
             font.pixelSize: root.textPixelSize;
-            text: mediaInfo.album
+            text: player.album
             width: parent.width
             wrapMode: Text.Wrap
         }

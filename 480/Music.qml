@@ -160,7 +160,7 @@ Window {
     }
 
     MusicInfo {
-        mediaInfo: qmhPlayer.mediaInfo
+        player: qmhPlayer
         position: qmhPlayer.position
         duration: qmhPlayer.duration
 
