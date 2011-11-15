@@ -162,7 +162,7 @@ FocusScope {
         var apps = runtime.file.findApplications()
         for (var idx in apps) {
             var path = apps[idx]
-            if(path.indexOf('terminalmode') != -1) {
+            if(path.indexOf('terminalmode') != -1 || path.indexOf('nokiadrive') != -1) {
                 var manifest = createQmlObjectFromFile(path + "qmhmanifest.qml", rapid)
                 var uiType = manifest.ui.substring(manifest.ui.lastIndexOf('.')+1)
                 if (uiType == "qml") {
