@@ -159,7 +159,7 @@ FocusScope {
             qtcube.z = 9999999
         }
 
-        var apps = runtime.file.findApplications()
+        var apps = runtime.apps.findApplications()
         for (var idx in apps) {
             var path = apps[idx]
             if(path.indexOf('terminalmode') != -1 || path.indexOf('nokiadrive') != -1) {
