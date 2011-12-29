@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import "cursor.js" as Cursor
+import IpAddressFinder 1.0
 
 import "rootmenumodelitem.js" as RootMenuModelItem
 
@@ -144,6 +145,7 @@ FocusScope {
         Cursor.initialize()
 
         rapid.rootMenuModel.append({name: qsTr("Music"),    url: "Music.qml"})
+        rapid.rootMenuModel.append({name: qsTr("Radio"),    url: "RadioWindow.qml"})
         rapid.rootMenuModel.append({name: qsTr("Pictures"), url: "Pictures.qml"})
         rapid.rootMenuModel.append({name: qsTr("Video"),    url: "Video.qml"})
         rapid.rootMenuModel.append({name: qsTr("Weather"),  url: "Weather.qml"})
@@ -160,19 +162,19 @@ FocusScope {
         }
 
         var apps = runtime.apps.findApplications()
-        for (var idx in apps) {
-            var path = apps[idx]
-            if(path.indexOf('terminalmode') != -1 || path.indexOf('nokiadrive') != -1) {
-                var manifest = createQmlObjectFromFile(path + "qmhmanifest.qml", rapid)
-                var uiType = manifest.ui.substring(manifest.ui.lastIndexOf('.')+1)
-                if (uiType == "qml") {
-                    rapid.rootMenuModel.append({ name: manifest.name, visualElement: undefined, icon: manifest.icon != undefined ? path + manifest.icon : themeResourcePath + "Application.png", url: path + manifest.ui })
-                    runtime.view.addImportPath(path + "imports")
-                } else {
-                    console.log('Application ' + manifest.name + ' at ' + path + ' with ui:' + manifest.ui + ' could not be loaded.')
-                }
-            }
-        }
+//        for (var idx in apps) {
+//            var path = apps[idx]
+//            if(path.indexOf('terminalmode') != -1 || path.indexOf('nokiadrive') != -1) {
+//                var manifest = createQmlObjectFromFile(path + "qmhmanifest.qml", rapid)
+//                var uiType = manifest.ui.substring(manifest.ui.lastIndexOf('.')+1)
+//                if (uiType == "qml") {
+//                    rapid.rootMenuModel.append({ name: manifest.name, visualElement: undefined, icon: manifest.icon != undefined ? path + manifest.icon : themeResourcePath + "Application.png", url: path + manifest.ui })
+//                    runtime.view.addImportPath(path + "imports")
+//                } else {
+//                    console.log('Application ' + manifest.name + ' at ' + path + ' with ui:' + manifest.ui + ' could not be loaded.')
+//                }
+//            }
+//        }
 
         rapid.rootMenuModel.append({name: qsTr("Cluster"), url: "qtic.qml"})
         rapid.setActiveElementByIndex(rootMenuModel.count-2)
