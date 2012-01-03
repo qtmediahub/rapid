@@ -49,42 +49,67 @@ Window {
     ListView {
         id: mediaListView
         model: radioModel
+        currentIndex: 1 // unsets the hightlight .. not sure why, but does the job ;)
 
         anchors.left:   parent.left
-        anchors.leftMargin: 60
+        anchors.leftMargin: 80
         anchors.right:  parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.top:    parent.top
-        anchors.topMargin: 30
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 30
 
         focus: true
         clip: true
-        highlightRangeMode: ListView.NoHighlightRange
-        highlightMoveDuration: 250
-        keyNavigationWraps: false
-        highlight: Rectangle {          //TODO: check if ok..
-            opacity: 0.4
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#88FF70" }
-                GradientStop { position: 0.5; color: "#50BB50" }
-                GradientStop { position: 0.51; color: "#20B810" }
-                GradientStop { position: 1.0; color: "lightgreen" }
-            }
-        }
+
         ScrollBar {
             id:  listViewScollBar
             flickable: parent
         }
+        Rectangle {
+            id: topShadow
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: parent.height/7
 
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "black" }
+                GradientStop { position: 1.0; color: "transparent" }
+            }
+        }
+        Rectangle {
+            id: buttomShadow
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: parent.height/7
+
+            gradient: Gradient {
+                GradientStop { position: 1.0; color: "black" }
+                GradientStop { position: 0.0; color: "transparent" }
+            }
+        }
+
+        highlightRangeMode: ListView.NoHighlightRange
+        highlightMoveDuration: 250
+        highlight: Rectangle {          //TODO: check if ok..
+            opacity: 0.5
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#88FF70" }
+                GradientStop { position: 0.5; color: "#50BB50" }
+                GradientStop { position: 0.51; color: "#40B830" }
+                GradientStop { position: 1.0; color: "lightgreen" }
+            }
+        }
+
+        spacing: 1
         delegate: Item {
             id: delegateItem
 
             property variant itemData : model
 
             width: delegateItem.ListView.view.width - listViewScollBar.width
-            height: sourceText.height + 8
+            height: sourceText.height + 18
             clip: true
             transformOrigin: Item.Left
 
@@ -106,6 +131,15 @@ Window {
                 color: "white"
             }
 
+            Rectangle {
+                id: separator
+                height: 1
+                color: "darkgray"
+                width: parent.width
+                anchors.top: sourceText.bottom
+                anchors.topMargin: 8
+            }
+
             ListView.onAdd:
                 SequentialAnimation {
                 NumberAnimation {
@@ -113,7 +147,7 @@ Window {
                     properties: "scale, opacity"
                     from: 0
                     to: 1
-                    duration: 200+index*40
+                    duration: 200+index*80
                 }
             }
 
