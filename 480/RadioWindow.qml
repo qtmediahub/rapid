@@ -26,20 +26,22 @@ import QtMediaHub.components.media 1.0
 Window {
     id: root
 
-//    mediaType: "radio"
+    // TODO: move to rapid
+    function togglePlayPause()  { qmhPlayer.togglePlayPause() }
+    function stop()             { qmhPlayer.stop() }
+    function playPrevious()     { qmhPlayer.playPrevious() }
+    function playNext()         { qmhPlayer.playNext() }
 
     QMHPlayer {
         id: qmhPlayer
 
-//        mediaPlaylist.onCurrentIndexChanged: { mediaListView.currentIndex = qmhPlayer.mediaPlaylist.currentIndex+1 }
-
-//        onPausedChanged:  { if(qmhPlayer.playing && !qmhPlayer.paused) rapid.takeOverAudio(root); }
-//        onPlayingChanged: { if(qmhPlayer.playing && !qmhPlayer.paused) rapid.takeOverAudio(root); }
+        onPausedChanged:  { if(qmhPlayer.playing && !qmhPlayer.paused) rapid.takeOverAudio(root); }
+        onPlayingChanged: { if(qmhPlayer.playing && !qmhPlayer.paused) rapid.takeOverAudio(root); }
     }
 
     MediaModel {
         id: radioModel
-        mediaType: "radio" //root.mediaType
+        mediaType: "radio"
         structure: "title"
         dotDotPosition: MediaModel.End
     }
@@ -48,11 +50,14 @@ Window {
         id: mediaListView
         model: radioModel
 
-        width: parent.width*0.66
-        anchors.left: parent.left
-        anchors.top: parent.top
+        anchors.left:   parent.left
+        anchors.leftMargin: 60
+        anchors.right:  parent.right
+        anchors.rightMargin: 5
+        anchors.top:    parent.top
+        anchors.topMargin: 30
         anchors.bottom: parent.bottom
-        anchors.margins: 50
+        anchors.bottomMargin: 30
 
         focus: true
         clip: true
@@ -69,6 +74,7 @@ Window {
             }
         }
         ScrollBar {
+            id:  listViewScollBar
             flickable: parent
         }
 
@@ -76,10 +82,10 @@ Window {
             id: delegateItem
 
             property variant itemData : model
-            property alias iconItem : delegateIcon
 
-            width: delegateItem.ListView.view.width
+            width: delegateItem.ListView.view.width - listViewScollBar.width
             height: sourceText.height + 8
+            clip: true
             transformOrigin: Item.Left
 
             function activate() {
@@ -87,33 +93,16 @@ Window {
                     qmhPlayer.play(radioModel, index)
                 else
                     musicModel.enter(index)
-            }
-
-            Image {
-                id: delegateIcon
-                anchors.verticalCenter: parent.verticalCenter
-                height: parent.height
-                clip:  true
-                source: model.previewUrl /*{
-                    var icon;
-                    if (model.previewUrl != "")
-                        return model.previewUrl;
-                    else
-                        icon = ""; //"DefaultAudio.png";
-                    return themeResourcePath + "/" + icon;
-                }*/
-                fillMode: Image.PreserveAspectFit
-                smooth: true
+                mediaListView.currentIndex = index;
             }
 
             Text {
                 id: sourceText
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: delegateIcon.right
+                anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: model.title
-                font.pointSize: 16
-                font.weight: Font.Light
+                text: model.title != "" ? model.title : model.uri
+                font.pointSize: 24
                 color: "white"
             }
 
@@ -130,33 +119,22 @@ Window {
 
             MouseArea {
                 anchors.fill: parent;
-                hoverEnabled: true
-                acceptedButtons: Qt.LeftButton
-                onEntered: {
-                    delegateItem.ListView.view.currentIndex = index
-                    if (delegateItem.ListView.view.currentItem)
-                        delegateItem.ListView.view.currentItem.focus = true
-                }
-                onClicked: delegateItem.activate()
+                onClicked: { delegateItem.activate(); }
             }
 
-            Keys.onEnterPressed: delegateItem.activate()
         }
 
-        Keys.onLeftPressed: {
-            var pageItemCount = height/currentItem.height;
-            if (mediaListView.currentIndex - pageItemCount < 0)
-                mediaListView.currentIndex = 0;
-            else
-                mediaListView.currentIndex -= pageItemCount;
-        }
-        Keys.onRightPressed: {
-            var pageItemCount = height/currentItem.height;
-            if (mediaListView.currentIndex + pageItemCount > mediaListView.count-1)
-                mediaListView.currentIndex = mediaListView.count-1;
-            else
-                mediaListView.currentIndex += pageItemCount;
-        }
+        Keys.onEnterPressed: if(mediaListView.currentIndex != -1) mediaListView.currentItem.activate()
+
+        Keys.onDownPressed:  if(mediaListView.currentIndex < mediaListView.count-1) mediaListView.currentIndex++;
+                             else mediaListView.currentIndex=0;
+        Keys.onRightPressed: if(mediaListView.currentIndex < mediaListView.count-1) mediaListView.currentIndex++;
+                             else mediaListView.currentIndex=0;
+
+        Keys.onUpPressed:    if(mediaListView.currentIndex > 0) mediaListView.currentIndex--;
+                             else mediaListView.currentIndex=mediaListView.count-1;
+        Keys.onLeftPressed:  if(mediaListView.currentIndex > 0) mediaListView.currentIndex--;
+                             else mediaListView.currentIndex=mediaListView.count-1;
     }
 
 //    Image {
