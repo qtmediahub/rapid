@@ -26,7 +26,8 @@ Window {
     anchors.bottomMargin: 20
 
 //    property string city: "Munich"
-    property string city: "Barcelona"
+//    property string city: "Barcelona"
+    property string city: "Las Vegas"
 
     function fahrenheit2celsius(f) {
         return ((f-32)*5/9.0).toFixed(0);

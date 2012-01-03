@@ -33,7 +33,9 @@ Window {
 
         mapType: Map.StreetMap
 
-        center: Coordinate { latitude: 41.376319; longitude: 2.152752 }
+//        center: Coordinate { latitude: 41.376319; longitude: 2.152752 }
+        center: Coordinate { latitude: 36.131766; longitude: -115.150731 }
+
         zoomLevel: 15.0
     }
 
